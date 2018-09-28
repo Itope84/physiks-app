@@ -1,7 +1,7 @@
 <template>
 
   <v-container fluid pa-0>
-    <v-jumbotron dark color="primary">
+    <v-jumbotron dark color="primary" gradient="to bottom, #311b92, #009688">
       <v-container fill-height>
         <v-layout column align-center class="text-xs-center py-3">
           <v-flex xs12>
@@ -186,8 +186,6 @@
           </v-flex>
         </v-layout>
       </v-container>
-
-    </v-slide-y-transition>
   </v-container>
 </template>
 

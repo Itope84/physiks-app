@@ -25,6 +25,8 @@
         for (var file of chunk.files) {
           if (file.match(/\.(js|css)$/)) { %>
     <link rel="<%= chunk.initial?'preload':'prefetch' %>" href="<%= htmlWebpackPlugin.files.publicPath + file %>" as="<%= file.match(/\.css$/)?'style':'script' %>"><% }}} %>
+    <!-- TODO: please remove this line not needed for production -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <link href='<%= htmlWebpackPlugin.files.publicPath %>static/iconfont/material-icons.css' rel="stylesheet">
   </head>
   <body>

@@ -7,9 +7,11 @@
       v-model="drawer"
       enable-resize-watcher
       fixed
+      dark
+      class="primary lighten-3"
       app
     >
-      <v-list>
+      <v-list dark class="full-height cover">
         <v-list-tile avatar>
           <v-list-tile-avatar>
             <img :src="`./static/img/icons/physics-concepts/005-physics.png`" alt="John">
@@ -33,18 +35,16 @@
         <v-list-tile
           v-for="item in menu"
           :key="item.title"
+          @click="goto(item.to)"
         >
-          <v-list-tile-action>
-            <v-icon v-html="item.icon" :color="item.active ? 'teal' : 'grey'"></v-icon>
-          </v-list-tile-action>
 
-          <v-list-tile-content>
-            <v-list-tile-title v-html="item.title"></v-list-tile-title>
-          </v-list-tile-content>
+            <v-list-tile-action>
+              <v-icon v-html="item.icon" :color="item.active ? 'teal' : 'grey'"></v-icon>
+            </v-list-tile-action>
 
-          <!-- <v-list-tile-action>
-            <v-icon :color="item.active ? 'teal' : 'grey'">chat_bubble</v-icon>
-          </v-list-tile-action> -->
+            <v-list-tile-content>
+              <v-list-tile-title v-html="item.title"></v-list-tile-title>
+            </v-list-tile-content>
         </v-list-tile>
 
         <!-- <v-list-tile
@@ -78,9 +78,9 @@
       <router-view/>
     </v-content>
 
-    <v-footer :fixed="fixed" app>
+    <!-- <v-footer :fixed="fixed" app>
       <span>&copy; 2017</span>
-    </v-footer>
+    </v-footer> -->
   </v-app>
 </template>
 
@@ -94,23 +94,33 @@ export default {
       fixed: false,
       menu: [{
         icon: 'bubble_chart',
+        title: 'Home',
+        active: true,
+        to: '/'
+      },
+      {
+        icon: 'bubble_chart',
         title: 'Modules',
-        active: true
+        active: false,
+        to: '/modules'
       },
       {
         icon: 'bubble_chart',
         title: 'Challenges',
-        active: false
+        active: false,
+        to: '/modules'
       },
       {
         icon: 'bubble_chart',
         title: 'Random Question',
-        active: false
+        active: false,
+        to: '/modules'
       },
       {
         icon: 'bubble_chart',
         title: 'Edit Profile',
-        active: false
+        active: false,
+        to: '/modules'
       }
       ],
       miniVariant: false,
@@ -119,17 +129,16 @@ export default {
       title: 'Physiks'
     }
   },
+  methods: {
+    goto (link) {
+      this.$router.push(link)
+    }
+  },
   name: 'App'
 }
 </script>
 
 <style>
-  .rounded-card {
-    border-radius: 12px;
-    overflow: hidden;
-  }
+  @import 'assets/css/main.css';
 
-  .mw-50 {
-    max-width: 50%;
-  }
 </style>

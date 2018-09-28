@@ -1,0 +1,27 @@
+.rounded-card {
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .mw-50 {
+    max-width: 50%;
+  }
+
+  .mh100 {
+    min-height: 100vh;
+  }
+
+  aside.v-navigation-drawer {
+    background-image: url('/static/img/364.jpg');
+    background-size: cover;
+    background-position: center;
+  }
+
+  .full-height.cover {
+    background-color: rgba(49,27,146,.8);
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }

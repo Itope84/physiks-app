@@ -3,6 +3,7 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import vuex from './store'
 import {
   Vuetify,
   VApp,
@@ -19,6 +20,7 @@ import {
   VAvatar,
   VImg,
   VProgressCircular,
+  VSubheader,
   transitions
 } from 'vuetify'
 import '../node_modules/vuetify/src/stylus/app.styl'
@@ -39,6 +41,7 @@ Vue.use(Vuetify, {
     VAvatar,
     VImg,
     VProgressCircular,
+    VSubheader,
     transitions
   },
   theme: {
@@ -58,6 +61,7 @@ Vue.config.productionTip = false
 new Vue({
   el: '#app',
   router,
+  vuex,
   components: { App },
   template: '<App/>'
 })
