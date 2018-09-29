@@ -7,7 +7,12 @@ function initialState () {
 }
 
 const getters = {
-  modules: state => state.modules
+  sanitisedModules: state => state.modules.map(module => {
+    // module.summary = module.summary.replace(/<\bimg.*?\B>\B/gi, '')
+    // strip all tags
+    module.summary = module.summary.replace(/<.*?>/gi, '')
+    return module
+  })
 }
 
 const actions = {
@@ -27,13 +32,6 @@ const actions = {
 
 const mutations = {
   setModules (state, modules) {
-    // remove all img tags from summary
-    modules = modules.map(module => {
-      // module.summary = module.summary.replace(/<\bimg.*?\B>\B/gi, '')
-      // strip all tags
-      module.summary = module.summary.replace(/<.*?>/gi, '')
-      return module
-    })
     state.modules = modules
   }
 }

@@ -8,7 +8,7 @@
 
       <v-divider></v-divider>
 
-      <template v-for="(item, index) in modules">
+      <template v-for="(item, index) in sanitisedModules">
 
         <!-- <v-list-tile
           :key="index"
@@ -41,7 +41,7 @@
 import { mapGetters, mapActions } from 'vuex'
 export default {
   computed: {
-    ...mapGetters('ModulesIndex', ['modules'])
+    ...mapGetters('ModulesIndex', ['sanitisedModules'])
   },
 
   created () {
