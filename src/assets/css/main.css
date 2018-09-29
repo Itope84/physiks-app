@@ -25,3 +25,8 @@
     right: 0;
     bottom: 0;
   }
+
+
+.sidebar-menu--item.active {
+  background: rgba(255,255,255,0.08);
+}

@@ -2,7 +2,9 @@
   <v-container fluid pa-0>
     <v-list two-line>
 
-      <v-subheader>Modules</v-subheader>
+      <v-subheader>
+        <h5 class="title">All Modules</h5>
+      </v-subheader>
 
       <v-divider></v-divider>
 
@@ -16,16 +18,14 @@
 
         <v-list-tile
           :key="index"
-          @click="null"
+          @click="console.log(`i'm happy`)"
         >
           <!-- <v-list-tile-avatar>
             <img :src="item.avatar">
           </v-list-tile-avatar> -->
 
           <v-list-tile-content>
-            <v-list-tile-title>
-              <span class="font-weight-medium">{{item.title}}</span>
-            </v-list-tile-title>
+            <v-list-tile-title v-html="item.title" class="primary--text"></v-list-tile-title>
             <v-list-tile-sub-title v-html="item.summary"></v-list-tile-sub-title>
           </v-list-tile-content>
 
@@ -38,40 +38,14 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
-  data () {
-    return {
-      modules: [
-        {
-          title: 'Electromagnetism',
-          summary: 'skjdnfcklsab sa,mfndhcsjakdn sdbdnx sdhabdc dsfb csdbundkmncdsnh vjdnf  vkdfnvsd vkvndl fdvkdfn vdvjd dfvkjd fvjklmslkfd;l,v d,a csdvs;d dkm;ld vkjnsdl vsjfkldsmf sdvjksdn sdjasn;ldmfndm sd ljdnl;sd sjdnvfkldsf fvjndf sdfjusdnfklsd f'
-        },
-        {
-          title: 'Electromagnetism',
-          summary: 'Dummy dummy'
-        },
-        {
-          title: 'Electromagnetism',
-          summary: 'Dummy dummy'
-        },
-        {
-          title: 'Electromagnetism',
-          summary: 'Dummy dummy'
-        },
-        {
-          title: 'Electromagnetism',
-          summary: 'Dummy dummy'
-        },
-        {
-          title: 'Electromagnetism',
-          summary: 'Dummy dummy'
-        },
-        {
-          title: 'Electromagnetism',
-          summary: 'Dummy dummy'
-        }
-      ]
-    }
+  computed: {
+    ...mapGetters('ModulesIndex', ['modules'])
+  },
+
+  created () {
+    // fetch data
   }
 }
 </script>

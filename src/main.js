@@ -3,7 +3,7 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import vuex from './store'
+import store from './store'
 import {
   Vuetify,
   VApp,
@@ -45,9 +45,9 @@ Vue.use(Vuetify, {
     transitions
   },
   theme: {
-    primary: '#311b92',
+    primary: '#2196f3',
     secondary: '#009688',
-    accent: '#1A237E',
+    accent: '#1976d2',
     error: '#f44336',
     warning: '#ffeb3b',
     info: '#2196f3',
@@ -61,7 +61,7 @@ Vue.config.productionTip = false
 new Vue({
   el: '#app',
   router,
-  vuex,
+  store,
   components: { App },
   template: '<App/>'
 })

@@ -10,6 +10,7 @@
       dark
       class="primary lighten-3"
       app
+      v-on:close-sidebar="isActive = !isActive"
     >
       <v-list dark class="full-height cover">
         <v-list-tile avatar>
@@ -35,11 +36,13 @@
         <v-list-tile
           v-for="item in menu"
           :key="item.title"
-          @click="goto(item.to)"
+          @click="visit(item)"
+          class="sidebar-menu--item"
+          :class="{'active' : item.active}"
         >
 
             <v-list-tile-action>
-              <v-icon v-html="item.icon" :color="item.active ? 'teal' : 'grey'"></v-icon>
+              <v-icon v-html="item.icon" color="white"></v-icon>
             </v-list-tile-action>
 
             <v-list-tile-content>
@@ -66,12 +69,18 @@
       :clipped-left="clipped"
       color="primary"
       dark
-      class="elevation-0"
+      :class="{'elevation-0': $route.name === 'Home'}"
     >
       <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
 
-      <v-toolbar-title v-text="title"></v-toolbar-title>
+      <v-toolbar-title>{{activeEl.title === 'Home' ? 'Physics' : activeEl.title}}</v-toolbar-title>
       <v-spacer></v-spacer>
+
+      <v-toolbar-items>
+        <v-btn flat>
+          <v-icon>{{activeEl.icon}}</v-icon>
+        </v-btn>
+      </v-toolbar-items>
 
     </v-toolbar>
     <v-content>
@@ -85,53 +94,30 @@
 </template>
 
 <script>
-
+import { mapGetters, mapActions } from 'vuex'
 export default {
   data () {
     return {
       clipped: false,
       drawer: false,
       fixed: false,
-      menu: [{
-        icon: 'bubble_chart',
-        title: 'Home',
-        active: true,
-        to: '/'
-      },
-      {
-        icon: 'bubble_chart',
-        title: 'Modules',
-        active: false,
-        to: '/modules'
-      },
-      {
-        icon: 'bubble_chart',
-        title: 'Challenges',
-        active: false,
-        to: '/modules'
-      },
-      {
-        icon: 'bubble_chart',
-        title: 'Random Question',
-        active: false,
-        to: '/modules'
-      },
-      {
-        icon: 'bubble_chart',
-        title: 'Edit Profile',
-        active: false,
-        to: '/modules'
-      }
-      ],
+
       miniVariant: false,
       right: true,
       rightDrawer: false,
       title: 'Physiks'
     }
   },
+  computed: {
+    ...mapGetters('Navigation', ['menu']),
+    activeEl: function () {
+      return this.menu.filter(item => item.active)[0]
+    }
+  },
   methods: {
-    goto (link) {
-      this.$router.push(link)
+    ...mapActions('Navigation', ['goto']),
+    visit (item) {
+      this.goto(item)
     }
   },
   name: 'App'

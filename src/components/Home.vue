@@ -125,7 +125,7 @@
                   <v-btn color="secondary white--text" small class="right">Help</v-btn>
                 </v-card-text>
 
-                <h5 class="title mt-5 primary--text text--lighten-3">Latest Challenge:</h5>
+                <h5 class="title mt-5 accent--text">Latest Challenge:</h5>
 
                 <v-divider class="my-2" color="primary lighten-3"></v-divider>
 
