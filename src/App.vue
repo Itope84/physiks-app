@@ -77,7 +77,7 @@
       <v-spacer></v-spacer>
 
       <v-toolbar-items>
-        <v-btn flat>
+        <v-btn fab flat>
           <v-icon>{{activeEl.icon}}</v-icon>
         </v-btn>
       </v-toolbar-items>

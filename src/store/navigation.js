@@ -18,7 +18,7 @@ function initialState () {
       icon: 'bookmark',
       title: 'Challenges',
       active: false,
-      to: '/modules'
+      to: '/challenges'
     },
     {
       icon: 'question_answer',
