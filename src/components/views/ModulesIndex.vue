@@ -38,14 +38,18 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 export default {
   computed: {
     ...mapGetters('ModulesIndex', ['modules'])
   },
 
   created () {
-    // fetch data
+    this.fetchModules()
+  },
+
+  methods: {
+    ...mapActions('ModulesIndex', ['fetchModules'])
   }
 }
 </script>

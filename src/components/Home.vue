@@ -42,7 +42,7 @@
           <!-- Current module card -->
           <v-slide-y-transition mode="out-in">
             <v-flex xs12>
-              <v-card light class="my-2 rounded-card">
+              <v-card light class="my-2">
                 <v-layout row>
                   <v-flex xs4 class="primary white--text d-flex align-center">
                     <v-card-text class="text-xs-center">
@@ -75,7 +75,7 @@
           <!-- random question -->
           <v-slide-y-transition mode="out-in">
             <v-flex xs12>
-              <v-card light class="my-2 rounded-card">
+              <v-card light class="my-2">
                 <v-layout row>
 
                   <v-flex xs9 class="d-flex align-center">
@@ -105,7 +105,7 @@
 
           <v-slide-y-transition mode="out-in">
             <v-flex xs12>
-              <v-card light class="my-2 pa-4 rounded-card">
+              <v-card light class="my-2 pa-4">
                 <h3 class="headline accent--text font-weight-medium">
                   <v-layout row wrap align-center>
                     <v-flex xs2 pa-1><svg-icon icon="star"></svg-icon></v-flex>

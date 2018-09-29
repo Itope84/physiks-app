@@ -2,36 +2,7 @@ import axios from '../../http'
 
 function initialState () {
   return {
-    modules: [
-      {
-        title: 'Electromagnetism',
-        summary: 'skjdnfcklsab sa,mfndhcsjakdn sdbdnx sdhabdc dsfb csdbundkmncdsnh vjdnf  vkdfnvsd vkvndl fdvkdfn vdvjd dfvkjd fvjklmslkfd;l,v d,a csdvs;d dkm;ld vkjnsdl vsjfkldsmf sdvjksdn sdjasn;ldmfndm sd ljdnl;sd sjdnvfkldsf fvjndf sdfjusdnfklsd f'
-      },
-      {
-        title: 'Electromagnetism',
-        summary: 'Dummy dummy'
-      },
-      {
-        title: 'Electromagnetism',
-        summary: 'Dummy dummy'
-      },
-      {
-        title: 'Electromagnetism',
-        summary: 'Dummy dummy'
-      },
-      {
-        title: 'Electromagnetism',
-        summary: 'Dummy dummy'
-      },
-      {
-        title: 'Electromagnetism',
-        summary: 'Dummy dummy'
-      },
-      {
-        title: 'Electromagnetism',
-        summary: 'Dummy dummy'
-      }
-    ]
+    modules: []
   }
 }
 
@@ -44,9 +15,26 @@ const actions = {
     // check if localstorage.modules is set
     let modules = localStorage.getItem('modules')
     if (modules) {
-      commit('setModules', modules)
+      commit('setModules', JSON.parse(modules))
     }
-    axios.get('modules')
+    axios.get('modules').then(response => {
+      // this is a quick hack, we need to mapo each module and format it to our needs before storing
+      localStorage.setItem('modules', JSON.stringify(response.data.data))
+      // check if module has been completed etc...
+    }).finally(commit('setModules', JSON.parse(localStorage.getItem('modules'))))
+  }
+}
+
+const mutations = {
+  setModules (state, modules) {
+    // remove all img tags from summary
+    modules = modules.map(module => {
+      // module.summary = module.summary.replace(/<\bimg.*?\B>\B/gi, '')
+      // strip all tags
+      module.summary = module.summary.replace(/<.*?>/gi, '')
+      return module
+    })
+    state.modules = modules
   }
 }
 
@@ -54,6 +42,6 @@ export default {
   namespaced: true,
   state: initialState,
   getters,
-  actions
-  // mutations
+  actions,
+  mutations
 }
