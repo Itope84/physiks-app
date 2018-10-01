@@ -4,13 +4,14 @@
       :src="require(`./../../../static/svg/icon-${icon}.svg`)"
       aspect-ratio="1"
       class="icon-img"
+      :class="csclass"
     ></v-img>
   </div>
 </template>
 
 <script>
 export default {
-  props: ['icon']
+  props: ['icon', 'csclass']
 }
 </script>
 

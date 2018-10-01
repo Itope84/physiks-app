@@ -106,7 +106,7 @@
                 <v-layout row align-center mb-2>
                   <v-flex xs3 class="ml-3 mr-1 accent white--text" style="margin-top: -15px;">
                     <v-card-text class="text-xs-center">
-                      <h3 class="display-2"><svg-icon icon="star"></svg-icon></h3>
+                      <h3 class="display-2"><svg-icon icon="star" csclass="ma-auto"></svg-icon></h3>
                     </v-card-text>
                   </v-flex>
                   <v-flex xs9>
@@ -153,7 +153,7 @@
 
                   <v-flex xs4>
                     <v-card-text>
-                      <h2 class="display-1 py-2"><b class="success--text">3</b> - <b class="error--text">2</b></h2>
+                      <h2 class="display-1 py-2 text-xs-center"><b class="success--text">3</b> - <b class="error--text">2</b></h2>
                     </v-card-text>
                   </v-flex>
 
