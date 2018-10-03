@@ -57,6 +57,14 @@ Vue.use(Vuetify, {
   }
 })
 
+let modules = require('../static/modules.json')
+
+// to ensure it only happens once, we check if we've done this before, or perhaps this is an update to the app
+let md = localStorage.getItem('modulesdata')
+if (!md || JSON.parse(md).updated_at !== modules.updated_at) {
+  localStorage.setItem('modulesdata', JSON.stringify(modules))
+}
+
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */

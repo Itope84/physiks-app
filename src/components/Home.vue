@@ -42,7 +42,7 @@
                   </v-flex>
                   <v-flex xs9>
                     <v-card-text class="px-2 pt-2 pb-0">
-                      <h4 class="headline primary--text mb-2">Magnetic Properties of Solids</h4>
+                      <h4 class="title primary--text mb-2">Magnetic Properties of Solids</h4>
                       <!-- <h3 class="subheading">2280 points</h3> -->
                     </v-card-text>
                   </v-flex>
@@ -79,7 +79,7 @@
                   </v-flex>
                   <v-flex xs9>
                     <v-card-text class="px-2 pt-2 pb-0">
-                      <h4 class="headline secondary--text mb-2"><b>Random Question</b></h4>
+                      <h4 class="title secondary--text mb-2"><span>Random Question</span></h4>
                       <!-- <h3 class="subheading">2280 points</h3> -->
                     </v-card-text>
                   </v-flex>
@@ -111,7 +111,7 @@
                   </v-flex>
                   <v-flex xs9>
                     <v-card-text class="px-2 pt-2 pb-0">
-                      <h4 class="headline mb-2 accent--text"><b>Challenges</b></h4>
+                      <h4 class="title mb-2 accent--text"><span>Challenges</span></h4>
                       <!-- <h3 class="subheading">2280 points</h3> -->
                     </v-card-text>
                   </v-flex>
@@ -147,13 +147,13 @@
                           </v-layout>
                         </v-img>
                       </v-avatar>
-                      <h5 class="subheading py-2 text-xs-center success--text"><b>Santiago</b></h5>
+                      <h5 class="subheading py-2 text-xs-center success--text"><span>Santiago</span></h5>
                     </v-layout>
                   </v-flex>
 
                   <v-flex xs4>
                     <v-card-text>
-                      <h2 class="display-1 py-2 text-xs-center"><b class="success--text">3</b> - <b class="error--text">2</b></h2>
+                      <h2 class="display-1 py-2 text-xs-center"><span class="success--text">3</span> - <span class="error--text">2</span></h2>
                     </v-card-text>
                   </v-flex>
 
@@ -166,7 +166,7 @@
                           </v-layout>
                         </v-img>
                       </v-avatar>
-                      <h5 class="subheading py-2 text-xs-center error--text"><b>Death Star</b></h5>
+                      <h5 class="subheading py-2 text-xs-center error--text"><span>Death Star</span></h5>
                     </v-layout>
                   </v-flex>
                 </v-layout>
