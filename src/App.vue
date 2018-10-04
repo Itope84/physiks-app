@@ -98,7 +98,7 @@ export default {
   methods: {
     ...mapActions('Navigation', ['goto']),
     visit (item) {
-      this.goto(item)
+      this.goto({routeName: item.routeName, activeEl: item})
     }
   },
   name: 'App'
