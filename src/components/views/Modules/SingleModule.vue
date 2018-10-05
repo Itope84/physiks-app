@@ -24,7 +24,7 @@
 
         <v-card-actions>
           <v-btn flat color="secondary" :to="module.slide_link"> <v-icon>file_download</v-icon> Slides</v-btn>
-          <v-btn color="primary" class="ml-auto">Start Solving <v-icon>play_arrow</v-icon> </v-btn>
+          <v-btn color="primary" class="ml-auto" :to="{name: 'Question', params: {id: module.id, questionId: module.questions[0].id}}">Start Solving <v-icon>play_arrow</v-icon> </v-btn>
         </v-card-actions>
 
       </v-card>

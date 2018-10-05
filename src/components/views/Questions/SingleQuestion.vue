@@ -1,11 +1,12 @@
 <template>
-  <v-layout row wrap dark primary>
+  <v-layout row wrap>
     <v-flex xs12 sm6 offset-sm3>
-      <v-card flat class="pb-1 primary" dark>
+      <v-card flat class="pb-1">
 
         <v-card-title primary-title>
           <div>
-            <h5 class="subheading mb-0 text-uppercase">Question 1</h5>
+            <h6 class="body-2">{{module.title}}</h6>
+            <h5 class="subheading mb-0 text-uppercase">Question 1 of {{module.questions.length}}</h5>
           </div>
         </v-card-title>
 
