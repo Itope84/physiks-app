@@ -45,12 +45,7 @@ export default {
     ...mapGetters('Navigation', ['menu'])
   },
 
-  created () {
-    this.fetchModules()
-  },
-
   methods: {
-    ...mapActions('ModulesIndex', ['fetchModules']),
     ...mapActions('Navigation', ['goto']),
     openModule (item) {
       this.goto({routeName: 'Module', activeEl: this.menu[1], params: {id: item.id}})

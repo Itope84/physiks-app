@@ -49,6 +49,9 @@ const actions = {
   goto ({ commit }, {routeName, activeEl, params}) {
     router.push({ name: routeName, params: params })
     // router.push(menuItem.to)
+    if (!activeEl) {
+      activeEl = routeName
+    }
     commit('setActive', activeEl)
   }
 }

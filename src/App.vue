@@ -89,6 +89,11 @@ export default {
       title: 'Physiks'
     }
   },
+
+  created () {
+    this.fetchModules()
+  },
+
   computed: {
     ...mapGetters('Navigation', ['menu']),
     activeEl: function () {
@@ -96,6 +101,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions('ModulesIndex', ['fetchModules']),
     ...mapActions('Navigation', ['goto']),
     visit (item) {
       this.goto({routeName: item.routeName, activeEl: item})

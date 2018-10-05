@@ -34,6 +34,9 @@ const actions = {
       // check if module has been completed etc...
     }).finally(commit('setModules', JSON.parse(localStorage.getItem('modules'))))
   },
+  fetchQuestion ({commit, state}, questionId) {
+
+  },
   activeMod ({state}, id) {
     return state.modules.filter(module => module.id === id)[0]
   }

@@ -18,6 +18,7 @@ import {
   VExpansionPanel,
   VIcon,
   VGrid,
+  VRadioGroup,
   VToolbar,
   VAvatar,
   VImg,
@@ -41,6 +42,7 @@ Vue.use(Vuetify, {
     VExpansionPanel,
     VIcon,
     VGrid,
+    VRadioGroup,
     VToolbar,
     VAvatar,
     VImg,
@@ -58,6 +60,8 @@ Vue.use(Vuetify, {
     success: '#4caf50'
   }
 })
+
+// require('mathjax')
 
 let modules = require('../static/modules.json')
 

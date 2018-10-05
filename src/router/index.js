@@ -4,6 +4,7 @@ import Home from '@/components/Home'
 import ModulesIndex from '@/components/views/ModulesIndex'
 import ChallengeIndex from '@/components/views/ChallengesIndex'
 import SingleModule from '@/components/views/Modules/SingleModule'
+import SingleQuestion from '@/components/views/Questions/SingleQuestion'
 
 Vue.use(Router)
 
@@ -28,6 +29,11 @@ export default new Router({
       path: '/modules/:id',
       name: 'Module',
       component: SingleModule
+    },
+    {
+      path: '/modules/:id/questions/:questionId',
+      name: 'Question',
+      component: SingleQuestion
     }
   ]
 })
