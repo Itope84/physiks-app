@@ -1,6 +1,6 @@
 <template>
   <v-layout row wrap>
-    <v-flex xs12 sm6 offset-sm3 px-3>
+    <v-flex xs12 sm6 offset-sm3 pa-3>
       <v-card flat class="pb-1 accent" dark>
 
         <v-card-title primary-title>
@@ -29,7 +29,7 @@
 
       </v-card>
     </v-flex>
-    <v-flex xs12 sm6 offset-sm-3 class="px-3">
+    <v-flex xs12 sm6 offset-sm-3 class="px-3 mb-3">
       <v-card class="primary" dark>
         <v-card-text>
           <v-radio-group v-model="attempt" class="my-1 py-0">
@@ -47,7 +47,7 @@
           </v-radio-group>
           <v-card-actions>
             <v-btn color="secondary">Return </v-btn>
-            <v-btn color="primary" style="margin-left: auto">Submit </v-btn>
+            <v-btn color="accent" style="margin-left: auto">Submit </v-btn>
           </v-card-actions>
         </v-card-text>
 
