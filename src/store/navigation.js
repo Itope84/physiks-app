@@ -6,30 +6,35 @@ function initialState () {
       icon: 'home',
       title: 'Home',
       active: true,
+      routeName: 'Home',
       to: '/'
     },
     {
       icon: 'library_books',
       title: 'Modules',
       active: false,
+      routeName: 'Modules',
       to: '/modules'
     },
     {
       icon: 'bookmark',
       title: 'Challenges',
       active: false,
+      routeName: 'Challenges',
       to: '/challenges'
     },
     {
       icon: 'question_answer',
       title: 'Random Question',
       active: false,
+      routeName: 'Home',
       to: '/modules'
     },
     {
       icon: 'person',
       title: 'Edit Profile',
       active: false,
+      routeName: 'Home',
       to: '/modules'
     }
     ]
@@ -41,14 +46,18 @@ const getters = {
 }
 
 const actions = {
-  goto ({ commit }, menuItem) {
-    router.push(menuItem.to)
-    commit('visit', menuItem)
+  goto ({ commit }, {routeName, activeEl, params}) {
+    router.push({ name: routeName, params: params })
+    // router.push(menuItem.to)
+    if (!activeEl) {
+      activeEl = routeName
+    }
+    commit('setActive', activeEl)
   }
 }
 
 const mutations = {
-  visit (state, menuItem) {
+  setActive (state, menuItem) {
     let menu = state.menu.map(item => {
       item !== menuItem ? item.active = false : item.active = true
       // this.$root.$emit('close-sidebar')

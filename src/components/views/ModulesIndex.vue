@@ -18,7 +18,7 @@
 
         <v-list-tile
           :key="index"
-          @click="console.log(`i'm happy`)"
+          @click="openModule(item)"
         >
           <!-- <v-list-tile-avatar>
             <img :src="item.avatar">
@@ -41,15 +41,16 @@
 import { mapGetters, mapActions } from 'vuex'
 export default {
   computed: {
-    ...mapGetters('ModulesIndex', ['sanitisedModules'])
-  },
-
-  created () {
-    this.fetchModules()
+    ...mapGetters('ModulesIndex', ['sanitisedModules']),
+    ...mapGetters('Navigation', ['menu'])
   },
 
   methods: {
-    ...mapActions('ModulesIndex', ['fetchModules'])
+    ...mapActions('Navigation', ['goto']),
+    openModule (item) {
+      this.goto({routeName: 'Module', activeEl: this.menu[1], params: {id: item.id}})
+    }
   }
+
 }
 </script>

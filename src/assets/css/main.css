@@ -30,3 +30,11 @@
 .sidebar-menu--item.active {
   background: rgba(255,255,255,0.08);
 }
+
+.relative {
+  position: relative;
+}
+
+.rounded-0{
+  border-radius: 0 !important;
+}

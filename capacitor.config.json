@@ -1,0 +1,6 @@
+{
+  "appId": "com.physiks.app",
+  "appName": "Physiks",
+  "bundledWebRuntime": false,
+  "webDir": "dist"
+}

@@ -1,37 +1,27 @@
 <template>
 
   <v-container fluid pa-0>
-    <v-jumbotron dark color="primary" gradient="to bottom, #311b92, #009688">
+    <v-jumbotron dark color="primary">
       <v-container fill-height>
-        <v-layout column align-center class="text-xs-center py-3">
-          <v-flex xs12>
-            <v-avatar
-              :size="120"
-              color="grey lighten-4"
-            >
-            <v-img
-                  :src="`./static/img/icons/physics-concepts/005-physics.png`"
-                  aspect-ratio="1"
-                  class="grey lighten-2"
-                >
-              <v-layout
-                slot="placeholder"
-                fill-height
-                align-center
-                justify-center
-                ma-0
-              >
+        <v-layout column align-center class="text-xs-center py-1">
+          <v-flex xs12 class="mb-2 relative">
+            <v-avatar :size="70" color="grey lighten-4">
+            <v-img :src="`./static/img/icons/physics-concepts/005-physics.png`" aspect-ratio="1" class="grey lighten-2">
+              <v-layout slot="placeholder" fill-height align-center justify-center ma-0>
                 <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
               </v-layout>
             </v-img>
 
             </v-avatar>
+            <!-- <v-btn fab flat icon color="pink" absolute>
+              <v-icon dark>edit</v-icon>
+            </v-btn> -->
           </v-flex>
 
           <v-flex xs12>
-             <h1 class="headline">Santiago</h1>
+             <h1 class="title mb-1">Santiago</h1>
 
-              <h3 class="subheading">Level 12 (2280 points)</h3>
+              <h5 class="body-2" style="color: #cecece">Level 12 (2280 points)</h5>
           </v-flex>
         </v-layout>
       </v-container>
@@ -42,25 +32,30 @@
           <!-- Current module card -->
           <v-slide-y-transition mode="out-in">
             <v-flex xs12>
-              <v-card light class="my-2">
-                <v-layout row>
-                  <v-flex xs4 class="primary white--text d-flex align-center">
+              <v-card light class="mt-4 mb-2">
+                <v-layout row align-center>
+                  <v-flex xs3 class="ml-3 mr-1 primary white--text" style="margin-top: -15px;">
                     <v-card-text class="text-xs-center">
-                      <h5 class="headline">Module</h5>
-                      <h3 class="display-3">8</h3>
+                      <!-- <h5 class="headline">Module</h5> -->
+                      <h3 class="display-2">8</h3>
                     </v-card-text>
                   </v-flex>
                   <v-flex xs9>
-                    <v-card-text class="px-3 py-2">
-                      <h1 class="title primary--text mb-2">Magnetic Properties of Solids</h1>
-                      <h3 class="body-2">2 of 10 questions</h3>
-                      <v-btn class="mx-0" color="accent">
-                        Continue
-                      </v-btn>
+                    <v-card-text class="px-2 pt-2 pb-0">
+                      <h4 class="title primary--text mb-2">Magnetic Properties of Solids</h4>
                       <!-- <h3 class="subheading">2280 points</h3> -->
                     </v-card-text>
                   </v-flex>
+
                 </v-layout>
+
+                <v-card-text class="px-3 py-0 mb-2"><h3 class="subheading grey--text"  style="font-size: 18px; font-weight: 600">2 of 10 questions</h3></v-card-text>
+
+                <div class="d-flex">
+                  <v-btn class="mx-0 mb-0 rounded-0" large depressed color="primary">
+                      Continue
+                  </v-btn>
+                </div>
 
               </v-card>
             </v-flex>
@@ -74,28 +69,30 @@
 
           <!-- random question -->
           <v-slide-y-transition mode="out-in">
-            <v-flex xs12>
-              <v-card light class="my-2">
-                <v-layout row>
-
-                  <v-flex xs9 class="d-flex align-center">
-                    <v-card-text class="px-3 py-2">
-                      <h1 class="title secondary--text mb-2">Random Question</h1>
-                      <p class="caption font-weight-thin"><em>Busy? let's solve one quick question before you go!</em></p>
-                      <v-btn class="mx-0" color="secondary">
-                        Continue
-                      </v-btn>
+            <v-flex xs12 pb-3>
+              <v-card light class="mt-4 mb-2">
+                <v-layout row align-center mb-2>
+                  <v-flex xs3 class="ml-3 mr-1 secondary white--text" style="margin-top: -15px;">
+                    <v-card-text class="text-xs-center">
+                      <h3 class="display-2">?</h3>
+                    </v-card-text>
+                  </v-flex>
+                  <v-flex xs9>
+                    <v-card-text class="px-2 pt-2 pb-0">
+                      <h4 class="title secondary--text mb-2"><span>Random Question</span></h4>
                       <!-- <h3 class="subheading">2280 points</h3> -->
                     </v-card-text>
                   </v-flex>
 
-                  <v-flex xs4 class="secondary white--text d-flex align-center">
-                    <v-card-text class="text-xs-center">
-                      <!-- <h5 class="headline">Random</h5> -->
-                      <h3 class="display-3">?</h3>
-                    </v-card-text>
-                  </v-flex>
                 </v-layout>
+
+                <v-card-text class="px-3 py-0 mb-2"><h3 class="subheading grey--text"  style="font-size: 18px; font-weight: 600">Busy? Solve a quick question before you go</h3></v-card-text>
+
+                <div class="d-flex">
+                  <v-btn class="mx-0 mb-0 rounded-0" large depressed color="secondary">
+                      Test your Knowledge
+                  </v-btn>
+                </div>
 
               </v-card>
             </v-flex>
@@ -105,63 +102,73 @@
 
           <v-slide-y-transition mode="out-in">
             <v-flex xs12>
-              <v-card light class="my-2 pa-4">
-                <h3 class="headline accent--text font-weight-medium">
-                  <v-layout row wrap align-center>
-                    <v-flex xs2 pa-1><svg-icon icon="star"></svg-icon></v-flex>
-                    <v-flex pa-1>Challenges</v-flex>
-                  </v-layout>
+              <v-card light class="mt-4 mb-2">
+                <v-layout row align-center mb-2>
+                  <v-flex xs3 class="ml-3 mr-1 accent white--text" style="margin-top: -15px;">
+                    <v-card-text class="text-xs-center">
+                      <h3 class="display-2"><svg-icon icon="star" csclass="ma-auto"></svg-icon></h3>
+                    </v-card-text>
+                  </v-flex>
+                  <v-flex xs9>
+                    <v-card-text class="px-2 pt-2 pb-0">
+                      <h4 class="title mb-2 accent--text"><span>Challenges</span></h4>
+                      <!-- <h3 class="subheading">2280 points</h3> -->
+                    </v-card-text>
+                  </v-flex>
 
-                </h3>
+                </v-layout>
 
-                <v-divider class="accent mt-2"></v-divider>
+                <v-card-text class="px-3 py-0 mb-2"><h3 class="subheading grey--text">Challenges are a good way to level up and gain more points...</h3></v-card-text>
 
-                <v-card-text>
-                  <p class="body-text-1 accent--text font-weight-thin mb-0">
-                    Challenges are a good way to level up and gain more points...
-                  </p>
+                <div class="d-flex">
+                  <v-btn class="mx-0 mb-0 rounded-0" large depressed color="accent">
+                      Challenge Someone
+                  </v-btn>
+                </div>
 
-                  <v-btn color="accent" class="right" small>Play Now</v-btn>
-                  <v-btn color="secondary white--text" small class="right">Help</v-btn>
-                </v-card-text>
+              </v-card>
+            </v-flex>
 
-                <h5 class="title mt-5 accent--text">Latest Challenge:</h5>
 
-                <v-divider class="my-2" color="primary lighten-3"></v-divider>
+          </v-slide-y-transition>
 
+
+          <v-slide-y-transition mode="out-in">
+            <v-flex xs12>
+              <v-card light class="my-2 pa-2">
                 <!-- the results -->
-                <v-layout class="py-3">
-                  <v-flex xs12>
-                    <v-layout justify-content-start align-center>
-                      <v-avatar :size="40" color="grey lighten-4">
-                          <v-img :src="`./static/img/icons/physics-concepts/005-physics.png`" aspect-ratio="1" class="grey lighten-2">
-                            <v-layout slot="placeholder" fill-height align-center justify-center ma-0>
-                              <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
-                            </v-layout>
-                          </v-img>
-                        </v-avatar>
-
-                      <h5 class="title error--text px-2">Santiago</h5>
-                    </v-layout>
-
-                    <v-layout class="justify-center align-center py-2">
-                      <h5 class="title font-weight-black primary--text">3 : 3</h5>
-                    </v-layout>
-
-                    <v-layout class="justify-end align-center">
-                        <v-avatar :size="40" color="grey lighten-4">
-                          <v-img :src="`./static/img/icons/physics-concepts/005-physics.png`" aspect-ratio="1" class="grey lighten-2">
-                            <v-layout slot="placeholder" fill-height align-center justify-center ma-0>
-                              <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
-                            </v-layout>
-                          </v-img>
-                        </v-avatar>
-
-                      <h5 class="title success--text px-2">Santiago</h5>
+                <v-layout class="py-1">
+                  <v-flex xs4>
+                    <v-layout column>
+                      <v-avatar size="80" class="ml-auto mr-auto" tile style="border-radius: 20px; overflow: hidden;" color="grey lighten-4">
+                        <v-img :src="`./static/img/icons/physics-concepts/005-physics.png`" aspect-ratio="1" class="grey lighten-2">
+                          <v-layout slot="placeholder" fill-height align-center justify-center ma-0>
+                            <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
+                          </v-layout>
+                        </v-img>
+                      </v-avatar>
+                      <h5 class="subheading py-2 text-xs-center success--text"><span>Santiago</span></h5>
                     </v-layout>
                   </v-flex>
 
+                  <v-flex xs4>
+                    <v-card-text>
+                      <h2 class="display-1 py-2 text-xs-center"><span class="success--text">3</span> - <span class="error--text">2</span></h2>
+                    </v-card-text>
+                  </v-flex>
 
+                  <v-flex xs4>
+                    <v-layout column>
+                      <v-avatar size="80" class="ml-auto mr-auto" tile style="border-radius: 20px; overflow: hidden;" color="grey lighten-4">
+                        <v-img :src="`./static/img/icons/physics-concepts/005-physics.png`" aspect-ratio="1" class="grey lighten-2">
+                          <v-layout slot="placeholder" fill-height align-center justify-center ma-0>
+                            <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
+                          </v-layout>
+                        </v-img>
+                      </v-avatar>
+                      <h5 class="subheading py-2 text-xs-center error--text"><span>Death Star</span></h5>
+                    </v-layout>
+                  </v-flex>
                 </v-layout>
 
                 <!--  -->
