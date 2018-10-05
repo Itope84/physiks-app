@@ -1,7 +1,7 @@
 <template>
   <v-layout row wrap>
-    <v-flex xs12 sm6 offset-sm3>
-      <v-card flat class="pb-1">
+    <v-flex xs12 sm6 offset-sm3 px-3>
+      <v-card flat class="pb-1 accent" dark>
 
         <v-card-title primary-title>
           <div>
@@ -29,8 +29,8 @@
 
       </v-card>
     </v-flex>
-    <v-flex xs12 sm6 offset-sm-3 class="px-2">
-      <v-card>
+    <v-flex xs12 sm6 offset-sm-3 class="px-3">
+      <v-card class="primary" dark>
         <v-card-text>
           <v-radio-group v-model="attempt" class="my-1 py-0">
             <v-radio :label="`Option A`" value="A"></v-radio>
