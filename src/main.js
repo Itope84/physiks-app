@@ -63,16 +63,6 @@ Vue.use(Vuetify, {
   }
 })
 
-// router.beforeEach((to, from, next) => {
-//   let mjx = document.querySelector('script[src="/static/mathjax/MathJax.js?config=TeX-MML-AM_CHTML"]')
-//   if (mjx) {
-//     document.head.removeChild(mjx)
-//   }
-//   next()
-// })
-
-// import('http://localhost/mathjax/MathJax.js?config=TeX-MML-AM_CHTML')
-
 let modules = require('../static/modules.json')
 
 // to ensure it only happens once, we check if we've done this before, or perhaps this is an update to the app
