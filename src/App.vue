@@ -51,7 +51,7 @@
         </v-list-tile>
       </v-list>
     </v-navigation-drawer>
-    <v-toolbar app color="accent" dark :class="{'elevation-0': $route.name === 'Home'}">
+    <v-toolbar app color="accent" dark :class="{'elevation-0': $route.name === 'Home'}" v-if="!isLanding">
       <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
 
       <v-toolbar-title class="ml-0">{{activeEl.title === 'Home' ? 'Physics' : activeEl.title}}</v-toolbar-title>
@@ -95,6 +95,9 @@ export default {
   },
 
   computed: {
+    isLanding () {
+      return this.$route.name === 'Landing'
+    },
     ...mapGetters('Navigation', ['menu']),
     activeEl: function () {
       return this.menu.filter(item => item.active)[0]

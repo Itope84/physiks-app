@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '@/components/Home'
+import Landing from '@/components/views/Landing'
 import ModulesIndex from '@/components/views/ModulesIndex'
 import ChallengeIndex from '@/components/views/ChallengesIndex'
 import SingleModule from '@/components/views/Modules/SingleModule'
@@ -12,6 +13,11 @@ export default new Router({
   routes: [
     {
       path: '/',
+      name: 'Landing',
+      component: Landing
+    },
+    {
+      path: '/home',
       name: 'Home',
       component: Home
     },
