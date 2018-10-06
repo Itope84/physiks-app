@@ -8,14 +8,12 @@
 
 
 
-        <v-subheader>Recent Challenges</v-subheader>
+        <v-subheader class="d-flex justify-center text-uppercase">Recent Challenges</v-subheader>
         <v-flex xs12 v-for="(challenge, index) in challenges" :key="index">
-          <v-card light class="my-2 pa-2">
-            <!-- the results -->
-            <v-layout class="py-1">
+          <v-layout class="pt-2">
               <v-flex xs4>
                 <v-layout column>
-                  <v-avatar size="50" class="ml-auto mr-auto" tile style="border-radius: 20px; overflow: hidden;" color="grey lighten-4">
+                  <v-avatar size="30" class="ml-auto mr-auto" tile style="border-radius: 20px; overflow: hidden;" color="grey lighten-4">
                     <v-img :src="`./static/img/icons/physics-concepts/005-physics.png`" aspect-ratio="1" class="grey lighten-2">
                       <v-layout slot="placeholder" fill-height align-center justify-center ma-0>
                         <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
@@ -28,13 +26,13 @@
 
               <v-flex xs4>
                 <v-card-text>
-                  <h2 class="display-1 py-2 text-xs-center"><span :class="[scoreClass(challenge.challenger.score, challenge.opponent.score)]">{{challenge.challenger.score}}</span> - <span :class="[scoreClass(challenge.opponent.score, challenge.challenger.score)]">{{challenge.opponent.score}}</span></h2>
+                  <h2 class="subheading py-2 text-xs-center"><span :class="[scoreClass(challenge.challenger.score, challenge.opponent.score)]">{{challenge.challenger.score}}</span> - <span :class="[scoreClass(challenge.opponent.score, challenge.challenger.score)]">{{challenge.opponent.score}}</span></h2>
                 </v-card-text>
               </v-flex>
 
               <v-flex xs4>
                 <v-layout column>
-                  <v-avatar size="50" class="ml-auto mr-auto" tile style="border-radius: 20px; overflow: hidden;" color="grey lighten-4">
+                  <v-avatar size="30" class="ml-auto mr-auto" tile style="border-radius: 20px; overflow: hidden;" color="grey lighten-4">
                     <v-img :src="`./static/img/icons/physics-concepts/005-physics.png`" aspect-ratio="1" class="grey lighten-2">
                       <v-layout slot="placeholder" fill-height align-center justify-center ma-0>
                         <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
@@ -46,7 +44,8 @@
               </v-flex>
             </v-layout>
 
-          </v-card>
+            <v-divider class="mb-4"></v-divider>
+
         </v-flex>
 
 

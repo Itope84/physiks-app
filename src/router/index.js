@@ -35,5 +35,8 @@ export default new Router({
       name: 'Question',
       component: SingleQuestion
     }
-  ]
+  ],
+  scrollBehavior (to, from, savedPosition) {
+    return { x: 0, y: 0 }
+  }
 })

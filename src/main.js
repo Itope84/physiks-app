@@ -1,3 +1,5 @@
+/* eslint no-eval: 0 */
+
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
@@ -61,7 +63,15 @@ Vue.use(Vuetify, {
   }
 })
 
-// require('mathjax')
+// router.beforeEach((to, from, next) => {
+//   let mjx = document.querySelector('script[src="/static/mathjax/MathJax.js?config=TeX-MML-AM_CHTML"]')
+//   if (mjx) {
+//     document.head.removeChild(mjx)
+//   }
+//   next()
+// })
+
+// import('http://localhost/mathjax/MathJax.js?config=TeX-MML-AM_CHTML')
 
 let modules = require('../static/modules.json')
 

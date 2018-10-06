@@ -28,6 +28,19 @@
     <!-- TODO: please remove this line not needed for production -->
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <link href='<%= htmlWebpackPlugin.files.publicPath %>static/iconfont/material-icons.css' rel="stylesheet">
+
+    <script>
+      MathJax.Hub.Config({
+        imageFont: null,
+        extensions: [tex2jax.js],
+        jax: ["input/TeX", "output/HTML-CSS"],
+        tex2jax: {inlineMath: [["$", "$"], ["\\(", "\\)"]]}
+      })
+    </script>
+
+    <script type="text/javascript" async src="<%= htmlWebpackPlugin.files.publicPath %>static/mathjax/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+
   </head>
   <body>
     <noscript>
@@ -37,5 +50,8 @@
     <!-- Todo: only include in production -->
     <%= htmlWebpackPlugin.options.serviceWorkerLoader %>
     <!-- built files will be auto injected -->
+
+    <!-- <script type="text/javascript" await src="">
+    </script> -->
   </body>
 </html>

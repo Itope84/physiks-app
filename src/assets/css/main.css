@@ -38,3 +38,7 @@
 .rounded-0{
   border-radius: 0 !important;
 }
+
+.rounded-all {
+  border-radius: 50%;
+}

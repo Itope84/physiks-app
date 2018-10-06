@@ -1,3 +1,4 @@
+/* eslint no-eval: 0 */
 <template>
   <v-layout row wrap>
     <v-flex xs12 sm6 offset-sm3>
@@ -10,7 +11,6 @@
         </v-card-title>
 
         <v-divider></v-divider>
-
         <v-card-actions>
           <v-btn flat color="secondary" :to="{ name: 'Modules'}"> <v-icon>keyboard_arrow_left</v-icon> Return</v-btn>
           <v-btn flat color="primary" style="margin-left: auto !important">Skip summary <v-icon>keyboard_arrow_right</v-icon> </v-btn>
@@ -41,10 +41,9 @@
     </v-flex>
   </v-layout>
 </template>
-
-
 <script>
 import { mapGetters, mapActions } from 'vuex'
+
 export default {
   data () {
     return {
@@ -57,6 +56,10 @@ export default {
     // console.log(this.modules)
   },
 
+  mounted () {
+    eval('MathJax.Hub.Queue(["Typeset", MathJax.Hub])')
+  },
+
   computed: {
     ...mapGetters('ModulesIndex', ['modules'])
   },
@@ -66,3 +69,4 @@ export default {
   }
 }
 </script>
+

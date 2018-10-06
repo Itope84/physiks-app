@@ -68,9 +68,9 @@
       <router-view/>
     </v-content>
 
-    <!-- <v-footer :fixed="fixed" app>
-      <span>&copy; 2017</span>
-    </v-footer> -->
+    <v-footer :fixed="fixed" app>
+      <!-- <span> \(\dfrac {\alpha} { \beta}\)</span> -->
+    </v-footer>
   </v-app>
 </template>
 
