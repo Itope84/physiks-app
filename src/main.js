@@ -18,6 +18,7 @@ import {
   VList,
   VBtn,
   VExpansionPanel,
+  VForm,
   VIcon,
   VGrid,
   VRadioGroup,
@@ -26,6 +27,8 @@ import {
   VImg,
   VProgressCircular,
   VSubheader,
+  VTabs,
+  VTextField,
   transitions
 } from 'vuetify'
 import '../node_modules/vuetify/src/stylus/app.styl'
@@ -42,6 +45,7 @@ Vue.use(Vuetify, {
     VBtn,
     VCard,
     VExpansionPanel,
+    VForm,
     VIcon,
     VGrid,
     VRadioGroup,
@@ -50,6 +54,8 @@ Vue.use(Vuetify, {
     VImg,
     VProgressCircular,
     VSubheader,
+    VTabs,
+    VTextField,
     transitions
   },
   theme: {
