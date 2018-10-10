@@ -10,6 +10,7 @@
       dark
       class="primary lighten-3"
       app
+      v-if="!isLanding"
       v-on:close-sidebar="isActive = !isActive"
     >
       <v-list dark class="full-height cover">
@@ -68,9 +69,9 @@
       <router-view/>
     </v-content>
 
-    <v-footer :fixed="fixed" app>
-      <!-- <span> \(\dfrac {\alpha} { \beta}\)</span> -->
-    </v-footer>
+    <!-- <v-footer :fixed="fixed" app>
+      <span> \(\dfrac {\alpha} { \beta}\)</span>
+    </v-footer> -->
   </v-app>
 </template>
 
@@ -82,7 +83,6 @@ export default {
       clipped: false,
       drawer: false,
       fixed: false,
-
       miniVariant: false,
       right: true,
       rightDrawer: false,
@@ -99,22 +99,72 @@ export default {
       return this.$route.name === 'Landing'
     },
     ...mapGetters('Navigation', ['menu']),
+    ...mapGetters('User', ['user']),
     activeEl: function () {
       return this.menu.filter(item => item.active)[0]
     }
   },
+
   methods: {
     ...mapActions('ModulesIndex', ['fetchModules']),
     ...mapActions('Navigation', ['goto']),
+    ...mapActions('User', ['fetchUser']),
     visit (item) {
       this.goto({routeName: item.routeName, activeEl: item})
     }
+  },
+
+  mounted () {
+    this.fetchUser()
   },
   name: 'App'
 }
 </script>
 
 <style>
-  @import 'assets/css/main.css';
+.rounded-card {
+    border-radius: 1rem;
+    overflow: hidden;
+  }
+
+  .mw-50 {
+    max-width: 50%;
+  }
+
+  .mh100 {
+    min-height: 100vh;
+  }
+
+  aside.v-navigation-drawer {
+    background-image: url('/static/img/364.jpg');
+    background-size: cover;
+    background-position: center;
+  }
+
+  .full-height.cover {
+    background-color: rgba(49,27,146,.8);
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+
+
+.sidebar-menu--item.active {
+  background: rgba(255,255,255,0.08);
+}
+
+.relative {
+  position: relative;
+}
+
+.rounded-0{
+  border-radius: 0 !important;
+}
+
+.rounded-all {
+  border-radius: 50%;
+}
 
 </style>

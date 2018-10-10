@@ -6,9 +6,12 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import store from './store'
+import isFuture from 'date-fns/is_future'
 import {
   Vuetify,
+  VAlert,
   VApp,
+  VBottomSheet,
   VCard,
   VChip,
   VNavigationDrawer,
@@ -17,6 +20,7 @@ import {
   VFooter,
   VList,
   VBtn,
+  VDialog,
   VExpansionPanel,
   VForm,
   VIcon,
@@ -25,7 +29,9 @@ import {
   VToolbar,
   VAvatar,
   VImg,
+  VProgressLinear,
   VProgressCircular,
+  VSnackbar,
   VSubheader,
   VTabs,
   VTextField,
@@ -35,10 +41,13 @@ import '../node_modules/vuetify/src/stylus/app.styl'
 
 Vue.use(Vuetify, {
   components: {
+    VAlert,
     VApp,
+    VBottomSheet,
     VChip,
     VNavigationDrawer,
     VFooter,
+    VDialog,
     VDivider,
     VJumbotron,
     VList,
@@ -53,6 +62,8 @@ Vue.use(Vuetify, {
     VAvatar,
     VImg,
     VProgressCircular,
+    VProgressLinear,
+    VSnackbar,
     VSubheader,
     VTabs,
     VTextField,
@@ -75,6 +86,11 @@ let modules = require('../static/modules.json')
 let md = localStorage.getItem('modulesdata')
 if (!md || JSON.parse(md).updated_at !== modules.updated_at) {
   localStorage.setItem('modulesdata', JSON.stringify(modules))
+}
+
+// if token is set and today is less than token's expiry date
+if (!localStorage.getItem('user.token') || !isFuture(JSON.parse(localStorage.getItem('user.token')).expires_at)) {
+  router.push('/')
 }
 
 Vue.config.productionTip = false

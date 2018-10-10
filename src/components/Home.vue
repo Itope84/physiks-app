@@ -19,9 +19,9 @@
           </v-flex>
 
           <v-flex xs12>
-             <h1 class="title mb-1">Santiago</h1>
+             <h1 class="title mb-1">{{ user.name }}</h1>
 
-              <h5 class="body-2" style="color: #cecece">Level 12 (2280 points)</h5>
+              <h5 class="body-2" style="color: #cecece">Level {{parseInt(user.points / 100)}} ({{user.points}} points)</h5>
           </v-flex>
         </v-layout>
       </v-container>
@@ -32,22 +32,22 @@
           <!-- Current module card -->
           <v-slide-y-transition mode="out-in">
             <v-flex xs12>
-              <v-card light class="mt-4 mb-2">
+              <v-card light class="mt-4 mb-2 pt-2 elevation-5 rounded-card">
 
-                  <v-avatar :size="30" class=" white--text d-block mx-auto Pt-3" color="primary">
+                  <v-avatar :size="30" class=" white--text d-block mx-auto" color="primary">
                     <v-icon color="white">lightbulb_outline</v-icon>
                   </v-avatar>
 
-                    <v-card-text class="px-2 text-xs-center pt-3 pb-0">
+                    <v-card-text class="px-2 text-xs-center pt-1 pb-0">
                       <!--  <p class="body-1 grey--text">Current Module</p> -->
-                      <h4 class="subheading primary--text mb-2 text-capitalize"><b> Magnetic Properties of Solids</b></h4>
+                      <h4 class="subheading primary--text mb-2 text-capitalize"><b>{{activeModule.title}}</b></h4>
                       <!-- <h3 class="subheading">2280 points</h3> -->
                     </v-card-text>
 
                 <v-card-text class="px-3 py-0 mb-2"><h3 class="subheading grey--text text-xs-center"  style="font-size: 18px;">2 of 10 questions</h3></v-card-text>
 
                 <div class="d-flex">
-                  <v-btn class="mx-0 mb-0 rounded-0" large depressed color="primary">
+                  <v-btn class="mx-0 mb-0 rounded-bottom" large depressed color="primary">
                       Continue
                   </v-btn>
                 </div>
@@ -65,7 +65,7 @@
           <!-- random question -->
           <v-slide-y-transition mode="out-in">
             <v-flex xs12 pb-3>
-              <v-card light class="mt-4 mb-2">
+              <v-card light class="mt-4 mb-2 elevation-5 rounded-card">
                 <v-layout column pt-2 justify-center align-center mb-1>
                   <v-flex xs12>
                     <v-avatar :size="30" class="white--text" color="secondary">
@@ -85,7 +85,7 @@
                 <v-card-text class="px-3 py-0 mb-2"><h3 class="body-1 grey--text text-xs-center">Busy? Solve a quick question before you go</h3></v-card-text>
 
                 <div class="d-flex">
-                  <v-btn class="mx-0 mb-0 rounded-0" large depressed color="secondary">
+                  <v-btn class="mx-0 mb-0 rounded-bottom" large depressed color="secondary">
                       Test your Knowledge
                   </v-btn>
                 </div>
@@ -98,7 +98,7 @@
 
           <v-slide-y-transition mode="out-in">
             <v-flex xs12>
-              <v-card light class="mt-4 mb-2">
+              <v-card light class="mt-4 mb-2 elevation-5 rounded-card">
                 <v-layout column align-center mb-2>
                   <v-flex xs3 class="ml-3 mr-1 white--text pt-2">
                       <h3 style="width: 30px;" class="pa-1 rounded-all"><svg-icon icon="star" csclass="ma-auto"></svg-icon></h3>
@@ -115,7 +115,7 @@
                 <v-card-text class="px-3 py-0 mb-2"><h3 class="body-1 grey--text">Challenges are a good way to level up and gain more points...</h3></v-card-text>
 
                 <div class="d-flex">
-                  <v-btn class="mx-0 mb-0 rounded-0" large depressed color="accent">
+                  <v-btn class="mx-0 mb-0 rounded-bottom" large depressed color="accent">
                       Challenge Someone
                   </v-btn>
                 </div>
@@ -129,7 +129,7 @@
 
           <v-slide-y-transition mode="out-in">
             <v-flex xs12>
-              <v-card light class="mt-4 pa-2">
+              <v-card light class="mt-4 pa-2 elevation-5 rounded-card">
                 <!-- the results -->
                 <v-layout class="py-1">
                   <v-flex xs4>
@@ -192,10 +192,17 @@
 
 <script>
 import SvgIcon from './partials/SvgIcon.vue'
-
+import { mapGetters } from 'vuex'
 export default {
   components: {
     'svg-icon': SvgIcon
+  },
+  computed: {
+    ...mapGetters('User', ['user']),
+    ...mapGetters('ModulesIndex', ['sanitisedModules']),
+    activeModule () {
+      return this.sanitisedModules.filter(module => module.id === this.user.modules[this.user.modules.length - 1].id)[0]
+    }
   }
 }
 </script>
