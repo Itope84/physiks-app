@@ -40,15 +40,18 @@
 
                     <v-card-text class="px-2 text-xs-center pt-1 pb-0">
                       <!--  <p class="body-1 grey--text">Current Module</p> -->
-                      <h4 class="subheading primary--text mb-2 text-capitalize"><b>{{activeModule.title}}</b></h4>
+                      <h4 class="subheading primary--text mb-2 text-capitalize"><b>{{activeModule ? activeModule.title : `You have not started any module`}}</b></h4>
                       <!-- <h3 class="subheading">2280 points</h3> -->
                     </v-card-text>
 
-                <v-card-text class="px-3 py-0 mb-2"><h3 class="subheading grey--text text-xs-center"  style="font-size: 18px;">2 of 10 questions</h3></v-card-text>
+                <v-card-text class="px-3 py-0 mb-2"><h3 class="subheading grey--text text-xs-center"  style="font-size: 18px;" v-if="activeModule">
+                  <!-- i'm still not sure if to display all correct attempts here or all attempts -->
+                  {{activeModule.correctAttempts}} of 10 questions</h3>
+                </v-card-text>
 
                 <div class="d-flex">
-                  <v-btn class="mx-0 mb-0 rounded-bottom" large depressed color="primary">
-                      Continue
+                  <v-btn class="mx-0 mb-0 rounded-bottom" large depressed color="primary" :to="{ name: 'Module', params: {id: activeModule ? activeModule.id : 1} }">
+                      {{activeModule ? `Continue` : `Start Now`}}
                   </v-btn>
                 </div>
 
@@ -59,7 +62,7 @@
           </v-slide-y-transition>
 
           <v-flex xs12 class="d-flex py-3">
-            <v-btn color="primary" class="mx-auto mw-50">View All Modules</v-btn>
+            <v-btn color="primary" class="mx-auto mw-50" :to="{ name: 'Modules'}">View All Modules</v-btn>
           </v-flex>
 
           <!-- random question -->
@@ -191,6 +194,7 @@
 </template>
 
 <script>
+import { getCorrectAnswersInQstnAttemps } from '../functions.js'
 import SvgIcon from './partials/SvgIcon.vue'
 import { mapGetters } from 'vuex'
 export default {
@@ -201,7 +205,16 @@ export default {
     ...mapGetters('User', ['user']),
     ...mapGetters('ModulesIndex', ['sanitisedModules']),
     activeModule () {
-      return this.sanitisedModules.filter(module => module.id === this.user.modules[this.user.modules.length - 1].id)[0]
+      let m = this.user.modules[this.user.modules.length - 1]
+      if (!m) {
+        return null
+      }
+      let p = this.sanitisedModules.filter(module => module.id === m.id)[0]
+      return {
+        id: m.id,
+        title: p.title,
+        correctAttempts: m.questions.reduce((total, question) => getCorrectAnswersInQstnAttemps(question, p.questions.filter(q => q.id === question.id)[0]).length ? total + 1 : typeof total === 'number' ? total : 0)
+      }
     }
   }
 }

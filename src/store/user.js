@@ -1,23 +1,20 @@
-import axios from '../http'
-import router from '../router'
+let userTemplate = {
+  name: '',
+  username: '',
+  email: '',
+  password: '',
+  matric_no: '',
+  points: 0,
+  modules: [],
+  // a list of all modules started by user, including the questions he has solved in each.
+  challenges: [],
+  // a list of all challenges user has engaged in
+  random_questions: []
+  // a list of all random questions user has solved
+}
 
-function initialState () {
-  return {
-    user: {
-      name: '',
-      username: '',
-      email: '',
-      password: '',
-      matric_no: '',
-      points: 0,
-      modules: [],
-      // a list of all modules started by user, including the questions he has solved in each.
-      challenges: [],
-      // a list of all challenges user has engaged in
-      random_questions: []
-      // a list of all random questions user has solved
-    }
-  }
+const state = {
+  user: userTemplate
 }
 
 const getters = {
@@ -25,17 +22,9 @@ const getters = {
 }
 
 const actions = {
-  register ({commit, state}, {name, username, email, password, matricNo}) {
-    // console.log({ name, username, email, password, matricNo })
-    axios.post('signup', {name, username, email, password, matric_no: matricNo}).then(response => {
-      console.log(response)
-      router.push('/home')
-    })
-  },
-
   storeUser ({commit, state}, {user}) {
     // this action is meant to be called only when we fetch user from database after logging in or signing up!
-    let u = state.user
+    let u = state.user = userTemplate
     // mass assign u those behaviours you know
     u = { ...u, name: user.name, id: user.id, matric_no: user.matric_no, email: user.email, points: user.points, username: user.username }
     // now to the hard part.
@@ -88,7 +77,7 @@ const actions = {
         question[0].attempts.push(attempt)
       }
     })
-    // console.log(u)
+    console.log(u)
     commit('setUser', u)
   },
 
@@ -113,7 +102,7 @@ const mutations = {
 
 export default {
   namespaced: true,
-  state: initialState,
+  state,
   getters,
   actions,
   mutations

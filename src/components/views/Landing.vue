@@ -231,7 +231,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions('User', ['register', 'storeUser']),
+    ...mapActions('User', ['storeUser']),
     submitSignup () {
       if (this.$refs.signup.validate()) {
         // set loading
