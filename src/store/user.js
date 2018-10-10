@@ -90,6 +90,19 @@ const actions = {
     let u = state.user
     u = {...u, ...details}
     commit('setUser', u)
+  },
+
+  startModule ({commit, state}, moduleId) {
+    let u = state.user
+    let userModule = u.modules.filter(mod => mod.id === moduleId)[0]
+    if (!userModule) {
+      u.modules.push({
+        id: moduleId,
+        questions: []
+      })
+    }
+    console.log(u)
+    commit('setUser', u)
   }
 }
 

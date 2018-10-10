@@ -1,5 +1,16 @@
 <template>
   <v-layout row wrap>
+    <v-flex xs12 sm6 offset-sm-3 px-3 pt-3 pb-1>
+      <v-card>
+        <v-card-text>
+          <div class="d-flex px-3">
+            <span class="success--text">Reward: 5pts</span>
+            <span class="ml-auto"> Attempts: <b class="indigo--text">3</b></span>
+          </div>
+
+        </v-card-text>
+      </v-card>
+    </v-flex>
     <v-flex xs12 sm6 offset-sm3 pa-3>
       <v-card flat class="pb-1 accent" dark>
 
@@ -47,7 +58,7 @@
           </v-radio-group>
           <v-card-actions>
             <v-btn color="secondary">Return </v-btn>
-            <v-btn color="accent" style="margin-left: auto">Submit </v-btn>
+            <v-btn color="accent" style="margin-left: auto">Next </v-btn>
           </v-card-actions>
         </v-card-text>
 
@@ -63,15 +74,25 @@ export default {
     return {
       question: null,
       module: null,
-      attempt: null
+      attempt: null,
+      ungotten: null
     }
   },
+
+  // beforeCreate () {
+
+  // },
   created () {
     this.module = this.modules.filter(mod => parseInt(mod.id) === parseInt(this.$route.params.id))[0]
     console.log(this.module)
     this.question = this.module.questions.filter(qstn => parseInt(qstn.id) === parseInt(this.$route.params.questionId))[0]
     console.log(this.question)
-    // console.log(this.modules)
+
+    // ungotten questions are questions for which user has no right answer. They're the only questions we'll show
+  },
+
+  mounted () {
+    eval('MathJax.Hub.Queue(["Typeset", MathJax.Hub])')
   },
   computed: {
     ...mapGetters('ModulesIndex', ['modules'])

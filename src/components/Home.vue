@@ -213,7 +213,7 @@ export default {
       return {
         id: m.id,
         title: p.title,
-        correctAttempts: m.questions.reduce((total, question) => getCorrectAnswersInQstnAttemps(question, p.questions.filter(q => q.id === question.id)[0]).length ? total + 1 : typeof total === 'number' ? total : 0)
+        correctAttempts: m.questions.length ? m.questions.reduce((total, question) => getCorrectAnswersInQstnAttemps(question, p.questions.filter(q => q.id === question.id)[0]).length ? total + 1 : typeof total === 'number' ? total : 0) : 0
       }
     }
   }
