@@ -95,6 +95,7 @@ export default {
     eval('MathJax.Hub.Queue(["Typeset", MathJax.Hub])')
   },
   computed: {
+    ...mapGetters('User', ['user']),
     ...mapGetters('ModulesIndex', ['modules'])
   }
 
