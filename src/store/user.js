@@ -1,3 +1,7 @@
+import { lastItemIn, randomItemIn } from '../functions'
+import router from '../router'
+import store from './index.js'
+
 let userTemplate = {
   name: '',
   username: '',
@@ -25,11 +29,15 @@ let userTemplate = {
 let questionsPerAttempt = 30
 
 const state = {
-  user: userTemplate
+  user: userTemplate,
+  activeModule: null,
+  activeQuestion: null
 }
 
 const getters = {
-  user: state => state.user
+  user: state => state.user,
+  module: state => state.activeModule,
+  question: state => state.activeQuestion
 }
 
 const actions = {
@@ -58,14 +66,12 @@ const actions = {
 
       // does the ser have any modules recorded yet? If not,
       if (!mods.length) {
-        console.log('a ran')
         mods.push(m)
       }
 
       // the user has some modules recorded but not this one
       let thisModule = mods.filter(module => module.id === attempt.module_id)
       if (!thisModule.length) {
-        console.log('b ran')
         mods.push(m)
         thisModule = [m]
       }
@@ -73,7 +79,6 @@ const actions = {
       // perhaps the module is recorded without attempts, or the last attempt in there is up to 20
       let thisAttempt = thisModule[0].attempts[thisModule[0].attempts.length - 1]
       if (!thisModule[0].attempts.length || thisAttempt.questions.length === questionsPerAttempt) {
-        console.log('c ran')
         thisModule[0].attempts.push(a)
         thisAttempt = a
       }
@@ -84,7 +89,6 @@ const actions = {
         thisAttempt.questions.push(q)
       }
     })
-    console.log(u)
     commit('setUser', u)
   },
 
@@ -111,8 +115,56 @@ const actions = {
         }]
       })
     }
-    console.log(u)
     commit('setUser', u)
+  },
+
+  addQuestion ({commit, state, actions}, {question, choice}) {
+    let u = state.user
+    let userModule = u.modules.filter(mod => mod.id === question.module_id)[0]
+    let q = {
+      id: question.id,
+      attempt: choice
+    }
+    // see if this question has been attempted during this attempt, if so, duh, you want to change your answer abi, I don't know what your punishment will be, but for now, just skip.
+    let questionExists = userModule.attempts[userModule.attempts.length - 1].questions.filter(qstn => qstn.id === question.id)[0]
+
+    if (!questionExists) {
+      console.log('question does not exist')
+      userModule.attempts[userModule.attempts.length - 1].questions.push(q)
+    }
+
+    console.log('out')
+
+    commit('setUser', u)
+  },
+
+  nextQuestion ({commit, state}, module) {
+    // wee need to compare the questions inside this attempt to the questions in the given module, then we pick any random qstn from the module that isn't aready in the module
+    let questionsInLastAttempt = lastItemIn(state.user.modules.filter(mod => mod.id === module.id)[0].attempts).questions
+
+    // filter through all qstns in module and see if you can find each qstn in questionsInLastAttempt
+    let untouchedQuestions = module.questions.filter(qstn => questionsInLastAttempt.filter(q => q.id === qstn.id)[0] ? 0 : 1)
+
+    console.log(untouchedQuestions)
+
+    let nextqstn = randomItemIn(untouchedQuestions)
+
+    router.push({ name: 'Question', params: { id: module.id, questionId: nextqstn.id } })
+
+    // TODO: remove this two lines, do we really need to update module?
+    let modules = store.getters['ModulesIndex/modules']
+    commit('setModule', modules.filter(mod => mod.id === module.id)[0])
+    commit('setQuestion', nextqstn)
+
+    // store.dispatch('Navigation/goto', { routeName: 'Question', activeEl: 'Modules', params: { id: module.id, questionId: randomItemIn(untouchedQuestions).id } })
+  },
+
+  setActiveQuestion ({commit, state}, question) {
+    commit('setQuestion', question)
+  },
+
+  setActiveModule ({commit}, module) {
+    commit('setModule', module)
   }
 }
 
@@ -120,7 +172,16 @@ const mutations = {
   setUser (state, user) {
     state.user = user
     localStorage.setItem('user', JSON.stringify(user))
+  },
+
+  setQuestion (state, question) {
+    state.activeQuestion = question
+  },
+
+  setModule (state, module) {
+    state.activeModule = module
   }
+
 }
 
 export default {

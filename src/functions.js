@@ -35,4 +35,12 @@ function toPosition (value) {
   return position
 }
 
-export { isQstnAttemptCorrect, toPosition }
+function lastItemIn (arr) {
+  return arr[arr.length - 1]
+}
+
+function randomItemIn (arr) {
+  return arr[Math.floor(Math.random() * arr.length)]
+}
+
+export { isQstnAttemptCorrect, toPosition, lastItemIn, randomItemIn }

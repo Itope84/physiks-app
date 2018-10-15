@@ -43,7 +43,7 @@
     <v-flex xs12 sm6 offset-sm-3 class="px-3 mb-3">
       <v-card class="primary" dark>
         <v-card-text>
-          <v-radio-group v-model="attempt" class="my-1 py-0">
+          <v-radio-group v-model="choice" class="my-1 py-0">
             <v-radio :label="`Option A`" value="A"></v-radio>
             <div v-html="question.option_a" class="mb-2"></div>
 
@@ -58,7 +58,7 @@
           </v-radio-group>
           <v-card-actions>
             <v-btn color="secondary">Return </v-btn>
-            <v-btn color="accent" style="margin-left: auto">Next </v-btn>
+            <v-btn color="accent" style="margin-left: auto" @click="submitAttempt">Submit </v-btn>
           </v-card-actions>
         </v-card-text>
 
@@ -68,34 +68,36 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 export default {
   data () {
     return {
-      question: null,
-      module: null,
-      attempt: null,
+      choice: null,
       ungotten: null
     }
   },
 
-  // beforeCreate () {
+  methods: {
+    ...mapActions('User', ['addQuestion', 'nextQuestion', 'setActiveModule', 'setActiveQuestion']),
+    submitAttempt () {
+      this.addQuestion({question: this.question, choice: this.choice})
+      let m = this.module
+      this.nextQuestion(m)
+    }
+  },
 
-  // },
   created () {
-    this.module = this.modules.filter(mod => parseInt(mod.id) === parseInt(this.$route.params.id))[0]
+    this.setActiveModule(this.modules.filter(mod => parseInt(mod.id) === parseInt(this.$route.params.id))[0])
     console.log(this.module)
-    this.question = this.module.questions.filter(qstn => parseInt(qstn.id) === parseInt(this.$route.params.questionId))[0]
+    this.setActiveQuestion(this.module.questions.filter(qstn => parseInt(qstn.id) === parseInt(this.$route.params.questionId))[0])
     console.log(this.question)
-
-    // ungotten questions are questions for which user has no right answer. They're the only questions we'll show
   },
 
   mounted () {
     eval('MathJax.Hub.Queue(["Typeset", MathJax.Hub])')
   },
   computed: {
-    ...mapGetters('User', ['user']),
+    ...mapGetters('User', ['user', 'module', 'question']),
     ...mapGetters('ModulesIndex', ['modules'])
   }
 
