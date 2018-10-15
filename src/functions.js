@@ -1,6 +1,6 @@
-function getCorrectAnswersInQstnAttemps (question, qstnSource) {
+function isQstnAttemptCorrect (question, qstnSource) {
   /* returns array */
-  return question.attempts.filter(attempt => attempt.answer === qstnSource.answer)
+  return question.answer === qstnSource.answer
 }
 
 function toPosition (value) {
@@ -35,4 +35,4 @@ function toPosition (value) {
   return position
 }
 
-export { getCorrectAnswersInQstnAttemps, toPosition }
+export { isQstnAttemptCorrect, toPosition }

@@ -45,8 +45,7 @@
                     </v-card-text>
 
                 <v-card-text class="px-3 py-0 mb-2"><h3 class="subheading grey--text text-xs-center"  style="font-size: 18px;" v-if="activeModule">
-                  <!-- i'm still not sure if to display all correct attempts here or all attempts -->
-                  {{activeModule.correctAttempts}} of 10 questions</h3>
+                  {{activeModule.qstnsInLastAttempt}} of {{activeModule.totalQstns}} questions</h3>
                 </v-card-text>
 
                 <div class="d-flex">
@@ -194,7 +193,7 @@
 </template>
 
 <script>
-import { getCorrectAnswersInQstnAttemps } from '../functions.js'
+// import { isQstnAttemptCorrect } from '../functions.js'
 import SvgIcon from './partials/SvgIcon.vue'
 import { mapGetters } from 'vuex'
 export default {
@@ -213,7 +212,8 @@ export default {
       return {
         id: m.id,
         title: p.title,
-        correctAttempts: m.questions.length ? m.questions.reduce((total, question) => getCorrectAnswersInQstnAttemps(question, p.questions.filter(q => q.id === question.id)[0]).length ? total + 1 : typeof total === 'number' ? total : 0) : 0
+        qstnsInLastAttempt: m.attempts.length ? m.attempts[m.attempts.length - 1].questions.length : 0,
+        totalQstns: p.questions.length
       }
     }
   }

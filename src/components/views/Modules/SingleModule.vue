@@ -48,7 +48,7 @@
         <v-card-title class="title primary white--text">Before you continue...</v-card-title>
 
         <v-card-text>
-          This is your {{module.attempts ? toPosition(module.attempts) : `first`}} attempt at this module. You have solved <span class="primary--text">{{userModule ? userModule.questions.filter(a => a.attempts.length === module.attempts).length : 0}}</span> questions of <span class="info--text">{{module.questions.length}}</span>.
+          This is your {{module.attempts ? toPosition(module.attempts) : `first`}} attempt at this module. You have solved <span class="primary--text">{{userModule ? userModule.attempts[userModule.attempts.length - 1].questions.length : 0}}</span> questions of <span class="info--text">{{module.questions.length}}</span>.
           <p>You need to get 10 questions right to complete this module. Remember:</p>
 
           <ul>
@@ -114,10 +114,7 @@ export default {
       let attempts
 
       if (m) {
-        attempts = m.questions.length ? m.questions.reduce((a, question) => {
-          typeof a === 'number' ? a *= 1 : a = 0
-          return question.attempts.length > a ? question.attempts.length : a
-        }) : 0
+        attempts = m.attempts ? m.attempts.length : 0
       } else {
         attempts = 0
       }

@@ -5,13 +5,24 @@ let userTemplate = {
   password: '',
   matric_no: '',
   points: 0,
-  modules: [],
+  // module is an array of all attemots
+  modules: [
+    // {
+    // id: 1,
+    // attempts: [{
+    // id: attempt_id, questions: [], score
+    // }
+  // ]}
+  ],
   // a list of all modules started by user, including the questions he has solved in each.
   challenges: [],
   // a list of all challenges user has engaged in
   random_questions: []
   // a list of all random questions user has solved
 }
+
+// we'll do sth about this later
+let questionsPerAttempt = 30
 
 const state = {
   user: userTemplate
@@ -29,52 +40,48 @@ const actions = {
     u = { ...u, name: user.name, id: user.id, matric_no: user.matric_no, email: user.email, points: user.points, username: user.username }
     // now to the hard part.
     user.attempts.map(attempt => {
-      // we want to see if this attempt's module is recorded already, if so, is the attempt's question already recorded, if so, push the attempt into the question, else record the question and push the attempt into the question, otherwise of the initial, record the module and push the question, then the attempt
+      // we want to see if this attempt's module is recorded already, if so, is the attempt already recorded? If so, push in the attempt
       let mods = u.modules
+
       let q = {
         id: attempt.question_id,
-        attempts: [attempt]
+        attempt: attempt.answer
+      }
+      let a = {
+        questions: [q],
+        score: null
       }
       let m = {
         id: attempt.module_id,
-        questions: [q]
+        attempts: [a]
       }
 
-      // if module is empty
+      // does the ser have any modules recorded yet? If not,
       if (!mods.length) {
+        console.log('a ran')
         mods.push(m)
       }
 
-      let mod = mods.filter(module => module.id === attempt.module_id)
-      // don't worry, if the first if executes, this one wont
-      if (!mod.length) {
-        // insert this attempt's module then
+      // the user has some modules recorded but not this one
+      let thisModule = mods.filter(module => module.id === attempt.module_id)
+      if (!thisModule.length) {
+        console.log('b ran')
         mods.push(m)
-        // we need this to continue
-        mod = [m]
+        thisModule = [m]
       }
 
-      // if this module has no questions
-      if (!mod[0].questions.length) {
-        mod[0].questions.push(q)
+      // perhaps the module is recorded without attempts, or the last attempt in there is up to 20
+      let thisAttempt = thisModule[0].attempts[thisModule[0].attempts.length - 1]
+      if (!thisModule[0].attempts.length || thisAttempt.questions.length === questionsPerAttempt) {
+        console.log('c ran')
+        thisModule[0].attempts.push(a)
+        thisAttempt = a
       }
 
-      let question = mod[0].questions.filter(qstn => qstn.id === attempt.question_id)
-
-      // if this attempt's question is not yet in the module
-      if (!question.length) {
-        mod[0].questions.push(q)
-        question = [q]
-      }
-
-      if (!question[0].attempts.length) {
-        question[0].attempts.push(attempt)
-      }
-
-      // is this attempt in the question
-      let att = question[0].attempts.filter(attmpt => attmpt.id === attempt.id)
-      if (!att.length) {
-        question[0].attempts.push(attempt)
+      // attempts have been recorded, but this question aint there
+      let thisQstn = thisModule[0].attempts[thisModule[0].attempts.length - 1].questions.filter(qstn => qstn.id === attempt.question_id)
+      if (!thisQstn.length) {
+        thisAttempt.questions.push(q)
       }
     })
     console.log(u)
@@ -98,7 +105,10 @@ const actions = {
     if (!userModule) {
       u.modules.push({
         id: moduleId,
-        questions: []
+        attempts: [{
+          questions: [],
+          score: null
+        }]
       })
     }
     console.log(u)
