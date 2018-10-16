@@ -6,6 +6,7 @@ import ModulesIndex from '@/components/views/ModulesIndex'
 import ChallengeIndex from '@/components/views/ChallengesIndex'
 import SingleModule from '@/components/views/Modules/SingleModule'
 import SingleQuestion from '@/components/views/Questions/SingleQuestion'
+import ShowScore from '@/components/views/Modules/ShowScore'
 
 Vue.use(Router)
 
@@ -40,6 +41,11 @@ export default new Router({
       path: '/modules/:id/questions/:questionId',
       name: 'Question',
       component: SingleQuestion
+    },
+    {
+      path: '/modules/:id/score',
+      name: 'Score',
+      component: ShowScore
     }
   ],
   scrollBehavior (to, from, savedPosition) {

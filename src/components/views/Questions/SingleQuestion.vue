@@ -4,20 +4,21 @@
       <v-card>
         <v-card-text>
           <div class="d-flex px-3">
-            <span class="success--text">Reward: 5pts</span>
-            <span class="ml-auto"> Attempts: <b class="indigo--text">3</b></span>
+            <span class="">Difficulty: <b class="success--text">Easy</b></span>
           </div>
 
         </v-card-text>
       </v-card>
     </v-flex>
+
+
     <v-flex xs12 sm6 offset-sm3 pa-3>
       <v-card flat class="pb-1 accent" dark>
 
         <v-card-title primary-title>
           <div>
             <h6 class="body-2">{{module.title}}</h6>
-            <h5 class="subheading mb-0 text-uppercase">Question 1 of {{module.questions.length}}</h5>
+            <h5 class="subheading mb-0 text-uppercase">Question {{answeredQuestions}} of {{module.questions.length}}</h5>
           </div>
         </v-card-title>
 
@@ -40,6 +41,8 @@
 
       </v-card>
     </v-flex>
+
+
     <v-flex xs12 sm6 offset-sm-3 class="px-3 mb-3">
       <v-card class="primary" dark>
         <v-card-text>
@@ -64,6 +67,17 @@
 
       </v-card>
     </v-flex>
+
+    <v-bottom-sheet v-model="bottomSheet.open">
+      <v-alert
+        :value="true"
+        type="error"
+      >
+        {{bottomSheet.message}}
+      </v-alert>
+
+    </v-bottom-sheet>
+
   </v-layout>
 </template>
 
@@ -73,31 +87,45 @@ export default {
   data () {
     return {
       choice: null,
-      ungotten: null
+      ungotten: null,
+      bottomSheet: {
+        open: false,
+        message: []
+      }
+    }
+  },
+
+  watch: {
+    question: function () {
+      this.choice = null
     }
   },
 
   methods: {
-    ...mapActions('User', ['addQuestion', 'nextQuestion', 'setActiveModule', 'setActiveQuestion']),
+    ...mapActions('User', ['addQuestion', 'nextQuestion', 'setActiveModule', 'setActiveQuestion', 'updateAnsweredQuestions']),
     submitAttempt () {
-      this.addQuestion({question: this.question, choice: this.choice})
-      let m = this.module
-      this.nextQuestion(m)
+      if (!this.choice) {
+        this.bottomSheet.message = 'Please select an option'
+        this.bottomSheet.open = true
+      } else {
+        this.addQuestion({question: this.question, choice: this.choice})
+        let m = this.module
+        this.nextQuestion(m)
+      }
     }
   },
 
   created () {
     this.setActiveModule(this.modules.filter(mod => parseInt(mod.id) === parseInt(this.$route.params.id))[0])
-    console.log(this.module)
+
     this.setActiveQuestion(this.module.questions.filter(qstn => parseInt(qstn.id) === parseInt(this.$route.params.questionId))[0])
-    console.log(this.question)
   },
 
   mounted () {
     eval('MathJax.Hub.Queue(["Typeset", MathJax.Hub])')
   },
   computed: {
-    ...mapGetters('User', ['user', 'module', 'question']),
+    ...mapGetters('User', ['user', 'module', 'question', 'answeredQuestions']),
     ...mapGetters('ModulesIndex', ['modules'])
   }
 

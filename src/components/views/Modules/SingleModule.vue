@@ -71,7 +71,7 @@
 
           <v-btn
             color="accent darken-1"
-            :to="{name: 'Question', params: {id: module.id, questionId: module.questions[0].id}}"
+            @click="nextQuestion(module)"
           >
             Proceed
           </v-btn>
@@ -130,7 +130,7 @@ export default {
   methods: {
     ...mapActions('ModulesIndex', ['fetchModules']),
     toPosition,
-    ...mapActions('User', ['startModule']),
+    ...mapActions('User', ['startModule', 'nextQuestion']),
     startMod () {
       this.startModule(this.module.id)
       this.introDialog = true

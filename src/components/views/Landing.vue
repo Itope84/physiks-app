@@ -266,15 +266,14 @@ export default {
           localStorage.setItem('user.token', JSON.stringify(response.data.token))
           this.storeUser({user: response.data.user})
           this.$router.push('/home')
+        }).catch(error => {
+          // otherwise, there's work to be done
+          this.loading = false
+          this.bottomSheet.open = true
+          // unset
+          this.bottomSheet.message = []
+          this.bottomSheet.message.push(error.response.data.error)
         })
-        // .catch(error => {
-        //   // otherwise, there's work to be done
-        //   this.loading = false
-        //   this.bottomSheet.open = true
-        //   // unset
-        //   this.bottomSheet.message = []
-        //   this.bottomSheet.message.push(error.response.data.error)
-        // })
       }
     }
   }

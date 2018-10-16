@@ -31,16 +31,23 @@ let questionsPerAttempt = 30
 const state = {
   user: userTemplate,
   activeModule: null,
-  activeQuestion: null
+  activeQuestion: null,
+  ansQuestions: 0
 }
 
 const getters = {
   user: state => state.user,
   module: state => state.activeModule,
-  question: state => state.activeQuestion
+  question: state => state.activeQuestion,
+  answeredQuestions: state => state.ansQuestions
 }
 
 const actions = {
+  updateAnsweredQuestions ({commit, state}) {
+    let x = lastItemIn(state.user.modules.filter(mod => mod.id === state.activeModule.id)[0].attempts).questions.length
+    console.log(x)
+    commit('SetAns', x)
+  },
   storeUser ({commit, state}, {user}) {
     // this action is meant to be called only when we fetch user from database after logging in or signing up!
     let u = state.user = userTemplate
@@ -145,8 +152,6 @@ const actions = {
     // filter through all qstns in module and see if you can find each qstn in questionsInLastAttempt
     let untouchedQuestions = module.questions.filter(qstn => questionsInLastAttempt.filter(q => q.id === qstn.id)[0] ? 0 : 1)
 
-    console.log(untouchedQuestions)
-
     let nextqstn = randomItemIn(untouchedQuestions)
 
     router.push({ name: 'Question', params: { id: module.id, questionId: nextqstn.id } })
@@ -172,14 +177,26 @@ const mutations = {
   setUser (state, user) {
     state.user = user
     localStorage.setItem('user', JSON.stringify(user))
+
+    if (state.activeModule) {
+      state.ansQuestions = lastItemIn(state.user.modules.filter(mod => mod.id === state.activeModule.id)[0].attempts).questions.length
+    }
   },
 
   setQuestion (state, question) {
     state.activeQuestion = question
+    if (state.activeModule) {
+      state.ansQuestions = lastItemIn(state.user.modules.filter(mod => mod.id === state.activeModule.id)[0].attempts).questions.length
+    }
   },
 
   setModule (state, module) {
     state.activeModule = module
+  },
+
+  setAns (state, val) {
+    console.log(val)
+    state.ansQuestions = val
   }
 
 }
