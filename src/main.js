@@ -11,6 +11,7 @@ import {
   Vuetify,
   VAlert,
   VApp,
+  VBottomNav,
   VBottomSheet,
   VCard,
   VChip,
@@ -43,6 +44,7 @@ Vue.use(Vuetify, {
   components: {
     VAlert,
     VApp,
+    VBottomNav,
     VBottomSheet,
     VChip,
     VNavigationDrawer,

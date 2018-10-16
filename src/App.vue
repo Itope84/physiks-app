@@ -1,77 +1,46 @@
 <template>
   <v-app>
-    <v-navigation-drawer
-      temporary
-      :mini-variant="miniVariant"
-      :clipped="clipped"
-      v-model="drawer"
-      enable-resize-watcher
-      fixed
-      dark
-      class="primary lighten-3"
-      app
-      v-if="!isLanding"
-      v-on:close-sidebar="isActive = !isActive"
-    >
-      <v-list dark class="full-height cover">
-        <v-list-tile avatar>
-          <v-list-tile-avatar>
-            <img :src="`./static/img/icons/physics-concepts/005-physics.png`" alt="John">
-          </v-list-tile-avatar>
-
-          <v-list-tile-content>
-            <v-list-tile-title>Santiago</v-list-tile-title>
-            <v-list-tile-sub-title>Level 12 (2280 points)</v-list-tile-sub-title>
-          </v-list-tile-content>
-
-
-          <v-list-tile-action>
-            <v-btn icon>
-              <v-icon>edit</v-icon>
-            </v-btn>
-          </v-list-tile-action>
-        </v-list-tile>
-
-        <v-divider></v-divider>
-
-        <v-list-tile
-          v-for="item in menu"
-          :key="item.title"
-          @click="visit(item)"
-          class="sidebar-menu--item"
-          :class="{'active' : item.active}"
-        >
-
-            <v-list-tile-action>
-              <v-icon v-html="item.icon" color="white"></v-icon>
-            </v-list-tile-action>
-
-            <v-list-tile-content>
-              <v-list-tile-title v-html="item.title"></v-list-tile-title>
-            </v-list-tile-content>
-        </v-list-tile>
-      </v-list>
-    </v-navigation-drawer>
     <v-toolbar app color="accent" dark :class="{'elevation-0': $route.name === 'Home'}" v-if="!isLanding">
-      <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
 
-      <v-toolbar-title class="ml-0">{{activeEl.title === 'Home' ? 'Physics' : activeEl.title}}</v-toolbar-title>
+      <v-toolbar-title class="ml-0">Physiks</v-toolbar-title>
       <v-spacer></v-spacer>
 
       <v-toolbar-items>
         <v-btn fab flat>
-          <v-icon>{{activeEl.icon}}</v-icon>
+          <v-icon>settings</v-icon>
         </v-btn>
       </v-toolbar-items>
 
     </v-toolbar>
-    <v-content>
+    <v-content class="mb-5">
       <router-view/>
     </v-content>
+    <v-card class="hide--overflow">
+    <v-bottom-nav :active.sync="bottomNav" :value="true" fixed shift color="accent">
 
-    <!-- <v-footer :fixed="fixed" app>
-      <span> \(\dfrac {\alpha} { \beta}\)</span>
-    </v-footer> -->
+      <v-btn dark :to="{name: 'Home'}">
+        <span>Home</span>
+        <v-icon>home</v-icon>
+      </v-btn>
+
+      <v-btn dark :to="{name: 'Modules'}">
+        <span>Modules</span>
+        <v-icon>library_books</v-icon>
+      </v-btn>
+
+      <v-btn dark :to="{name: 'Challenges'}">
+        <span>Challenges</span>
+        <v-icon>bookmark</v-icon>
+      </v-btn>
+
+      <v-btn dark>
+        <span>Profile</span>
+        <v-icon>person</v-icon>
+      </v-btn>
+    </v-bottom-nav>
+
+    </v-card>
+
   </v-app>
 </template>
 
@@ -80,12 +49,8 @@ import { mapGetters, mapActions } from 'vuex'
 export default {
   data () {
     return {
-      clipped: false,
-      drawer: false,
+      bottomNav: 0,
       fixed: false,
-      miniVariant: false,
-      right: true,
-      rightDrawer: false,
       title: 'Physiks'
     }
   },
