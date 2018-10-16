@@ -18,7 +18,7 @@
         <v-card-title primary-title>
           <div>
             <h6 class="body-2">{{module.title}}</h6>
-            <h5 class="subheading mb-0 text-uppercase">Question {{answeredQuestions}} of {{module.questions.length}}</h5>
+            <h5 class="subheading mb-0 text-uppercase">Question {{answeredQuestions + 1}} of {{module.questions.length}}</h5>
           </div>
         </v-card-title>
 

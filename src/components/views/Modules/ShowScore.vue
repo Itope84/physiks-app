@@ -1,18 +1,41 @@
 <template>
-  <v-container fluid pa-3>
-    <v-jumbotron dark gradient="to top right, rgba(21, 153, 87, .85), rgba(21, 87, 153, .85)" :src="`./static/img/celebration.png`">
+  <v-layout row wrap>
+    <v-flex xs12 sm6 offset-sm3 pa-3>
+      <v-card class="pb-1 ma-2 elevation-6">
+        <v-card-title primary-title class="accent white--text elevation-3">
+          <div>
+            <h6 class="body-2">Electric Charges</h6>
+            <h5 class="subheading mb-0 text-uppercase">Results</h5>
+          </div>
+        </v-card-title>
 
-    <v-progress-circular
-      :size="100"
-      :width="15"
-      :value="value"
-      color="primary"
-    >
-      <h2 class="display-1 white--text">{{ value }}</h2>
-    </v-progress-circular>
+        <v-divider></v-divider>
 
-    </v-jumbotron>
-  </v-container>
+        <v-layout align-center justify-center pa-3 row wrap>
+          <v-progress-circular
+            :size="150"
+            :width="10"
+            :value="value"
+            :rotate="120"
+            color="primary"
+            class="xs-12 pa-2"
+          >
+            <h2 class="display-2">{{ value }}%</h2>
+
+            <h1 class="text-xs-center"><span class="headline">14/</span><span class="subheading">20</span></h1>
+          </v-progress-circular>
+
+          <v-card-text>
+            <h3 class="display-2 text-xs-center secondary--text">+300 pts</h3>
+          </v-card-text>
+
+          <v-card-actions></v-card-actions>
+
+        </v-layout>
+
+      </v-card>
+    </v-flex>
+  </v-layout>
 </template>
 
 <script>
