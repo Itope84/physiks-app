@@ -41,14 +41,12 @@
 import { mapGetters, mapActions } from 'vuex'
 export default {
   computed: {
-    ...mapGetters('ModulesIndex', ['sanitisedModules']),
-    ...mapGetters('Navigation', ['menu'])
+    ...mapGetters('ModulesIndex', ['sanitisedModules'])
   },
 
   methods: {
-    ...mapActions('Navigation', ['goto']),
     openModule (item) {
-      this.goto({routeName: 'Module', activeEl: this.menu[1], params: {id: item.id}})
+      this.$router.push({name: 'Module', params: {id: item.id}})
     }
   }
 

@@ -160,8 +160,6 @@ const actions = {
     let modules = store.getters['ModulesIndex/modules']
     commit('setModule', modules.filter(mod => mod.id === module.id)[0])
     commit('setQuestion', nextqstn)
-
-    // store.dispatch('Navigation/goto', { routeName: 'Question', activeEl: 'Modules', params: { id: module.id, questionId: randomItemIn(untouchedQuestions).id } })
   },
 
   setActiveQuestion ({commit, state}, question) {

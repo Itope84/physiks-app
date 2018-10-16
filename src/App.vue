@@ -63,20 +63,12 @@ export default {
     isLanding () {
       return this.$route.name === 'Landing'
     },
-    ...mapGetters('Navigation', ['menu']),
-    ...mapGetters('User', ['user']),
-    activeEl: function () {
-      return this.menu.filter(item => item.active)[0]
-    }
+    ...mapGetters('User', ['user'])
   },
 
   methods: {
     ...mapActions('ModulesIndex', ['fetchModules']),
-    ...mapActions('Navigation', ['goto']),
-    ...mapActions('User', ['fetchUser']),
-    visit (item) {
-      this.goto({routeName: item.routeName, activeEl: item})
-    }
+    ...mapActions('User', ['fetchUser'])
   },
 
   mounted () {
