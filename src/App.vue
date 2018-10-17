@@ -16,7 +16,7 @@
       <router-view/>
     </v-content>
     <v-card class="hide--overflow">
-    <v-bottom-nav :active.sync="bottomNav" :value="true" fixed shift color="accent">
+    <v-bottom-nav v-if="!isLanding" :active.sync="bottomNav" :value="true" fixed shift color="accent">
 
       <v-btn dark :to="{name: 'Home'}">
         <span>Home</span>
@@ -57,6 +57,7 @@ export default {
 
   created () {
     this.fetchModules()
+    this.fetchUser()
   },
 
   computed: {
@@ -69,10 +70,6 @@ export default {
   methods: {
     ...mapActions('ModulesIndex', ['fetchModules']),
     ...mapActions('User', ['fetchUser'])
-  },
-
-  mounted () {
-    this.fetchUser()
   },
   name: 'App'
 }

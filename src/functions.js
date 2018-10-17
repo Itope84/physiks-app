@@ -43,4 +43,8 @@ function randomItemIn (arr) {
   return arr[Math.floor(Math.random() * arr.length)]
 }
 
-export { isQstnAttemptCorrect, toPosition, lastItemIn, randomItemIn }
+function findById (arr, targetId) {
+  return arr.filter(item => item.id === targetId)[0]
+}
+
+export { isQstnAttemptCorrect, toPosition, lastItemIn, randomItemIn, findById }

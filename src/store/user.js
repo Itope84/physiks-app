@@ -1,4 +1,4 @@
-import { lastItemIn, randomItemIn } from '../functions'
+import { lastItemIn, randomItemIn, findById } from '../functions'
 import router from '../router'
 import store from './index.js'
 
@@ -32,14 +32,16 @@ const state = {
   user: userTemplate,
   activeModule: null,
   activeQuestion: null,
-  ansQuestions: 0
+  ansQuestions: 0,
+  correctAttempts: null
 }
 
 const getters = {
   user: state => state.user,
   module: state => state.activeModule,
   question: state => state.activeQuestion,
-  answeredQuestions: state => state.ansQuestions
+  answeredQuestions: state => state.ansQuestions,
+  correctAttempts: state => state.correctAttempts
 }
 
 const actions = {
@@ -110,16 +112,22 @@ const actions = {
     commit('setUser', u)
   },
 
-  startModule ({commit, state}, moduleId) {
+  startModule ({commit, state}, module) {
     let u = state.user
-    let userModule = u.modules.filter(mod => mod.id === moduleId)[0]
+    let userModule = u.modules.filter(mod => mod.id === module.id)[0]
     if (!userModule) {
       u.modules.push({
-        id: moduleId,
+        id: module.id,
         attempts: [{
           questions: [],
           score: null
         }]
+      })
+    }
+    if (lastItemIn(userModule.attempts).questions.length === module.questions.length) {
+      userModule.attempts.push({
+        questions: [],
+        score: null
       })
     }
     commit('setUser', u)
@@ -164,6 +172,48 @@ const actions = {
 
   setActiveQuestion ({commit, state}, question) {
     commit('setQuestion', question)
+  },
+
+  markLatestAttempt ({commit, state}, {module, actualModule}) {
+    // find the latest complete attempt
+    let att = module.attempts.filter(a => a.questions.length === actualModule.questions.length)[0]
+
+    console.log(att)
+
+    let correctAttempts = att.questions.filter(q => q.attempt === findById(actualModule.questions, q.id).answer)
+
+    let u = state.user
+
+    let points = 0
+    correctAttempts.map(q => {
+      // only if the question hasn't been marked before
+      if (!att.score) {
+        switch (findById(actualModule.questions, q.id).difficulty) {
+          case 1:
+            points += 3
+            break
+          case 2:
+            points += 4
+            break
+          case 3:
+            points += 5
+            break
+          default:
+          // for debugging only
+            points += 1
+            break
+        }
+      }
+    })
+
+    u.points += points
+
+    let mod = findById(u.modules, module.id)
+    findById(mod.attempts, att.id).score = correctAttempts.length
+
+    state.correctAttempts = correctAttempts
+
+    commit('setUser', u)
   },
 
   setActiveModule ({commit}, module) {

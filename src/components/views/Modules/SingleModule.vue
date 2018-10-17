@@ -132,7 +132,7 @@ export default {
     toPosition,
     ...mapActions('User', ['startModule', 'nextQuestion']),
     startMod () {
-      this.startModule(this.module.id)
+      this.startModule(this.module)
       this.introDialog = true
     }
   }

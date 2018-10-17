@@ -83,6 +83,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import { findById } from '../../../functions'
 export default {
   data () {
     return {
@@ -110,15 +111,15 @@ export default {
       } else {
         this.addQuestion({question: this.question, choice: this.choice})
         let m = this.module
-        this.nextQuestion(m)
+        this.answeredQuestions === this.module.questions.length ? this.$router.push({name: 'Score', params: {id: this.module.id}}) : this.nextQuestion(m)
       }
     }
   },
 
   created () {
-    this.setActiveModule(this.modules.filter(mod => parseInt(mod.id) === parseInt(this.$route.params.id))[0])
+    this.setActiveModule(findById(this.modules, parseInt(this.$route.params.id)))
 
-    this.setActiveQuestion(this.module.questions.filter(qstn => parseInt(qstn.id) === parseInt(this.$route.params.questionId))[0])
+    this.setActiveQuestion(findById(this.module.questions, parseInt(this.$route.params.questionId)))
   },
 
   mounted () {
