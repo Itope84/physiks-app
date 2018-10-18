@@ -1,6 +1,6 @@
 <template>
   <v-layout row wrap>
-    <v-flex xs12 sm6 offset-sm-3 px-3 pt-3 pb-1>
+    <v-flex xs12 sm6 offset-sm3 px-3 pt-3 pb-1>
       <v-card>
         <v-card-text>
           <div class="d-flex px-3">
@@ -43,7 +43,7 @@
     </v-flex>
 
 
-    <v-flex xs12 sm6 offset-sm-3 class="px-3 mb-3">
+    <v-flex xs12 sm6 offset-sm3 class="px-3 mb-3">
       <v-card class="primary" dark>
         <v-card-text>
           <v-radio-group v-model="choice" class="my-1 py-0">

@@ -11,6 +11,7 @@ import {
   Vuetify,
   VAlert,
   VApp,
+  VBadge,
   VBottomNav,
   VBottomSheet,
   VCard,
@@ -44,6 +45,7 @@ Vue.use(Vuetify, {
   components: {
     VAlert,
     VApp,
+    VBadge,
     VBottomNav,
     VBottomSheet,
     VChip,

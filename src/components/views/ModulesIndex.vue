@@ -25,7 +25,12 @@
           </v-list-tile-avatar> -->
 
           <v-list-tile-content>
-            <v-list-tile-title v-html="item.title" class="primary--text"></v-list-tile-title>
+            <v-badge>
+              <span slot="badge" v-if="findById(user.modules, item.id)">{{findById(user.modules, item.id).attempts.length}}</span>
+
+              <v-list-tile-title v-html="item.title" class="primary--text"></v-list-tile-title>
+            </v-badge>
+
             <v-list-tile-sub-title v-html="item.summary"></v-list-tile-sub-title>
           </v-list-tile-content>
 
@@ -39,15 +44,19 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import { findById } from '../../functions'
 export default {
   computed: {
-    ...mapGetters('ModulesIndex', ['sanitisedModules'])
+    ...mapGetters('ModulesIndex', ['sanitisedModules']),
+    ...mapGetters('User', ['user'])
   },
 
   methods: {
     openModule (item) {
       this.$router.push({name: 'Module', params: {id: item.id}})
-    }
+    },
+
+    findById
   }
 
 }

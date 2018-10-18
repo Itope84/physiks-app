@@ -15,7 +15,8 @@ let userTemplate = {
     // id: 1,
     // attempts: [{
     // id: attempt_id, questions: [], score
-    // }
+    // },
+    // showScore: false
   // ]}
   ],
   // a list of all modules started by user, including the questions he has solved in each.
@@ -123,8 +124,7 @@ const actions = {
           score: null
         }]
       })
-    }
-    if (lastItemIn(userModule.attempts).questions.length === module.questions.length) {
+    } else if (lastItemIn(userModule.attempts).questions.length === module.questions.length) {
       userModule.attempts.push({
         questions: [],
         score: null
@@ -209,7 +209,14 @@ const actions = {
     u.points += points
 
     let mod = findById(u.modules, module.id)
+
+    // set score of current attempt
     findById(mod.attempts, att.id).score = correctAttempts.length
+
+    // set the highest score
+    let scores = mod.attempts.map(att => typeof att.score === 'number' ? att.score : 0)
+
+    mod.highestScore = scores.reduce((a, b) => b > a ? b : a)
 
     state.correctAttempts = correctAttempts
 
@@ -219,6 +226,13 @@ const actions = {
   setActiveModule ({commit}, module) {
     commit('setModule', module)
   }
+
+  // buyAnswers ({commit, state}, moduleId) {
+  //   let module = findById(state.user.modules, moduleId)
+  //   if (!module) {
+  //     state.user.modules.push({})
+  //   }
+  // }
 }
 
 const mutations = {

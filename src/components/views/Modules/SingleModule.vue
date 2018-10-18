@@ -22,14 +22,18 @@
           <div v-html="module.summary"></div>
         </v-card-text>
 
-        <v-card-actions>
+        <v-card-actions class="justify-space-around">
           <v-btn flat color="secondary" :to="module.slide_link"> <v-icon>file_download</v-icon> Slides</v-btn>
           <v-btn color="primary" class="ml-auto" @click="startMod()">Start Solving <v-icon>play_arrow</v-icon> </v-btn>
         </v-card-actions>
 
+        <v-card-actions class="justify-center">
+          <v-btn color="accent" :to="{name: 'Score', params:{id: module.id}}" v-if="userModule && userModule.highestScore">View Previous Score</v-btn>
+        </v-card-actions>
+
       </v-card>
     </v-flex>,
-    <v-flex xs12 sm6 offset-sm-3 class="my-3 px-2">
+    <v-flex xs12 sm6 offset-sm3 class="my-3 px-2">
       <v-expansion-panel>
         <v-expansion-panel-content class="py-1">
           <div slot="header">ADDITIONAL RESOURCES</div>
