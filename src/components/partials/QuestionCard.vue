@@ -39,8 +39,8 @@
       </v-card>
     </v-flex>
   </v-layout>
-
 </template>
+
 
 <script>
 export default {
