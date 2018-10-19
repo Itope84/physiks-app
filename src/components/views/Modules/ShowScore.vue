@@ -62,7 +62,7 @@
             Retry
           </v-btn>
 
-          <v-btn color="orange darken-4" dark>View Answers</v-btn>
+          <v-btn color="orange darken-4" dark @click="showConfirmViewAnswersDialog">View Answers</v-btn>
 
         </v-card-actions>
 
@@ -73,8 +73,34 @@
       </v-card>
     </v-flex>
 
-    <v-dialog v-model="detailsDialog" fullscreen hide-overlay transition="dialog-bottom-transition">
+    <!-- confirm view answers dialog -->
+
+    <v-dialog v-model="confirmViewAnswersDialog" max-width="290">
       <v-card>
+        <v-card-title class="title">Are you sure?</v-card-title>
+
+        <v-card-text>
+          This will cost you {{reducePointsPerAnswer * module.questions.length}} points
+        </v-card-text>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+
+          <v-btn color="error darken-1" flat="flat" @click="confirmViewAnswersDialog = false">
+            Cancel
+          </v-btn>
+
+          <v-btn
+            color="accent darken-1" @click="buyAnswers">
+            Agree
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+    <!-- dialog for showing result details -->
+    <v-dialog v-model="detailsDialog" fullscreen hide-overlay transition="dialog-bottom-transition">
+      <v-card :ripple="true">
 
         <v-toolbar dark color="primary">
           <v-btn icon dark @click.native="detailsDialog = false">
@@ -83,17 +109,52 @@
           <v-toolbar-title>Details</v-toolbar-title>
           <v-spacer></v-spacer>
           <v-toolbar-items class="pa-2">
-            <v-chip label color="orange darken-3" class="white--text" @click.native="this.showAnswers = true">View Answers</v-chip>
+            <v-chip label color="orange darken-3" class="white--text"  v-if="!showAnswers" @click.native="showConfirmViewAnswersDialog">View Answers</v-chip>
           </v-toolbar-items>
         </v-toolbar>
 
         <v-card-text>
-          <h1 class="text-xs-center"><span class="headline">{{correctAttempts.length}}/</span><span class="subheading">{{module.questions.length}}</span></h1>
+          <div class="d-flex justify-center">
+            <v-progress-circular :size="70" :width="7" :value="parseInt(correctAttempts.length / module.questions.length * 100)" :rotate="120" class="xs-12 pa-2"
+            :class = "[parseInt(correctAttempts.length / module.questions.length * 100) > 70 ? 'orange--text text--darken-2': parseInt(correctAttempts.length / module.questions.length * 100) > 50 ? 'success--text' : 'error--text' ]">
+
+              <h1 class="text-xs-center"><span class="headline">{{correctAttempts.length}}/</span><span class="subheading">{{module.questions.length}}</span></h1>
+            </v-progress-circular>
+
+          </div>
+
+          <p class="body-2 info--text"><v-icon>info</v-icon>Click on each question to view more details</p>
+
+          <v-card class="pa-3 mb-2" style="border-radius: 1rem !important" v-for="(question, index) in thisAttempt.questions" :key="index">
+
+            <v-flex xs12 >
+
+              <h2 class="title" :class="[findById(correctAttempts, question.id) ? 'success--text' : 'error--text']">Question {{index + 1}}</h2>
+              <p class="text-truncate" v-html="findById(module.questions, question.id).body"></p>
+
+              <h5 class="body-2 d-flex" :class="[findById(correctAttempts, question.id) ? 'success--text' : 'error--text']">
+                <span>CHOICE: {{question.attempt}}</span>
+
+                <span class="ml-auto" v-if="showAnswers">ANSWER: {{findById(module.questions, question.id).answer}}</span>
+              </h5>
+
+            </v-flex>
+
+          </v-card>
+
         </v-card-text>
 
 
       </v-card>
     </v-dialog>
+
+    <!-- error bottom sheet -->
+    <v-bottom-sheet v-model="insufficientPoints">
+      <v-alert :value="true" type="error">
+        Sorry, you do not have sufficient points to view the answers.
+      </v-alert>
+
+    </v-bottom-sheet>
   </v-layout>
 </template>
 
@@ -104,12 +165,14 @@ export default {
   data () {
     return {
       detailsDialog: false,
-      showAnswers: false
+      showAnswers: false,
+      insufficientPoints: false,
+      confirmViewAnswersDialog: false
     }
   },
 
   computed: {
-    ...mapGetters('User', ['user', 'module', 'answeredQuestions', 'correctAttempts']),
+    ...mapGetters('User', ['user', 'module', 'answeredQuestions', 'correctAttempts', 'reducePointsPerAnswer']),
     ...mapGetters('ModulesIndex', ['modules']),
 
     gainedPoints () {
@@ -134,15 +197,39 @@ export default {
       })
 
       return points
+    },
+
+    thisAttempt () {
+      return findById(this.user.modules, this.module.id).attempts.filter(a => a.questions.length === this.module.questions.length)[0]
     }
   },
 
   methods: {
-    ...mapActions('User', ['setActiveModule', 'updateAnsweredQuestions', 'markLatestAttempt']),
+    ...mapActions('User', ['setActiveModule', 'updateAnsweredQuestions', 'markLatestAttempt', 'reducePoints']),
 
     showDetails () {
       this.detailsDialog = true
-    }
+    },
+
+    showConfirmViewAnswersDialog () {
+      this.confirmViewAnswersDialog = true
+    },
+
+    buyAnswers () {
+      let pointsToReduce = this.reducePointsPerAnswer * this.module.questions.length
+      if (this.user.points < pointsToReduce) {
+        this.insufficientPoints = true
+      } else {
+        this.reducePoints(pointsToReduce).then(this.showAnswers = true)
+        this.showDetails()
+      }
+    },
+
+    showQuestion (id) {
+      // this
+    },
+
+    findById
   },
 
   created () {

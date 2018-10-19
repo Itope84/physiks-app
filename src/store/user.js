@@ -34,7 +34,9 @@ const state = {
   activeModule: null,
   activeQuestion: null,
   ansQuestions: 0,
-  correctAttempts: null
+  correctAttempts: null,
+  reducePointsPerAnswer: 2,
+  pointsPerCorrectQuestionOnFIrstAttempt: 5
 }
 
 const getters = {
@@ -42,7 +44,8 @@ const getters = {
   module: state => state.activeModule,
   question: state => state.activeQuestion,
   answeredQuestions: state => state.ansQuestions,
-  correctAttempts: state => state.correctAttempts
+  correctAttempts: state => state.correctAttempts,
+  reducePointsPerAnswer: state => state.reducePointsPerAnswer
 }
 
 const actions = {
@@ -225,6 +228,12 @@ const actions = {
 
   setActiveModule ({commit}, module) {
     commit('setModule', module)
+  },
+
+  reducePoints ({commit, state}, points) {
+    let u = state.user
+    u.points -= points
+    commit('setUser', u)
   }
 
   // buyAnswers ({commit, state}, moduleId) {
