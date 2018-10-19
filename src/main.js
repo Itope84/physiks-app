@@ -39,6 +39,7 @@ import {
   VTextField,
   transitions
 } from 'vuetify'
+import { Touch } from 'vuetify/es5/directives'
 import '../node_modules/vuetify/src/stylus/app.styl'
 
 Vue.use(Vuetify, {
@@ -72,6 +73,9 @@ Vue.use(Vuetify, {
     VTabs,
     VTextField,
     transitions
+  },
+  directives: {
+    Touch
   },
   theme: {
     primary: '#3F51B5',

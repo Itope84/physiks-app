@@ -13,7 +13,7 @@
         <v-divider></v-divider>
         <v-card-actions>
           <v-btn flat color="secondary" :to="{ name: 'Modules'}"> <v-icon>keyboard_arrow_left</v-icon> Return</v-btn>
-          <v-btn flat color="primary" style="margin-left: auto !important">Skip summary <v-icon>keyboard_arrow_right</v-icon> </v-btn>
+          <v-btn flat color="primary" style="margin-left: auto !important" @click="startMod()">Skip summary <v-icon>keyboard_arrow_right</v-icon> </v-btn>
         </v-card-actions>
 
         <v-card-text>

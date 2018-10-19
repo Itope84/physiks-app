@@ -67,7 +67,7 @@
         </v-card-actions>
 
         <v-card-actions>
-          <v-btn color="accent" class="mx-auto">All Modules</v-btn>
+          <v-btn color="accent" class="mx-auto" :to="{name: 'Modules'}">All Modules</v-btn>
         </v-card-actions>
 
       </v-card>
@@ -100,7 +100,7 @@
 
     <!-- dialog for showing result details -->
     <v-dialog v-model="detailsDialog" fullscreen hide-overlay transition="dialog-bottom-transition">
-      <v-card :ripple="true">
+      <v-card>
 
         <v-toolbar dark color="primary">
           <v-btn icon dark @click.native="detailsDialog = false">
@@ -113,7 +113,24 @@
           </v-toolbar-items>
         </v-toolbar>
 
-        <v-card-text>
+        <v-layout v-if="showSingleQuestion" row wrap
+         v-touch="{
+            left: () => nextQuestion(),
+            right: () => prevQuestion()
+          }"
+        >
+        <v-flex xs12>
+          <v-card-actions class="px-3">
+          <v-btn color="secondary" @click="showSingleQuestion = false">Return</v-btn>
+
+          <v-btn class="primary" style="margin-left: auto" @click="prevQuestion()"><v-icon>keyboard_arrow_left</v-icon> Prev</v-btn>
+          <v-btn class="primary" @click="nextQuestion()">Next <v-icon>keyboard_arrow_right</v-icon></v-btn>
+        </v-card-actions>
+        </v-flex>
+          <question-card :question="questionToShow.question" :questionNo="questionToShow.questionNo" :choice="questionToShow.choice" :showAnswer="showAnswers"></question-card>
+        </v-layout>
+
+        <v-card-text v-else>
           <div class="d-flex justify-center">
             <v-progress-circular :size="70" :width="7" :value="parseInt(correctAttempts.length / module.questions.length * 100)" :rotate="120" class="xs-12 pa-2"
             :class = "[parseInt(correctAttempts.length / module.questions.length * 100) > 70 ? 'orange--text text--darken-2': parseInt(correctAttempts.length / module.questions.length * 100) > 50 ? 'success--text' : 'error--text' ]">
@@ -125,7 +142,7 @@
 
           <p class="body-2 info--text"><v-icon>info</v-icon>Click on each question to view more details</p>
 
-          <v-card class="pa-3 mb-2" style="border-radius: 1rem !important" v-for="(question, index) in thisAttempt.questions" :key="index">
+          <v-card class="pa-3 mb-2" :ripple="true" style="border-radius: 1rem !important" v-for="(question, index) in thisAttempt.questions" :key="index" @click.native="showQuestion(question.id, index + 1)">
 
             <v-flex xs12 >
 
@@ -161,13 +178,17 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import { findById } from '../../../functions'
+import QuestionCard from '../../partials/QuestionCard'
+
 export default {
   data () {
     return {
       detailsDialog: false,
       showAnswers: false,
       insufficientPoints: false,
-      confirmViewAnswersDialog: false
+      confirmViewAnswersDialog: false,
+      showSingleQuestion: false,
+      questionToShow: null
     }
   },
 
@@ -225,8 +246,34 @@ export default {
       }
     },
 
-    showQuestion (id) {
-      // this
+    showQuestion (id, questionNo) {
+      this.questionToShow = {
+        question: findById(this.module.questions, id),
+        questionNo,
+        choice: findById(this.thisAttempt.questions, id).attempt,
+        showAnswer: this.showAnswers
+      }
+      this.showSingleQuestion = true
+    },
+
+    currentQuestionNo () {
+      // current question, recall all qstns are randomised
+      let q = findById(this.thisAttempt.questions, this.questionToShow.question.id)
+      let no = this.thisAttempt.questions.indexOf(q)
+      return no
+    },
+
+    nextQuestion () {
+      let nextq = this.thisAttempt.questions[this.currentQuestionNo() + 1]
+
+      this.showQuestion(nextq.id, (this.currentQuestionNo() + 2))
+    },
+
+    prevQuestion () {
+      let prevNo = this.currentQuestionNo() - 1
+      let prev = this.thisAttempt.questions[prevNo]
+
+      this.showQuestion(prev.id, this.currentQuestionNo())
     },
 
     findById
@@ -242,6 +289,10 @@ export default {
     let m = findById(this.user.modules, parseInt(this.$route.params.id))
 
     this.markLatestAttempt({module: m, actualModule: this.module})
+  },
+
+  components: {
+    QuestionCard
   }
 }
 </script>
