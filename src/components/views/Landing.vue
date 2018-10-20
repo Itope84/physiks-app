@@ -240,7 +240,7 @@ export default {
         axios.post('signup', {name: this.signup.name, email: this.signup.email, password: this.signup.password, username: this.signup.username, matric_no: this.signup.matricnum}).then(response => {
           // if successful, let's store the user info and go home
           this.storeUser({user: response.data.user})
-          localStorage.setItem('user.token', JSON.stringify(response.data.token))
+          localStorage.setItem('user.token', response.data.token)
           this.$router.push('/home')
         }).catch(error => {
           // otherwise, there's work to be done
@@ -263,7 +263,7 @@ export default {
         // sign in
         axios.post('signin', {email: this.login.email, password: this.login.password}).then(response => {
           console.log(response.data)
-          localStorage.setItem('user.token', JSON.stringify(response.data.token))
+          localStorage.setItem('user.token', response.data.token)
           this.storeUser({user: response.data.user})
           this.$router.push('/home')
         }).catch(error => {

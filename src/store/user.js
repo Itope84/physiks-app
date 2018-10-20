@@ -1,6 +1,10 @@
 import { lastItemIn, randomItemIn, findById } from '../functions'
 import router from '../router'
 import store from './index.js'
+import axios from '../http'
+
+axios.defaults.headers.common['Content-Type'] = 'application/json'
+axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('user.token')
 
 let userTemplate = {
   name: '',
@@ -55,7 +59,13 @@ const actions = {
     commit('SetAns', x)
   },
   storeUser ({commit, state}, {user}) {
+    // TODO: filter this, and remove all before production
     // this action is meant to be called only when we fetch user from database after logging in or signing up!
+    // to make sure we don't lose the user's data after logging in... we wanna make sure we get the latest unsubmitted attempts by this user, so that we can somehow merge it back to the one we fetched
+
+    // actually, we shouldn't need this, cause our users are never logging out
+    let localUser = JSON.parse(localStorage.getItem('user'))
+
     let u = state.user = userTemplate
     // mass assign u those behaviours you know
     u = { ...u, name: user.name, id: user.id, matric_no: user.matric_no, email: user.email, points: user.points, username: user.username }
@@ -102,6 +112,23 @@ const actions = {
         thisAttempt.questions.push(q)
       }
     })
+
+    // all the modules we fetched for the user fcrom the BE is completed cause they wouldn't have been sent there if they weren't
+    u.modules.map(module => {
+      module.completed = true
+    })
+
+    if (localUser && localUser.email === u.email) {
+      localUser.modules.forEach(module => {
+        module.attempts.map(att => {
+          if (!att.submitted) {
+            findById(u.modules, module.id) ? findById(u.modules, module.id).attempts.push(att) : u.modules.push(module)
+          }
+        })
+
+        findById(u.modules, module.id).completed = module.completed
+      })
+    }
     commit('setUser', u)
   },
 
@@ -234,8 +261,30 @@ const actions = {
     let u = state.user
     u.points -= points
     commit('setUser', u)
-  }
+  },
 
+  submitAnswers ({commit, state}, module) {
+    let u = state.user
+    // the module in the user object
+    let mod = findById(u.modules, module.id)
+    let latestCompleteAttempt = mod.attempts.filter(a => a.questions.length === module.questions.length)[0]
+
+    // submit latest complete attempt to database, that's if it hasn't been submitted
+    console.log(latestCompleteAttempt)
+
+    if (!latestCompleteAttempt.submitted) {
+      axios.post(`modules/${module.id}/submitAttempt`, { attempt: JSON.stringify(latestCompleteAttempt) }).then(response => {
+        latestCompleteAttempt.submitted = true
+
+        router.push({ name: 'Score', params: { id: module.id } })
+      }).catch(err => {
+        console.log(err)
+      })
+      commit('setUser', u)
+    } else {
+      router.push({ name: 'Score', params: { id: module.id } })
+    }
+  }
   // buyAnswers ({commit, state}, moduleId) {
   //   let module = findById(state.user.modules, moduleId)
   //   if (!module) {

@@ -65,7 +65,7 @@
           </v-flex>
 
           <!-- random question -->
-          <v-slide-y-transition mode="out-in">
+          <!-- <v-slide-y-transition mode="out-in">
             <v-flex xs12 pb-3>
               <v-card light class="mt-4 mb-2 elevation-5 rounded-card">
                 <v-layout column pt-2 justify-center align-center mb-1>
@@ -78,7 +78,6 @@
                   <v-flex xs12>
                     <v-card-text class="px-2 pt-2 pb-0">
                       <h4 class="title secondary--text mb-2"><span>Random Question</span></h4>
-                      <!-- <h3 class="subheading">2280 points</h3> -->
                     </v-card-text>
                   </v-flex>
 
@@ -96,7 +95,7 @@
             </v-flex>
 
 
-          </v-slide-y-transition>
+          </v-slide-y-transition> -->
 
           <v-slide-y-transition mode="out-in">
             <v-flex xs12>
@@ -107,7 +106,7 @@
                   </v-flex>
                   <v-flex xs9>
                     <v-card-text class="px-2 pt-2 pb-0">
-                      <h4 class="title mb-2 accent--text"><span>Challenges</span></h4>
+                      <h4 class="title mb-2 secondary--text"><span>Challenges</span></h4>
                       <!-- <h3 class="subheading">2280 points</h3> -->
                     </v-card-text>
                   </v-flex>
@@ -117,7 +116,7 @@
                 <v-card-text class="px-3 py-0 mb-2"><h3 class="body-1 grey--text">Challenges are a good way to level up and gain more points...</h3></v-card-text>
 
                 <div class="d-flex">
-                  <v-btn class="mx-0 mb-0 rounded-bottom" large depressed color="accent">
+                  <v-btn class="mx-0 mb-0 rounded-bottom" large depressed color="secondary">
                       Challenge Someone
                   </v-btn>
                 </div>
@@ -169,7 +168,7 @@
 
                 <!--  -->
 
-                <div class="d-flex"><v-btn color="primary" class="mx-auto">View All</v-btn></div>
+                <div class="d-flex"><v-btn color="accent" class="mx-auto">View All</v-btn></div>
 
               </v-card>
             </v-flex>

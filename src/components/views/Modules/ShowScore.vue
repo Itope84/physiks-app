@@ -18,7 +18,7 @@
             :value="parseInt(correctAttempts.length / module.questions.length * 100)"
             :rotate="120"
             class="xs-12 pa-2"
-            :class = "[parseInt(correctAttempts.length / module.questions.length * 100) > 70 ? 'orange--text text--darken-2': parseInt(correctAttempts.length / module.questions.length * 100) > 50 ? 'success--text' : 'error--text' ]"
+            :class = "[parseInt(correctAttempts.length / module.questions.length * 100) >= 70 ? 'orange--text text--darken-2': parseInt(correctAttempts.length / module.questions.length * 100) >= 50 ? 'success--text' : 'error--text' ]"
           >
             <h2 class="display-2 mt-4">{{ parseInt(correctAttempts.length / module.questions.length * 100) }}%</h2>
 
@@ -47,7 +47,7 @@
       </v-card>
 
       <v-card class="pa-2 ma-2">
-        <v-card-text v-if="correctAttempts.length / module.questions.length > 0.5">
+        <v-card-text v-if="correctAttempts.length / module.questions.length >= 0.5">
           You have attained a score \(\ge\) 50%. You can now proceed to the next stage. Alternatively, you can chose to view answers for all questions you got wrong <span class="orange--text text--darken-4">This will cost you some points</span>.
         </v-card-text>
 
@@ -56,7 +56,7 @@
         </v-card-text>
 
         <v-card-actions class="justify-center">
-          <v-btn color="success" dark v-if="correctAttempts.length / module.questions.length > 0.5">Next Module</v-btn>
+          <v-btn color="success" dark v-if="correctAttempts.length / module.questions.length >= 0.5">Next Module</v-btn>
 
           <v-btn v-else :to="{ name: 'Module', params:{id: module.id} }" color="success">
             Retry
@@ -133,7 +133,7 @@
         <v-card-text v-else>
           <div class="d-flex justify-center">
             <v-progress-circular :size="70" :width="7" :value="parseInt(correctAttempts.length / module.questions.length * 100)" :rotate="120" class="xs-12 pa-2"
-            :class = "[parseInt(correctAttempts.length / module.questions.length * 100) > 70 ? 'orange--text text--darken-2': parseInt(correctAttempts.length / module.questions.length * 100) > 50 ? 'success--text' : 'error--text' ]">
+            :class = "[parseInt(correctAttempts.length / module.questions.length * 100) >= 70 ? 'orange--text text--darken-2': parseInt(correctAttempts.length / module.questions.length * 100) >= 50 ? 'success--text' : 'error--text' ]">
 
               <h1 class="text-xs-center"><span class="headline">{{correctAttempts.length}}/</span><span class="subheading">{{module.questions.length}}</span></h1>
             </v-progress-circular>

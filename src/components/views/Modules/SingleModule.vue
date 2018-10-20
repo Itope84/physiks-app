@@ -23,12 +23,12 @@
         </v-card-text>
 
         <v-card-actions class="justify-space-around">
-          <v-btn flat color="secondary" :to="module.slide_link"> <v-icon>file_download</v-icon> Slides</v-btn>
+          <v-btn flat color="secondary" :href="module.slide_link" target="_blank"> <v-icon>file_download</v-icon> Slides</v-btn>
           <v-btn color="primary" class="ml-auto" @click="startMod()">Start Solving <v-icon>play_arrow</v-icon> </v-btn>
         </v-card-actions>
 
         <v-card-actions class="justify-center">
-          <v-btn color="accent" :to="{name: 'Score', params:{id: module.id}}" v-if="userModule && userModule.highestScore">View Previous Score</v-btn>
+          <v-btn color="accent" @click="submit(module)" v-if="userModule && userModule.completed">View Previous Score</v-btn>
         </v-card-actions>
 
       </v-card>
@@ -86,7 +86,7 @@
 </template>
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import { toPosition } from '../../../functions.js'
+import { toPosition, lastItemIn } from '../../../functions.js'
 export default {
   data () {
     return {
@@ -134,11 +134,18 @@ export default {
   methods: {
     ...mapActions('ModulesIndex', ['fetchModules']),
     toPosition,
-    ...mapActions('User', ['startModule', 'nextQuestion']),
+    ...mapActions('User', ['startModule', 'nextQuestion', 'submitAnswers']),
+
+    submit (mod) {
+      this.submitAnswers(mod).catch(error => {
+        console.log(error)
+      })
+    },
     startMod () {
       this.startModule(this.module)
       this.introDialog = true
-    }
+    },
+    lastItemIn
   }
 }
 </script>

@@ -12,7 +12,7 @@
       </v-toolbar-items>
 
     </v-toolbar>
-    <v-content class="mb-5">
+    <v-content :class="{'mb-5' : !isLanding}">
       <router-view/>
     </v-content>
     <v-card class="hide--overflow">

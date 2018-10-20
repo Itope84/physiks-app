@@ -6,7 +6,7 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import store from './store'
-import isFuture from 'date-fns/is_future'
+// import isFuture from 'date-fns/is_future'
 import {
   Vuetify,
   VAlert,
@@ -97,7 +97,7 @@ if (!md || JSON.parse(md).updated_at !== modules.updated_at) {
 }
 
 // if token is set and today is less than token's expiry date
-if (!localStorage.getItem('user.token') || !isFuture(JSON.parse(localStorage.getItem('user.token')).expires_at)) {
+if (!localStorage.getItem('user.token')) {
   router.push('/')
 }
 

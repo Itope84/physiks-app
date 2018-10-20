@@ -5,4 +5,9 @@ const instance = axios.create({
   baseURL: 'http://physiks.local/api/frontend/'
 })
 
+if (localStorage.getItem('user.token')) {
+  axios.defaults.headers.common['Content-Type'] = 'application/json'
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('user.token')
+}
+
 export default instance

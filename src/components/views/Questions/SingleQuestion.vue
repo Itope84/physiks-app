@@ -103,7 +103,7 @@ export default {
   },
 
   methods: {
-    ...mapActions('User', ['addQuestion', 'nextQuestion', 'setActiveModule', 'setActiveQuestion', 'updateAnsweredQuestions']),
+    ...mapActions('User', ['addQuestion', 'nextQuestion', 'setActiveModule', 'setActiveQuestion', 'updateAnsweredQuestions', 'submitAnswers', 'updateUser']),
     submitAttempt () {
       if (!this.choice) {
         this.bottomSheet.message = 'Please select an option'
@@ -111,8 +111,23 @@ export default {
       } else {
         this.addQuestion({question: this.question, choice: this.choice})
         let m = this.module
-        this.answeredQuestions === this.module.questions.length ? this.$router.push({name: 'Score', params: {id: this.module.id}}) : this.nextQuestion(m)
+        this.answeredQuestions === this.module.questions.length ? this.submitAll() : this.nextQuestion(m)
       }
+    },
+
+    submitAll () {
+      // TODO: add a loader, start it here
+      // set the module as completed and submit it
+      let a = findById(this.user.modules, this.module.id).attempts.filter(a => a.questions.length === this.module.questions.length)[0]
+
+      if (a) {
+        findById(this.user.modules, this.module.id).completed = true
+      }
+      this.updateUser(this.user)
+
+      this.submitAnswers(this.module).finally(
+        console.log('done')
+      )
     }
   },
 
