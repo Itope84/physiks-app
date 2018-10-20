@@ -37,12 +37,14 @@ function initialState () {
       routeName: 'Home',
       to: '/modules'
     }
-    ]
+    ],
+    pageTitle: 'Physiks'
   }
 }
 
 const getters = {
-  menu: state => state.menu
+  menu: state => state.menu,
+  title: state => state.pageTitle
 }
 
 const actions = {
@@ -53,6 +55,10 @@ const actions = {
       activeEl = routeName
     }
     commit('setActive', activeEl)
+  },
+
+  setTitle ({commit}, title) {
+    commit('setTitle', title)
   }
 }
 
@@ -64,6 +70,10 @@ const mutations = {
       return item
     })
     state.menu = menu
+  },
+
+  setTitle (state, title) {
+    state.title = title
   }
 }
 

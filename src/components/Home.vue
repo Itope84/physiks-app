@@ -5,14 +5,7 @@
       <v-container fill-height>
         <v-layout column align-center class="text-xs-center py-1">
           <v-flex xs12 class="mb-2 relative">
-            <v-avatar :size="70" color="grey lighten-4">
-            <v-img :src="`./static/img/icons/physics-concepts/005-physics.png`" aspect-ratio="1" class="grey lighten-2">
-              <v-layout slot="placeholder" fill-height align-center justify-center ma-0>
-                <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
-              </v-layout>
-            </v-img>
-
-            </v-avatar>
+            <profile-avatar :name="user.name" :username="user.username"></profile-avatar>
             <!-- <v-btn fab flat icon color="pink" absolute>
               <v-icon dark>edit</v-icon>
             </v-btn> -->
@@ -194,10 +187,12 @@
 <script>
 // import { isQstnAttemptCorrect } from '../functions.js'
 import SvgIcon from './partials/SvgIcon.vue'
+import ProfileAvatar from './partials/ProfileAvatar.vue'
 import { mapGetters } from 'vuex'
 export default {
   components: {
-    'svg-icon': SvgIcon
+    'svg-icon': SvgIcon,
+    ProfileAvatar
   },
   computed: {
     ...mapGetters('User', ['user']),

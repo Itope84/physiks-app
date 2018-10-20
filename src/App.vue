@@ -2,7 +2,7 @@
   <v-app>
     <v-toolbar app color="accent" dark :class="{'elevation-0': $route.name === 'Home'}" v-if="!isLanding">
 
-      <v-toolbar-title class="ml-0">Physiks</v-toolbar-title>
+      <v-toolbar-title class="ml-0">{{title}}</v-toolbar-title>
       <v-spacer></v-spacer>
 
       <v-toolbar-items>
@@ -50,8 +50,7 @@ export default {
   data () {
     return {
       bottomNav: 0,
-      fixed: false,
-      title: 'Physiks'
+      fixed: false
     }
   },
 
@@ -64,7 +63,8 @@ export default {
     isLanding () {
       return this.$route.name === 'Landing'
     },
-    ...mapGetters('User', ['user'])
+    ...mapGetters('User', ['user']),
+    ...mapGetters('Navigation', ['title'])
   },
 
   methods: {
