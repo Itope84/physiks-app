@@ -1,5 +1,24 @@
 <template>
   <v-app>
+    <!-- loading dialog -->
+    <v-dialog
+      v-model="ajaxLoading"
+      hide-overlay
+      persistent
+      width="300"
+    >
+      <v-card color="primary" class="pa-3" dark>
+        <v-card-text>
+          Just a minute...
+          <v-progress-linear
+            indeterminate
+            color="white"
+            class="mb-0"
+          ></v-progress-linear>
+        </v-card-text>
+      </v-card>
+    </v-dialog>
+
     <v-toolbar app color="accent" dark :class="{'elevation-0': $route.name === 'Home'}" v-if="!isLanding">
 
       <v-toolbar-title class="ml-0">{{title}}</v-toolbar-title>
@@ -64,7 +83,7 @@ export default {
       return this.$route.name === 'Landing'
     },
     ...mapGetters('User', ['user']),
-    ...mapGetters('Navigation', ['title'])
+    ...mapGetters('Navigation', ['title', 'ajaxLoading'])
   },
 
   methods: {

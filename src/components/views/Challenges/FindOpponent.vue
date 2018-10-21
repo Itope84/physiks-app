@@ -6,20 +6,29 @@
       <!-- TODO: add append-icon-cb -->
       <v-text-field
         solo color="primary"
-        label="Append"
+        label="Search a friend's name or username"
         append-icon="search"
+        v-model="searchText"
+        :append-icon-cb="search"
       ></v-text-field>
 
       <v-layout row wrap>
-        <v-flex xs4 class="text-xs-right py-3 pr-3">
-          SORT BY
-        </v-flex>
-        <v-flex xs8>
+        <v-flex xs7 class="text-xs-right">
           <v-select
             :items="filter_array"
-            label="SORT BY"
+            label="Sort by"
             solo
+            v-model="sortBy"
             append-icon="filter_list"
+            class="text-truncate"
+          ></v-select>
+        </v-flex>
+        <v-flex xs5 class="px-2">
+          <v-select
+            :items="[{text: 'Ascending'}, {text: 'Descending'}]"
+            label="Order"
+            v-model="order"
+            append-icon="sort"
             class="text-truncate"
           ></v-select>
         </v-flex>
@@ -33,7 +42,7 @@
 
 
       <v-layout row wrap>
-        <v-flex xs6 sm4 v-for="(user, index) in users" :key ="index" class="pa-2">
+        <v-flex xs6 sm4 v-for="(user, index) in sortedUsers" :key ="index" class="pa-2">
           <v-card class="pa-3 text-xs-center">
             <v-flex xs12 class="mb-2 relative">
               <profile-avatar :size="50" :name="user.name" :username="user.username"></profile-avatar>
@@ -49,7 +58,8 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import axios from '../../../http'
+import { mapGetters, mapActions, mapMutations } from 'vuex'
 import ProfileAvatar from '../../partials/ProfileAvatar.vue'
 export default {
   data () {
@@ -58,16 +68,75 @@ export default {
         { text: 'Name' },
         { text: 'Challenges Completed' },
         { text: 'Level' }
-      ]
+      ],
+      sortBy: null,
+      order: null,
+      searchText: ''
     }
   },
 
+  beforeMount () {
+    this.startLoading()
+  },
+
+  mounted () {
+    axios.get('users').then(response => {
+      this.setUsers(response.data)
+      this.stopLoading()
+    })
+  },
+
   computed: {
-    ...mapGetters('ChallengesIndex', ['users'])
+    ...mapGetters('ChallengesIndex', ['users']),
+
+    sortedUsers () {
+      let users = []
+      switch (this.sortBy) {
+        case 'Name':
+          users = this.sortByName(this.order)
+          break
+        case 'Challenges Completed':
+          users = this.sortByChallenges(this.order)
+          break
+        case 'Level':
+          users = this.sortByPoints(this.order)
+          break
+        default:
+          users = this.sortByName(this.order)
+          break
+      }
+      return users
+    }
   },
 
   components: {
     ProfileAvatar
+  },
+
+  methods: {
+    ...mapActions('ChallengesIndex', ['fetchUsers', 'searchUser']),
+    ...mapActions('Navigation', ['startLoading', 'stopLoading']),
+    ...mapMutations('ChallengesIndex', ['setUsers']),
+
+    search () {
+      this.startLoading()
+      axios.get('users/search?q=' + this.searchText).then(response => {
+        this.setUsers(response.data)
+        this.stopLoading()
+      })
+    },
+
+    sortByName (order) {
+      return this.users.sort((a, b) => order && order.toLowerCase() === 'descending' ? b.username > a.username ? 1 : b.username < a.username ? -1 : 0 : b.username > a.username ? -1 : b.username < a.username ? 1 : 0)
+    },
+
+    sortByChallenges (order) {
+      return this.users.sort((a, b) => order && order.toLowerCase() === 'descending' ? b.challenges_count > a.challenges_count ? -1 : b.challenges_count < a.challenges_count ? 1 : 0 : b.challenges_count > a.challenges_count ? 1 : b.challenges_count < a.challenges_count ? -1 : 0)
+    },
+
+    sortByPoints (order) {
+      return this.users.sort((a, b) => order && order.toLowerCase() === 'descending' ? b.points > a.points ? -1 : b.points < a.points ? 1 : 0 : b.points > a.points ? 1 : b.points < a.points ? -1 : 0)
+    }
   }
 }
 </script>

@@ -38,13 +38,15 @@ function initialState () {
       to: '/modules'
     }
     ],
-    pageTitle: 'Physiks'
+    pageTitle: 'Physiks',
+    ajaxLoading: false
   }
 }
 
 const getters = {
   menu: state => state.menu,
-  title: state => state.pageTitle
+  title: state => state.pageTitle,
+  ajaxLoading: state => state.ajaxLoading
 }
 
 const actions = {
@@ -59,6 +61,14 @@ const actions = {
 
   setTitle ({commit}, title) {
     commit('setTitle', title)
+  },
+
+  startLoading ({state}) {
+    state.ajaxLoading = true
+  },
+
+  stopLoading ({state}) {
+    state.ajaxLoading = false
   }
 }
 

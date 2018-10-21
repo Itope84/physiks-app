@@ -4,7 +4,7 @@
       <v-card>
         <v-card-text>
           <div class="d-flex px-3">
-            <span class="">Difficulty: <b class="success--text">Easy</b></span>
+            <span class="">Difficulty: <b class="success--text">{{question.difficulty > 2 ? 'Difficult' : question.difficulty > 1 ? 'Medium' : 'Easy'}}</b></span>
           </div>
 
         </v-card-text>
@@ -104,6 +104,7 @@ export default {
 
   methods: {
     ...mapActions('User', ['addQuestion', 'nextQuestion', 'setActiveModule', 'setActiveQuestion', 'updateAnsweredQuestions', 'submitAnswers', 'updateUser']),
+    ...mapActions('Navigation', ['startLoading', 'stopLoading']),
     submitAttempt () {
       if (!this.choice) {
         this.bottomSheet.message = 'Please select an option'
@@ -116,7 +117,7 @@ export default {
     },
 
     submitAll () {
-      // TODO: add a loader, start it here
+      this.startLoading()
       // set the module as completed and submit it
       let a = findById(this.user.modules, this.module.id).attempts.filter(a => a.questions.length === this.module.questions.length)[0]
 
@@ -139,6 +140,8 @@ export default {
 
   mounted () {
     eval('MathJax.Hub.Queue(["Typeset", MathJax.Hub])')
+
+    this.stopLoading()
   },
   computed: {
     ...mapGetters('User', ['user', 'module', 'question', 'answeredQuestions']),

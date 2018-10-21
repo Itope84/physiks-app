@@ -14,7 +14,7 @@
           <v-flex xs12>
              <h1 class="title mb-1">{{ user.name }}</h1>
 
-              <h5 class="body-2" style="color: #cecece">Level {{parseInt(user.points / 100)}} ({{user.points}} points)</h5>
+              <h5 class="body-2" style="color: #cecece">Level {{getUserLevel(user.points)}} ({{user.points}} points)</h5>
           </v-flex>
         </v-layout>
       </v-container>
@@ -25,7 +25,7 @@
           <!-- Current module card -->
           <v-slide-y-transition mode="out-in">
             <v-flex xs12>
-              <v-card light class="mt-4 mb-2 pt-2 elevation-5 rounded-card">
+              <v-card light class="mt-4 mb-2 pt-2 elevation-5" style="border-radius: 1rem; overflow: hidden;">
 
                   <v-avatar :size="30" class=" white--text d-block mx-auto" color="primary">
                     <v-icon color="white">lightbulb_outline</v-icon>
@@ -42,7 +42,7 @@
                 </v-card-text>
 
                 <div class="d-flex">
-                  <v-btn class="mx-0 mb-0 rounded-bottom" large depressed color="primary" :to="{ name: 'Module', params: {id: activeModule ? activeModule.id : 1} }">
+                  <v-btn class="mx-0 mb-0" large depressed color="primary" :to="{ name: 'Module', params: {id: activeModule ? activeModule.id : 1} }">
                       {{activeModule ? `Continue` : `Start Now`}}
                   </v-btn>
                 </div>
@@ -92,7 +92,7 @@
 
           <v-slide-y-transition mode="out-in">
             <v-flex xs12>
-              <v-card light class="mt-4 mb-2 elevation-5 rounded-card">
+              <v-card light class="mt-4 mb-2 elevation-5" style="border-radius: 1rem; overflow: hidden;">
                 <v-layout column align-center mb-2>
                   <v-flex xs3 class="ml-3 mr-1 white--text pt-2">
                       <h3 style="width: 30px;" class="pa-1 rounded-all"><svg-icon icon="star" csclass="ma-auto"></svg-icon></h3>
@@ -123,7 +123,7 @@
 
           <v-slide-y-transition mode="out-in">
             <v-flex xs12>
-              <v-card light class="mt-4 pa-2 elevation-5 rounded-card">
+              <v-card light class="mt-4 pa-2 elevation-5" style="border-radius: 1rem; overflow: hidden;">
                 <!-- the results -->
                 <v-layout class="py-1">
                   <v-flex xs4>
@@ -185,10 +185,10 @@
 </template>
 
 <script>
-// import { isQstnAttemptCorrect } from '../functions.js'
+import { getUserLevel } from '../functions.js'
 import SvgIcon from './partials/SvgIcon.vue'
 import ProfileAvatar from './partials/ProfileAvatar.vue'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 export default {
   components: {
     'svg-icon': SvgIcon,
@@ -197,6 +197,7 @@ export default {
   computed: {
     ...mapGetters('User', ['user']),
     ...mapGetters('ModulesIndex', ['sanitisedModules']),
+    ...mapActions('Navigation', ['startLoading', 'stopLoading']),
     activeModule () {
       let m = this.user.modules[this.user.modules.length - 1]
       if (!m) {
@@ -210,6 +211,13 @@ export default {
         totalQstns: p.questions.length
       }
     }
+  },
+  methods: {
+    getUserLevel
+  },
+
+  mounted () {
+    this.stopLoading()
   }
 }
 </script>

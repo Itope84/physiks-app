@@ -50,7 +50,7 @@ export default new Router({
     },
     {
       path: '/challenges/challenge',
-      name: 'NewChallenge',
+      name: 'FindOpponent',
       component: FindOpponent
     }
   ],

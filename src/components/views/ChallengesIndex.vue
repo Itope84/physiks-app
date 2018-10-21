@@ -1,7 +1,7 @@
 <template>
   <v-container fluid pa-0>
     <div class="text-xs-center px-3 mt-3">
-      <v-btn color="primary">
+      <v-btn color="primary" :to="{name: 'FindOpponent'}">
         Challenge Someone Now
       </v-btn>
     </div>

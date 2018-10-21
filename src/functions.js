@@ -47,4 +47,8 @@ function findById (arr, targetId) {
   return arr.filter(item => item.id === targetId)[0]
 }
 
-export { isQstnAttemptCorrect, toPosition, lastItemIn, randomItemIn, findById }
+function getUserLevel (points) {
+  return points > 1300 ? 10 : points > 1100 ? 9 : points > 950 ? 8 : points > 800 ? 7 : points > 650 ? 6 : points > 500 ? 5 : points > 350 ? 4 : points > 250 ? 3 : points > 100 ? 2 : points > 50 ? 1 : 0
+}
+
+export { isQstnAttemptCorrect, toPosition, lastItemIn, randomItemIn, findById, getUserLevel }

@@ -227,6 +227,7 @@ export default {
 
   methods: {
     ...mapActions('User', ['setActiveModule', 'updateAnsweredQuestions', 'markLatestAttempt', 'reducePoints']),
+    ...mapActions('Navigation', ['startLoading', 'stopLoading']),
 
     showDetails () {
       this.detailsDialog = true
@@ -285,6 +286,8 @@ export default {
 
   mounted () {
     eval('MathJax.Hub.Queue(["Typeset", MathJax.Hub])')
+
+    this.stopLoading()
 
     let m = findById(this.user.modules, parseInt(this.$route.params.id))
 

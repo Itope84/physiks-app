@@ -103,6 +103,10 @@ if (!localStorage.getItem('user.token')) {
   router.push('/')
 }
 
+router.afterEach((to, from) => {
+  store.dispatch('Navigation/stopLoading')
+})
+
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */

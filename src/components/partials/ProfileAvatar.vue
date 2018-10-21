@@ -1,6 +1,6 @@
 <template>
   <v-avatar :size="size ? size : 70" :color="color">
-    <h5 class="display-1 text-uppercase">{{initials}}</h5>
+    <h5 class="headline text-uppercase white--text">{{initials}}</h5>
   </v-avatar>
 </template>
 

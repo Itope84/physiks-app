@@ -80,7 +80,8 @@ const actions = {
       }
       let a = {
         questions: [q],
-        score: null
+        score: null,
+        submitted: true
       }
       let m = {
         id: attempt.module_id,

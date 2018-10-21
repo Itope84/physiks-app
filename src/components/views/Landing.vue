@@ -18,25 +18,6 @@
       </v-btn>
     </v-snackbar>
 
-    <!-- loading dialog -->
-    <v-dialog
-      v-model="loading"
-      hide-overlay
-      persistent
-      width="300"
-    >
-      <v-card color="primary" class="pa-3" dark>
-        <v-card-text>
-          Just a minute while we set you up...
-          <v-progress-linear
-            indeterminate
-            color="white"
-            class="mb-0"
-          ></v-progress-linear>
-        </v-card-text>
-      </v-card>
-    </v-dialog>
-
     <v-bottom-sheet v-model="bottomSheet.open">
       <v-alert
         :value="true"
@@ -172,7 +153,6 @@
 <script>
 import {mapActions} from 'vuex'
 import axios from '../../http'
-import isFuture from 'date-fns/is_future'
 
 export default {
   data () {
@@ -221,7 +201,7 @@ export default {
     // check if
     // 1. user is signed up and logged in, i.e localstorage.user is set
     // 2. user has set matric number... if both are true, then just bounce away from here
-    if (localStorage.getItem('user.token') && isFuture(JSON.parse(localStorage.getItem('user.token')).expires_at)) {
+    if (localStorage.getItem('user.token')) {
       if (JSON.parse(localStorage.getItem('user')).matric_no) {
         this.$router.push('/home')
       } else {
@@ -232,10 +212,11 @@ export default {
   },
   methods: {
     ...mapActions('User', ['storeUser']),
+    ...mapActions('Navigation', ['startLoading', 'stopLoading']),
     submitSignup () {
       if (this.$refs.signup.validate()) {
         // set loading
-        this.loading = true
+        this.startLoading()
         // sign up
         axios.post('signup', {name: this.signup.name, email: this.signup.email, password: this.signup.password, username: this.signup.username, matric_no: this.signup.matricnum}).then(response => {
           // if successful, let's store the user info and go home
@@ -258,7 +239,7 @@ export default {
     signIn () {
       if (this.$refs.login.validate()) {
         // set loading
-        this.loading = true
+        this.startLoading()
 
         // sign in
         axios.post('signin', {email: this.login.email, password: this.login.password}).then(response => {

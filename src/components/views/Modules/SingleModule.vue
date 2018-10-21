@@ -135,11 +135,11 @@ export default {
     ...mapActions('ModulesIndex', ['fetchModules']),
     toPosition,
     ...mapActions('User', ['startModule', 'nextQuestion', 'submitAnswers']),
+    ...mapActions('Navigation', ['startLoading', 'stopLoading']),
 
     submit (mod) {
-      this.submitAnswers(mod).catch(error => {
-        console.log(error)
-      })
+      this.startLoading()
+      this.submitAnswers(mod)
     },
     startMod () {
       this.startModule(this.module)
