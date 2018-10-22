@@ -41,11 +41,15 @@
     <script type="text/javascript" async src="<%= htmlWebpackPlugin.files.publicPath %>static/mathjax/MathJax.js?config=TeX-MML-AM_CHTML">
     </script>
 
+    <link rel="stylesheet" type="text/css" href="<%= htmlWebpackPlugin.files.publicPath %>static/preloader.css">
   </head>
   <body>
     <noscript>
       This is your fallback content in case JavaScript fails to load.
     </noscript>
+    <div id="preloader">
+        <div id="loader"></div>
+    </div>
     <div id="app"></div>
     <!-- Todo: only include in production -->
     <%= htmlWebpackPlugin.options.serviceWorkerLoader %>

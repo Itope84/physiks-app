@@ -86,6 +86,11 @@ export default {
     ...mapGetters('Navigation', ['title', 'ajaxLoading'])
   },
 
+  mounted () {
+    let el = window.document.querySelector('#preloader')
+    el.parentElement.removeChild(el)
+  },
+
   methods: {
     ...mapActions('ModulesIndex', ['fetchModules']),
     ...mapActions('User', ['fetchUser'])

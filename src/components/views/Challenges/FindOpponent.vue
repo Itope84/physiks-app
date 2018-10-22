@@ -43,7 +43,7 @@
 
       <v-layout row wrap>
         <v-flex xs6 sm4 v-for="(user, index) in sortedUsers" :key ="index" class="pa-2">
-          <v-card class="pa-3 text-xs-center">
+          <v-card class="pa-3 text-xs-center" ripple @click.native="startChallenge(user.id)">
             <v-flex xs12 class="mb-2 relative">
               <profile-avatar :size="50" :name="user.name" :username="user.username"></profile-avatar>
             </v-flex>
@@ -54,6 +54,17 @@
         </v-flex>
       </v-layout>
     </v-flex>
+
+    <v-bottom-sheet v-model="bottomSheet.open">
+      <v-alert
+        :value="true"
+        type="error"
+      >
+        Oops!
+        {{bottomSheet.message}}
+      </v-alert>
+
+    </v-bottom-sheet>
   </v-layout>
 </template>
 
@@ -69,6 +80,10 @@ export default {
         { text: 'Challenges Completed' },
         { text: 'Level' }
       ],
+      bottomSheet: {
+        open: false,
+        message: 'Error while fetching data, please check your internet connection'
+      },
       sortBy: null,
       order: null,
       searchText: ''
@@ -83,6 +98,10 @@ export default {
     axios.get('users').then(response => {
       this.setUsers(response.data)
       this.stopLoading()
+    }).catch(error => {
+      this.stopLoading()
+      this.bottomSheet.open = true
+      error.response ? this.bottomSheet.message = error.message : this.bottomSheet.message = 'Error while fetching data, please check your internet connection'
     })
   },
 
@@ -123,6 +142,10 @@ export default {
       axios.get('users/search?q=' + this.searchText).then(response => {
         this.setUsers(response.data)
         this.stopLoading()
+      }).catch(error => {
+        this.stopLoading()
+        this.bottomSheet.open = true
+        error.response ? this.bottomSheet.message = error.message : this.bottomSheet.message = 'Error while fetching data, please check your internet connection'
       })
     },
 
@@ -131,11 +154,25 @@ export default {
     },
 
     sortByChallenges (order) {
-      return this.users.sort((a, b) => order && order.toLowerCase() === 'descending' ? b.challenges_count > a.challenges_count ? -1 : b.challenges_count < a.challenges_count ? 1 : 0 : b.challenges_count > a.challenges_count ? 1 : b.challenges_count < a.challenges_count ? -1 : 0)
+      return this.users.sort((a, b) => order && order.toLowerCase() === 'ascending' ? b.challenges_count > a.challenges_count ? -1 : b.challenges_count < a.challenges_count ? 1 : 0 : b.challenges_count > a.challenges_count ? 1 : b.challenges_count < a.challenges_count ? -1 : 0)
     },
 
     sortByPoints (order) {
-      return this.users.sort((a, b) => order && order.toLowerCase() === 'descending' ? b.points > a.points ? -1 : b.points < a.points ? 1 : 0 : b.points > a.points ? 1 : b.points < a.points ? -1 : 0)
+      return this.users.sort((a, b) => order && order.toLowerCase() === 'ascending' ? b.points > a.points ? -1 : b.points < a.points ? 1 : 0 : b.points > a.points ? 1 : b.points < a.points ? -1 : 0)
+    },
+
+    startChallenge (opponentId) {
+      this.startLoading()
+
+      axios.post('challenges/new', {opponent_id: opponentId}).then(response => {
+        console.log(response.data)
+        this.stopLoading()
+        this.$router.push({name: 'NewChallenge', params: {id: response.data.id}})
+      }).catch(error => {
+        this.stopLoading()
+        this.bottomSheet.open = true
+        error.response ? this.bottomSheet.message = error.message : this.bottomSheet.message = 'Error while fetching data, please check your internet connection'
+      })
     }
   }
 }

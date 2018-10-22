@@ -18,24 +18,33 @@
     </v-flex>
 
     <v-flex xs12 sm6 offset-sm3 px-3 mb-2>
-      <v-card class="pa-3 mb-2" dark :class="[showAnswer && question.answer === 'A' ? 'success' : question.answer === 'A' && choice === 'A' ? 'success' : choice === 'A' ? 'error' : 'primary']" style="border-radius: 1rem !important">
-        <h2 class="title mb-1">Option A</h2>
-        <div v-html="question.option_a"></div>
-      </v-card>
+      <v-card>
+        <v-card flat class="pa-3 mb-0" dark :class="[showAnswer && question.answer === 'A' ? ' success' : question.answer === 'A' && choice === 'A' ? ' success' : choice === 'A' ? ' error' : 'primary']">
+          <h2 class="title mb-1">Option A</h2>
+          <div v-html="question.option_a"></div>
+        </v-card>
 
-      <v-card class="pa-3 mb-2" dark :class="[showAnswer && question.answer === 'B' ? 'success' : question.answer === 'B' && choice === 'B' ? 'success' : choice === 'B' ? 'error' : 'primary']" style="border-radius: 1rem !important">
+        <v-divider></v-divider>
+
+
+      <v-card flat class="pa-3 mb-0" dark :class="[showAnswer && question.answer === 'B' ? ' success' : question.answer === 'B' && choice === 'B' ? ' success' : choice === 'B' ? ' error' : 'primary']">
         <h2 class="title mb-1">Option B</h2>
         <div v-html="question.option_b"></div>
       </v-card>
 
-      <v-card class="pa-3 mb-2" dark :class="[showAnswer && question.answer === 'C' ? 'success' : question.answer === 'C' && choice === 'C' ? 'success' : choice === 'C' ? 'error' : 'primary']" style="border-radius: 1rem !important">
+      <v-divider></v-divider>
+
+      <v-card flat class="pa-3 mb-0" dark :class="[showAnswer && question.answer === 'C' ? ' success' : question.answer === 'C' && choice === 'C' ? ' success' : choice === 'C' ? ' error' : 'primary']">
         <h2 class="title mb-1">Option C</h2>
         <div v-html="question.option_c"></div>
       </v-card>
 
-      <v-card class="pa-3 mb-2" dark :class="[showAnswer && question.answer === 'D' ? 'success' : question.answer === 'D' && choice === 'D' ? 'success' : choice === 'D' ? 'error' : 'primary']" style="border-radius: 1rem !important">
+      <v-divider></v-divider>
+
+      <v-card class="pa-3 mb-0" dark :class="[showAnswer && question.answer === 'D' ? ' success' : question.answer === 'D' && choice === 'D' ? ' success' : choice === 'D' ? ' error' : 'primary']">
         <h2 class="title mb-1">Option D</h2>
         <div v-html="question.option_d"></div>
+      </v-card>
       </v-card>
     </v-flex>
   </v-layout>

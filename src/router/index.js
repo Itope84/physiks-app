@@ -4,7 +4,8 @@ import Home from '@/components/Home'
 import Landing from '@/components/views/Landing'
 import ModulesIndex from '@/components/views/ModulesIndex'
 import ChallengeIndex from '@/components/views/ChallengesIndex'
-import FindOpponent from '@/components/views/Challenges/FIndOpponent'
+import FindOpponent from '@/components/views/Challenges/FindOpponent'
+import NewChallenge from '@/components/views/Challenges/NewChallenge'
 import SingleModule from '@/components/views/Modules/SingleModule'
 import SingleQuestion from '@/components/views/Questions/SingleQuestion'
 import ShowScore from '@/components/views/Modules/ShowScore'
@@ -52,6 +53,11 @@ export default new Router({
       path: '/challenges/challenge',
       name: 'FindOpponent',
       component: FindOpponent
+    },
+    {
+      path: '/challenges/challenge/:id',
+      name: 'NewChallenge',
+      component: NewChallenge
     }
   ],
   scrollBehavior (to, from, savedPosition) {

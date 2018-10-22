@@ -160,7 +160,7 @@ export default {
       snackbar: true,
       bottomSheet: {
         open: false,
-        message: []
+        message: 'No internet connection'
       },
       active: null,
       signup: {
@@ -226,12 +226,14 @@ export default {
         }).catch(error => {
           // otherwise, there's work to be done
           console.log(error.response)
-          this.loading = false
+          this.stopLoading()
           this.bottomSheet.open = true
           // unset
-          this.bottomSheet.message = []
-          for (let i in error.response.data.error) {
-            this.bottomSheet.message.push(...error.response.data.error[i])
+          if (error.response) {
+            this.bottomSheet.message = []
+            for (let i in error.response.data.error) {
+              this.bottomSheet.message.push(...error.response.data.error[i])
+            }
           }
         })
       }
@@ -249,7 +251,7 @@ export default {
           this.$router.push('/home')
         }).catch(error => {
           // otherwise, there's work to be done
-          this.loading = false
+          this.stopLoading()
           this.bottomSheet.open = true
           // unset
           this.bottomSheet.message = []

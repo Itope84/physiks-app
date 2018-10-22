@@ -142,9 +142,12 @@
 
           <p class="body-2 info--text"><v-icon>info</v-icon>Click on each question to view more details</p>
 
-          <v-card class="pa-3 mb-2" :ripple="true" style="border-radius: 1rem !important" v-for="(question, index) in thisAttempt.questions" :key="index" @click.native="showQuestion(question.id, index + 1)">
+          <!-- each card containing the results -->
+          <v-flex xs12 class="pb-3" v-ripple style="border-radius: 1rem !important" v-for="(question, index) in thisAttempt.questions" :key="index" @click="showQuestion(question.id, index + 1)">
 
-            <v-flex xs12 >
+            <v-divider class="mb-3"></v-divider>
+
+            <v-flex xs12 class="px-3">
 
               <h2 class="title" :class="[findById(correctAttempts, question.id) ? 'success--text' : 'error--text']">Question {{index + 1}}</h2>
               <p class="text-truncate" v-html="findById(module.questions, question.id).body"></p>
@@ -157,7 +160,7 @@
 
             </v-flex>
 
-          </v-card>
+          </v-flex>
 
         </v-card-text>
 

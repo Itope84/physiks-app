@@ -126,9 +126,7 @@ export default {
       }
       this.updateUser(this.user)
 
-      this.submitAnswers(this.module).finally(
-        console.log('done')
-      )
+      this.submitAnswers(this.module)
     }
   },
 
