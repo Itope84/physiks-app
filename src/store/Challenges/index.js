@@ -1,14 +1,17 @@
 import axios from '../../http'
 import { getUserLevel } from '../../functions'
+import store from 'vuex'
 
 const state = {
   users: [],
-  challenges: null
+  challenges: null,
+  scoredChallenges: []
 }
 
 const getters = {
   users: state => state.users,
-  challenges: state => state.challenges
+  challenges: state => state.challenges,
+  scoredChallenges: state => state.scoredChallenges
 }
 
 const actions = {
@@ -18,15 +21,29 @@ const actions = {
     })
   },
 
-  fetchChallenges ({commit}) {
+  fetchChallenges ({commit, state}) {
     let challenges = localStorage.getItem('challenges')
     commit('setChallenges', JSON.parse(challenges))
+
+    let s = JSON.parse(localStorage.getItem('scoredChallenges'))
+
+    if (!s) {
+      s = []
+    }
+
+    state.scoredChallenges = s
   },
 
   addChallenge ({commit, state}, challenge) {
     let challenges = state.challenges
     challenges.push(challenge)
     commit('setChallenges', challenges)
+  },
+
+  scoreChallenge ({commit, state}, {challenge, score}) {
+    let a = {...challenge}
+    a.scored = true
+    commit('scoreChallenge', a)
   },
 
   searchUser ({commit}, query) {
@@ -57,6 +74,21 @@ const mutations = {
     state.challenges = challenges
 
     localStorage.setItem('challenges', JSON.stringify(challenges))
+  },
+
+  scoreChallenge (state, {challenge, score}) {
+    let user = store.getters['User/user']
+    user.points += score
+    store.dispatch('User/updateUser', {details: user})
+
+    let c = localStorage.getItem('scoredChallenges')
+    c = JSON.parse(c)
+    if (!c) {
+      c = []
+    }
+    c.push(challenge)
+    state.scoredChallenges = c
+    localStorage.setItem('scoredChallenges', JSON.stringify(c))
   }
 }
 

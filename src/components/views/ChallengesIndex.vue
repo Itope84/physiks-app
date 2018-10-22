@@ -9,7 +9,8 @@
 
 
         <v-subheader class="d-flex justify-center text-uppercase">Recent Challenges</v-subheader>
-        <v-flex xs12 v-for="(challenge, index) in challenges" :key="index">
+
+        <v-flex xs12 v-for="(challenge, index) in challenges" :key="index" @click="goToChallenge(challenge.id)">
           <v-layout class="pt-2">
               <v-flex xs4>
                 <v-layout column align-center>
@@ -36,26 +37,6 @@
 
         </v-flex>
 
-
-      <!-- <v-list>
-
-          <v-list-tile v-for="(challenge, index) in challenges" :key="index">
-
-
-            <v-list-tile-content>
-              <v-list-tile-title class="text-xs-center py-2 mb-2" style="height: auto">
-                {{challenge.challenger.name}}
-                <v-chip label color="primary">
-                  {{challenge.challenger.score}} vs {{challenge.opponent.score}}
-                </v-chip>
-                 {{challenge.opponent.name}}
-              </v-list-tile-title>
-            </v-list-tile-content>
-          </v-list-tile>
-
-          <v-divider></v-divider>
-      </v-list> -->
-
   </v-container>
 </template>
 
@@ -74,6 +55,10 @@ export default {
     ...mapMutations('ChallengesIndex', ['setChallenges']),
     scoreClass (a, b) {
       return a > b ? 'success--text' : 'error--text'
+    },
+
+    goToChallenge (id) {
+      this.$router.push({name: 'NewChallenge', params: { id: id }})
     }
   },
 

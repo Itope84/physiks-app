@@ -25,11 +25,36 @@
     </v-flex>
 
     <v-flex xs12>
-      <h5 class="primary--text subheading text-uppercase text-xs-center">WINNER GETS</h5>
-      <h5 class="secondary--text text-uppercase text-xs-center">25 Points</h5>
+      <h5 class="primary--text subheading text-uppercase text-xs-center" v-if="!isScored">WINNER GETS</h5>
+
+      <h5 class="success--text subheading text-uppercase text-xs-center" v-else-if="userWon">YOU WON</h5>
+
+      <h5 class="error--text subheading text-uppercase text-xs-center" v-else>YOU LOST</h5>
+
+      <h5 class="text-uppercase text-xs-center" v-if="isScored && !userWon"><v-chip label outline color="error">- {{this.pointsToLose}} POINTS  </v-chip></h5>
+
+      <h5 class="text-uppercase text-xs-center"><v-chip label outline :color="userWon ? 'success' : 'primary'"> + {{this.pointsToGain}} POINTS  </v-chip></h5>
     </v-flex>
 
-    <v-btn style="bottom: 4rem; position: absolute; width: 80%; margin-left: 10%" color="primary">Start Now</v-btn>
+    <v-card class="pa-3 my-3 mx-5 full" style="width: 100%;" v-if="isScored">
+      <v-layout row wrap class="text-xs-center">
+        <v-flex xs4>You</v-flex>
+        <v-flex xs4></v-flex>
+        <v-flex xs4>Somebody</v-flex>
+      </v-layout>
+
+      <v-layout row wrap v-for="(item, index) in challenge.questions" :key="index" justify-center class="text-xs-center">
+        <v-flex xs4><v-icon :color="item.challenger_answer === item.question.answer ? 'success' : 'error'">{{item.challenger_answer === item.question.answer ? 'check' : 'close'}}</v-icon></v-flex>
+
+        <v-flex xs4>{{index + 1}}</v-flex>
+
+        <v-flex xs4>
+          <v-icon :color="item.opponent_answer === item.question.answer ? 'success' : 'error'">{{item.opponent_answer === item.question.answer ? 'check' : 'close'}}</v-icon>
+        </v-flex>
+      </v-layout>
+    </v-card>
+
+    <v-btn style="bottom: 4rem; position: absolute; width: 80%; margin-left: 10%" color="primary" v-if="!isScored">Start Now</v-btn>
   </v-layout>
 </template>
 
@@ -43,7 +68,7 @@ export default {
   },
 
   methods: {
-    ...mapActions('ChallengesIndex', ['fetchChallenges']),
+    ...mapActions('ChallengesIndex', ['fetchChallenges', 'scoreChallenge']),
     scoreClass (a, b) {
       return a > b ? 'success--text' : 'error--text'
     }
@@ -55,8 +80,60 @@ export default {
       if (!this.challenges) {
         this.fetchChallenges()
       }
-      console.log(this.challenges)
       return this.challenges.filter(c => c.id === parseInt(this.$route.params.id))[0]
+    },
+
+    pointsToGain () {
+      let points = 0
+      this.challenge.questions.map(q => {
+        switch (q.question.difficulty) {
+          case 1:
+            points += 3
+            break
+          case 2:
+            points += 4
+            break
+          case 3:
+            points += 5
+            break
+          default:
+          // for debugging only
+            points += 1
+            break
+        }
+      })
+      return points
+    },
+
+    pointsToLose () {
+      return Math.ceil(this.pointsToGain / 3)
+    },
+
+    isScored () {
+      // is his challenge scored?
+      let challenges = JSON.parse(localStorage.getItem('scoredChallenges'))
+
+      return challenges && challenges.filter(c => c.id === this.challenge.id)[0]
+    },
+
+    role () {
+      let uid = JSON.parse(localStorage.getItem('user')).id
+
+      return this.challenge.challenger.id === uid ? 'challenger' : 'opponent'
+    },
+
+    userWon () {
+      // did our hero win?
+
+      let otherRole = this.role === 'challenger' ? 'opponent' : 'challenger'
+
+      return this.isScored && this.challenge[this.role + '_score'] > this.challenge[otherRole + '_score']
+    }
+  },
+
+  mounted () {
+    if (!(this.isScored) && this.challenge.completed) {
+      this.scoreChallenge({challenge: this.challenge, score: this.userWon ? this.pointsToGain : -1 * this.pointsToLose})
     }
   }
 }
