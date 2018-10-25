@@ -2,7 +2,7 @@ import axios from 'axios'
 
 // create a new axios instance
 const instance = axios.create({
-  baseURL: 'http://physiks.local/api/frontend/'
+  baseURL: 'http://localhost:5000/api/frontend/'
 })
 
 if (localStorage.getItem('user.token')) {

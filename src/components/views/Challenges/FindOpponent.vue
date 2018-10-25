@@ -133,7 +133,7 @@ export default {
   },
 
   methods: {
-    ...mapActions('ChallengesIndex', ['fetchUsers', 'searchUser']),
+    ...mapActions('ChallengesIndex', ['fetchUsers', 'searchUser', 'addChallenge']),
     ...mapActions('Navigation', ['startLoading', 'stopLoading']),
     ...mapMutations('ChallengesIndex', ['setUsers']),
 
@@ -166,6 +166,7 @@ export default {
 
       axios.post('challenges/new', {opponent_id: opponentId}).then(response => {
         console.log(response.data)
+        this.addChallenge(response.data)
         this.stopLoading()
         this.$router.push({name: 'NewChallenge', params: {id: response.data.id}})
       }).catch(error => {

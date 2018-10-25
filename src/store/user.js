@@ -141,6 +141,16 @@ const actions = {
   updateUser ({commit, state}, {details}) {
     let u = state.user
     u = {...u, ...details}
+
+    axios.post(`users/${u.id}`, {
+      name: u.name,
+      username: u.username,
+      email: u.email,
+      password: u.password,
+      matric_no: u.matric_no,
+      points: u.points
+    })
+
     commit('setUser', u)
   },
 
@@ -207,7 +217,7 @@ const actions = {
 
   markLatestAttempt ({commit, state}, {module, actualModule}) {
     // find the latest complete attempt
-    let att = module.attempts.filter(a => a.questions.length === actualModule.questions.length)[0]
+    let att = lastItemIn(module.attempts.filter(a => a.questions.length === actualModule.questions.length))
 
     console.log(att)
 
@@ -268,7 +278,7 @@ const actions = {
     let u = state.user
     // the module in the user object
     let mod = findById(u.modules, module.id)
-    let latestCompleteAttempt = mod.attempts.filter(a => a.questions.length === module.questions.length)[0]
+    let latestCompleteAttempt = lastItemIn(mod.attempts.filter(a => a.questions.length >= module.questions.length))
 
     // submit latest complete attempt to database, that's if it hasn't been submitted
     console.log(latestCompleteAttempt)

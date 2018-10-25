@@ -24,7 +24,7 @@
         type="error"
       >
         Oops!
-        <li v-for="item in bottomSheet.message" :key="item">{{item}}</li>
+        <li v-for="(item, index) in bottomSheet.message" :key="index">{{item}}</li>
       </v-alert>
 
     </v-bottom-sheet>
