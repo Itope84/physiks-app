@@ -126,7 +126,7 @@
               <v-card light class="mt-4 pa-2 elevation-5" style="border-radius: 1rem; overflow: hidden;">
                 <!-- the results -->
 
-                <v-layout class="pt-2">
+                <v-layout class="pt-2" v-if="latestChallenge">
                   <v-flex xs4>
                     <v-layout column align-center>
                       <profile-avatar :username="latestChallenge.challenger.username" :size="30"></profile-avatar>
@@ -146,6 +146,12 @@
                       <h5 class="subheading py-2 text-xs-center" :class="[scoreClass(latestChallenge.opponent_score, latestChallenge.challenger_score)]">{{latestChallenge.opponent.username}}</h5>
                     </v-layout>
                   </v-flex>
+                </v-layout>
+
+                <v-layout class="pt-2" v-else>
+                  <v-card-text>
+                    Challenges you've participated in will show up here...
+                  </v-card-text>
                 </v-layout>
 
                 <!--  -->
@@ -201,7 +207,7 @@ export default {
       }
     },
     latestChallenge () {
-      return lastItemIn(this.challenges)
+      return this.challenges ? lastItemIn(this.challenges) : null
     }
   },
   methods: {

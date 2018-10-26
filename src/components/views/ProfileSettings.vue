@@ -1,6 +1,19 @@
 <template>
   <v-layout row wrap>
 
+    <v-dialog v-model="showBonusModal">
+      <v-card>
+        <v-card-text>
+          Thanks for entering your matric number. You have been awarded <span class="orange--text">{{bonusPoints}} bonus points</span>.
+
+          <v-card-actions justify-end>
+            <v-btn color="primary" @click="showBonusModal = false">Okay, thanks</v-btn>
+          </v-card-actions>
+        </v-card-text>
+
+      </v-card>
+    </v-dialog>
+
     <v-dialog :max-width="290" v-model="showMatricEditor">
       <v-card>
         <v-card-title>Enter Matric Number</v-card-title>
@@ -100,25 +113,28 @@ export default {
     getUserLevel,
     // ...mapActions('User', ['updateUser']),
     ...mapMutations('User', ['setUser']),
+    ...mapActions('User', ['updateUser']),
     ...mapActions('Navigation', ['startLoading', 'stopLoading', 'setTitle']),
     saveMatricNumber () {
       if (this.$refs.matricForm.validate()) {
-        this.user.matric_no = this.matric_no
-        this.user.points += bonusPoints
         this.startLoading()
         axios.post(`users/${this.user.id}`, {
           name: this.user.name,
           username: this.user.username,
           email: this.user.email,
           password: this.user.password,
-          matric_no: this.user.matric_no,
-          points: this.user.points
+          matric_no: this.matric_no,
+          points: parseInt(this.user.points) + bonusPoints
         }).then(response => {
+          this.user.matric_no = this.matric_no
+          this.user.points = parseInt(this.user.points) + bonusPoints
+
+          this.updateUser({details: this.user, dontPost: true})
           this.showBonusModal = true
           this.stopLoading()
         }).catch(error => {
           this.bottomSheet.open = true
-          this.bottomSheet.message = 'Sorry, we were unable to upload that data, try again later'
+          this.bottomSheet.message = ['Sorry, we were unable to upload that data, try again later']
           console.log(error)
           this.stopLoading()
         })

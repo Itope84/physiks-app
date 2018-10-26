@@ -26,7 +26,7 @@
 
           <v-list-tile-content>
             <v-badge>
-              <span slot="badge" v-if="findById(user.modules, item.id)">{{findById(user.modules, item.id).attempts.length}}</span>
+              <span slot="badge" class="white--text" v-if="findById(user.modules, item.id)"><v-icon dark>{{findById(user.modules, item.id).completed ? 'check' : 'remove'}}</v-icon></span>
 
               <v-list-tile-title v-html="item.title" class="primary--text"></v-list-tile-title>
             </v-badge>

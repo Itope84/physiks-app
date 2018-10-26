@@ -111,7 +111,6 @@ export default {
   },
 
   created () {
-
     // get this module's info from the user's profile
   },
 

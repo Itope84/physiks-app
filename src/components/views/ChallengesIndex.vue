@@ -37,6 +37,16 @@
 
         </v-flex>
 
+        <v-bottom-sheet v-model="bottomSheet.open">
+          <v-alert
+            :value="true"
+            type="error"
+          >
+            {{bottomSheet.message}}
+          </v-alert>
+
+        </v-bottom-sheet>
+
   </v-container>
 </template>
 
@@ -48,6 +58,10 @@ import { mapGetters, mapActions, mapMutations } from 'vuex'
 export default {
   data () {
     return {
+      bottomSheet: {
+        open: false,
+        message: ''
+      }
     }
   },
   methods: {
@@ -77,6 +91,8 @@ export default {
       this.setChallenges(response.data.data)
       this.stopLoading()
     }).catch(err => {
+      this.bottomSheet.open = true
+      this.bottomSheet.message = 'Network error, please try again later'
       this.stopLoading()
       console.log(err)
     })

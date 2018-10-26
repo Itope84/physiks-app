@@ -231,6 +231,7 @@ export default {
   },
 
   mounted () {
+    eval('MathJax.Hub.Queue(["Typeset", MathJax.Hub])')
     this.setTitle('Challenge')
   }
 }

@@ -195,7 +195,7 @@ export default {
       showBonusModal: false,
       bottomSheet: {
         open: false,
-        message: 'No internet connection'
+        message: ['No internet connection']
       },
       matric_no: '',
       matricForm: {
@@ -289,10 +289,10 @@ export default {
           email: this.user.email,
           password: this.user.password,
           matric_no: this.matric_no,
-          points: this.user.points + bonusPoints
+          points: parseInt(this.user.points) + bonusPoints
         }).then(response => {
           this.user.matric_no = this.matric_no
-          this.user.points += bonusPoints
+          this.user.points = parseInt(this.user.points) + bonusPoints
 
           this.updateUser({details: this.user, dontPost: true})
           this.showBonusModal = true

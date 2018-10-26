@@ -182,7 +182,7 @@ const actions = {
 
   addQuestion ({commit, state, actions}, {question, choice}) {
     let u = state.user
-    let userModule = u.modules.filter(mod => mod.id === question.module_id)[0]
+    let userModule = u.modules.filter(mod => mod.id === parseInt(question.module_id))[0]
     let q = {
       id: question.id,
       attempt: choice
@@ -249,7 +249,7 @@ const actions = {
         }
       }
     })
-    u.points += points
+    u.points = parseInt(u.points) + points
 
     axios.post(`users/${u.id}`, {
       name: u.name,

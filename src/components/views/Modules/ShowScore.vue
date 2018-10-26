@@ -1,3 +1,4 @@
+/* eslint no-eval: 0 */
 <template>
   <v-layout row wrap>
     <v-flex xs12 sm6 offset-sm3 pa-3>
@@ -268,16 +269,20 @@ export default {
     },
 
     nextQuestion () {
-      let nextq = this.thisAttempt.questions[this.currentQuestionNo() + 1]
+      if (this.currentQuestionNo() + 1 < this.thisAttempt.questions.length) {
+        let nextq = this.thisAttempt.questions[this.currentQuestionNo() + 1]
 
-      this.showQuestion(nextq.id, (this.currentQuestionNo() + 2))
+        this.showQuestion(nextq.id, (this.currentQuestionNo() + 2))
+      }
     },
 
     prevQuestion () {
-      let prevNo = this.currentQuestionNo() - 1
-      let prev = this.thisAttempt.questions[prevNo]
+      if (this.currentQuestionNo() - 1 >= 0) {
+        let prevNo = this.currentQuestionNo() - 1
+        let prev = this.thisAttempt.questions[prevNo]
 
-      this.showQuestion(prev.id, this.currentQuestionNo())
+        this.showQuestion(prev.id, this.currentQuestionNo())
+      }
     },
 
     findById

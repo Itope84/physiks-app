@@ -223,6 +223,8 @@ export default {
   },
 
   mounted () {
+    eval('MathJax.Hub.Queue(["Typeset", MathJax.Hub])')
+
     this.submitData().then(response => {
       if (this.userIsDone && this.OpponentIsDone) {
         this.challenge.completed = true
