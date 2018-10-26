@@ -83,7 +83,7 @@ const mutations = {
   },
 
   setTitle (state, title) {
-    state.title = title
+    state.pageTitle = title
   }
 }
 

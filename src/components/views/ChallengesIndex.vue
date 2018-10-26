@@ -51,7 +51,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions('Navigation', ['startLoading', 'stopLoading']),
+    ...mapActions('Navigation', ['startLoading', 'stopLoading', 'setTitle']),
     ...mapMutations('ChallengesIndex', ['setChallenges']),
     scoreClass (a, b) {
       return a > b ? 'success--text' : 'error--text'
@@ -80,6 +80,10 @@ export default {
       this.stopLoading()
       console.log(err)
     })
+  },
+
+  mounted () {
+    this.setTitle('Challenges')
   }
 }
 </script>

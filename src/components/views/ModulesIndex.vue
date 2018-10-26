@@ -43,7 +43,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import { findById } from '../../functions'
 export default {
   computed: {
@@ -56,7 +56,13 @@ export default {
       this.$router.push({name: 'Module', params: {id: item.id}})
     },
 
+    ...mapActions('Navigation', ['setTitle']),
+
     findById
+  },
+
+  mounted () {
+    this.setTitle('Modules')
   }
 
 }

@@ -24,11 +24,11 @@
       <v-toolbar-title class="ml-0">{{title}}</v-toolbar-title>
       <v-spacer></v-spacer>
 
-      <v-toolbar-items>
+      <!-- <v-toolbar-items>
         <v-btn fab flat>
           <v-icon>settings</v-icon>
         </v-btn>
-      </v-toolbar-items>
+      </v-toolbar-items> -->
 
     </v-toolbar>
     <v-content :class="{'mb-5' : !isLanding}">

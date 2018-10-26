@@ -29,6 +29,18 @@
 
     </v-bottom-sheet>
 
+    <v-dialog v-model="showBonusModal">
+      <v-card>
+        <v-card-text>
+          Thanks for entering your matric number. You have been awarded <span class="orange--text">{{bonusPoints}} bonus points</span>.
+
+          <v-card-actions justify-end>
+            <v-btn color="primary" @click="proceed()">Continue</v-btn>
+          </v-card-actions>
+        </v-card-text>
+
+      </v-card>
+    </v-dialog>
 
     <v-flex xs6 d-block>
       <div class="d-flex column mb-5">
@@ -41,7 +53,27 @@
 
     </v-flex>
 
-    <v-flex xs12 class="px-3">
+    <v-flex xs12 class="px-3" v-if="showMatricInput">
+      <v-card flat>
+        <v-card-title>
+          ENter Matric Number
+        </v-card-title>
+        <v-card-text>
+          Welcome, before you proceed, please enter your matric number and get <span class="orange--text">{{bonusPoints}}</span> bonus points. This is completely voluntary, so you can also <span class="accent--text" @click="proceed()">skip this step.</span>
+
+          <v-form ref="matricForm" v-model="matricForm.valid" lazy-validation>
+            <v-text-field label="Matric No" required :value="user.matric_no" :disabled="user.matric_no ? true : false" :rules="signup.matricnumRules" v-model="matric_no"></v-text-field>
+          </v-form>
+
+          <v-card-actions class="justify-end">
+            <v-btn @click="proceed()" color="primary" flat>Skip</v-btn>
+            <v-btn color="secondary" :disabled="user.matric_no != null || !matricForm.valid || !matric_no" @click="saveMatricNumber()">Submit</v-btn>
+          </v-card-actions>
+        </v-card-text>
+      </v-card>
+    </v-flex>
+
+    <v-flex xs12 class="px-3" v-else>
       <v-tabs fixed-tabs v-model="active" color="accent" dark slider-color="white" >
 
         <v-tab ripple>Sign Up</v-tab>
@@ -151,16 +183,23 @@
 </template>
 
 <script>
-import {mapActions} from 'vuex'
+import {mapActions, mapGetters} from 'vuex'
 import axios from '../../http'
+const bonusPoints = 100
 
 export default {
   data () {
     return {
       snackbar: true,
+      bonusPoints,
+      showBonusModal: false,
       bottomSheet: {
         open: false,
         message: 'No internet connection'
+      },
+      matric_no: '',
+      matricForm: {
+        valid: true
       },
       active: null,
       signup: {
@@ -197,6 +236,9 @@ export default {
       loading: false
     }
   },
+  computed: {
+    ...mapGetters('User', ['user'])
+  },
   beforeCreate () {
     // check if
     // 1. user is signed up and logged in, i.e localstorage.user is set
@@ -206,12 +248,12 @@ export default {
         this.$router.push('/home')
       } else {
         // show them the input to update matric number
-        this.$router.push('/home')
+        this.showMatricInput = true
       }
     }
   },
   methods: {
-    ...mapActions('User', ['storeUser']),
+    ...mapActions('User', ['storeUser', 'updateUser']),
     ...mapActions('Navigation', ['startLoading', 'stopLoading']),
     submitSignup () {
       if (this.$refs.signup.validate()) {
@@ -237,6 +279,34 @@ export default {
           }
         })
       }
+    },
+    saveMatricNumber () {
+      if (this.$refs.matricForm.validate()) {
+        this.startLoading()
+        axios.post(`users/${this.user.id}`, {
+          name: this.user.name,
+          username: this.user.username,
+          email: this.user.email,
+          password: this.user.password,
+          matric_no: this.matric_no,
+          points: this.user.points + bonusPoints
+        }).then(response => {
+          this.user.matric_no = this.matric_no
+          this.user.points += bonusPoints
+
+          this.updateUser({details: this.user, dontPost: true})
+          this.showBonusModal = true
+          this.stopLoading()
+        }).catch(error => {
+          this.bottomSheet.open = true
+          this.bottomSheet.message = ['Sorry, we were unable to upload that data, try again later']
+          console.log(error)
+          this.stopLoading()
+        })
+      }
+    },
+    proceed () {
+      this.$router.push('/home')
     },
     signIn () {
       if (this.$refs.login.validate()) {

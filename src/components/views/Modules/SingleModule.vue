@@ -82,6 +82,17 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+
+    <v-bottom-sheet v-model="bottomSheet.open">
+      <v-alert
+        :value="true"
+        type="error"
+      >
+        {{bottomSheet.message}}
+      </v-alert>
+
+    </v-bottom-sheet>
+
   </v-layout>
 </template>
 <script>
@@ -91,7 +102,11 @@ export default {
   data () {
     return {
       // module: null,
-      introDialog: false
+      introDialog: false,
+      bottomSheet: {
+        open: false,
+        message: []
+      }
     }
   },
 
@@ -100,13 +115,21 @@ export default {
     // get this module's info from the user's profile
   },
 
+  watch: {
+    uploadError: function () {
+      this.stopLoading()
+      this.bottomSheet.open = true
+      this.bottomSheet.message = 'Unable to upload results, please try again later. DON\'T PANIC! Your responses have been saved. You can submit when you\re connected by clicking VIEW PREVIOUS SCORE on this page. Then you can see your score.'
+    }
+  },
+
   mounted () {
     eval('MathJax.Hub.Queue(["Typeset", MathJax.Hub])')
-    // console.log(this.user.modules)
+    this.setTitle(this.module.title)
   },
 
   computed: {
-    ...mapGetters('User', ['user']),
+    ...mapGetters('User', ['user', 'uploadError']),
     ...mapGetters('ModulesIndex', ['modules']),
     userModule () {
       return this.user.modules.filter(mod => parseInt(mod.id) === parseInt(this.$route.params.id))[0]
@@ -135,7 +158,7 @@ export default {
     ...mapActions('ModulesIndex', ['fetchModules']),
     toPosition,
     ...mapActions('User', ['startModule', 'nextQuestion', 'submitAnswers']),
-    ...mapActions('Navigation', ['startLoading', 'stopLoading']),
+    ...mapActions('Navigation', ['startLoading', 'stopLoading', 'setTitle']),
 
     submit (mod) {
       this.startLoading()

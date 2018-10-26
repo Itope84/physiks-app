@@ -103,6 +103,7 @@ export default {
       this.bottomSheet.open = true
       error.response ? this.bottomSheet.message = error.message : this.bottomSheet.message = 'Error while fetching data, please check your internet connection'
     })
+    this.setTitle('Challenges')
   },
 
   computed: {
@@ -134,7 +135,7 @@ export default {
 
   methods: {
     ...mapActions('ChallengesIndex', ['fetchUsers', 'searchUser', 'addChallenge']),
-    ...mapActions('Navigation', ['startLoading', 'stopLoading']),
+    ...mapActions('Navigation', ['startLoading', 'stopLoading', 'setTitle']),
     ...mapMutations('ChallengesIndex', ['setUsers']),
 
     search () {

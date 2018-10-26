@@ -9,11 +9,11 @@
           Enter your matric number and get some bonus points to kickstart the fun
 
           <v-form ref="matricForm" v-model="matricForm.valid" lazy-validation>
-            <v-text-field label="Matric No" required :value="user.matric_no" :disabled="user.matric_no" :rules="matricForm.matricNoRules" v-model="matric_no"></v-text-field>
+            <v-text-field label="Matric No" required :value="user.matric_no" :disabled="user.matric_no ? true : false" :rules="matricForm.matricNoRules" v-model="matric_no"></v-text-field>
           </v-form>
 
           <v-card-actions class="justify-end">
-            <v-btn color="primary" :disabled="user.matric_no || !matricForm.valid || !matric_no" @click="saveMatricNumber()">Submit</v-btn>
+            <v-btn color="primary" :disabled="user.matric_no != null || !matricForm.valid || !matric_no" @click="saveMatricNumber()">Submit</v-btn>
           </v-card-actions>
 
         </v-card-text>
@@ -100,7 +100,7 @@ export default {
     getUserLevel,
     // ...mapActions('User', ['updateUser']),
     ...mapMutations('User', ['setUser']),
-    ...mapActions('Navigation', ['startLoading', 'stopLoading']),
+    ...mapActions('Navigation', ['startLoading', 'stopLoading', 'setTitle']),
     saveMatricNumber () {
       if (this.$refs.matricForm.validate()) {
         this.user.matric_no = this.matric_no
@@ -124,6 +124,9 @@ export default {
         })
       }
     }
+  },
+  mounted () {
+    this.setTitle('Profile Settings')
   }
 }
 </script>

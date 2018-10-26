@@ -154,6 +154,7 @@ export default {
 
   methods: {
     ...mapActions('ChallengesIndex', ['fetchChallenges', 'updateChallenge']),
+    ...mapActions('Navigation', ['setTitle']),
     nextQuestion () {
       let unanswered = this.challenge.questions.filter(q => !q[this.role + '_answer'])
       console.log(unanswered)
@@ -227,6 +228,10 @@ export default {
     } else {
       this.nextQuestion()
     }
+  },
+
+  mounted () {
+    this.setTitle('Challenge')
   }
 }
 </script>

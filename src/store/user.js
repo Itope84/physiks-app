@@ -1,4 +1,4 @@
-import { lastItemIn, randomItemIn, findById } from '../functions'
+import { lastItemIn, randomItemIn, findById, getUserLevel } from '../functions'
 import router from '../router'
 import store from './index.js'
 import axios from '../http'
@@ -13,6 +13,7 @@ let userTemplate = {
   password: '',
   matric_no: '',
   points: 0,
+  level: 0,
   // module is an array of all attemots
   modules: [
     // {
@@ -37,6 +38,7 @@ const state = {
   user: userTemplate,
   activeModule: null,
   activeQuestion: null,
+  uploadError: false,
   ansQuestions: 0,
   correctAttempts: null,
   reducePointsPerAnswer: 2,
@@ -49,7 +51,8 @@ const getters = {
   question: state => state.activeQuestion,
   answeredQuestions: state => state.ansQuestions,
   correctAttempts: state => state.correctAttempts,
-  reducePointsPerAnswer: state => state.reducePointsPerAnswer
+  reducePointsPerAnswer: state => state.reducePointsPerAnswer,
+  uploadError: state => state.uploadError
 }
 
 const actions = {
@@ -59,7 +62,6 @@ const actions = {
     commit('SetAns', x)
   },
   storeUser ({commit, state}, {user}) {
-    // TODO: filter this, and remove all before production
     // this action is meant to be called only when we fetch user from database after logging in or signing up!
     // to make sure we don't lose the user's data after logging in... we wanna make sure we get the latest unsubmitted attempts by this user, so that we can somehow merge it back to the one we fetched
 
@@ -130,6 +132,8 @@ const actions = {
         findById(u.modules, module.id).completed = module.completed
       })
     }
+
+    u.level = getUserLevel(user.points)
     commit('setUser', u)
   },
 
@@ -138,18 +142,20 @@ const actions = {
     commit('setUser', user)
   },
 
-  updateUser ({commit, state}, {details}) {
+  updateUser ({commit, state}, {details, dontPost}) {
     let u = state.user
     u = {...u, ...details}
 
-    axios.post(`users/${u.id}`, {
-      name: u.name,
-      username: u.username,
-      email: u.email,
-      password: u.password,
-      matric_no: u.matric_no,
-      points: u.points
-    })
+    if (!dontPost) {
+      axios.post(`users/${u.id}`, {
+        name: u.name,
+        username: u.username,
+        email: u.email,
+        password: u.password,
+        matric_no: u.matric_no,
+        points: u.points
+      })
+    }
 
     commit('setUser', u)
   },
@@ -185,11 +191,8 @@ const actions = {
     let questionExists = userModule.attempts[userModule.attempts.length - 1].questions.filter(qstn => qstn.id === question.id)[0]
 
     if (!questionExists) {
-      console.log('question does not exist')
       userModule.attempts[userModule.attempts.length - 1].questions.push(q)
     }
-
-    console.log('out')
 
     commit('setUser', u)
   },
@@ -307,6 +310,7 @@ const actions = {
         router.push({ name: 'Score', params: { id: module.id } })
       }).catch(err => {
         console.log(err)
+        state.uploadError = true
       })
       commit('setUser', u)
     } else {
@@ -324,6 +328,10 @@ const actions = {
 const mutations = {
   setUser (state, user) {
     state.user = user
+    if (localStorage.getItem(user)) {
+      let u = localStorage.getItem(user)
+      state.user.level = user.level > u.level ? user.level : u.level
+    }
     localStorage.setItem('user', JSON.stringify(user))
 
     if (state.activeModule) {

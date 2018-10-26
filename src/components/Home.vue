@@ -206,7 +206,7 @@ export default {
   },
   methods: {
     getUserLevel,
-    ...mapActions('Navigation', ['startLoading', 'stopLoading']),
+    ...mapActions('Navigation', ['startLoading', 'stopLoading', 'setTitle']),
     ...mapActions('ChallengesIndex', ['fetchChallenges']),
 
     scoreClass (a, b) {
@@ -220,6 +220,7 @@ export default {
 
   mounted () {
     this.stopLoading()
+    this.setTitle('Physiks')
   }
 }
 </script>

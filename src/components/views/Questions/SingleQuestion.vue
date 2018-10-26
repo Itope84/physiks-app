@@ -99,6 +99,11 @@ export default {
   watch: {
     question: function () {
       this.choice = null
+    },
+    uploadError: function () {
+      this.stopLoading()
+      this.bottomSheet.open = true
+      this.bottomSheet.message = 'Unable to upload results, please try again later. DON\'T PANIC! Your responses have been saved. You can submit when you\re connected by clicking VIEW PREVIOUS SCORE on the module\'s page. Then you can see your score.'
     }
   },
 
@@ -142,7 +147,7 @@ export default {
     this.stopLoading()
   },
   computed: {
-    ...mapGetters('User', ['user', 'module', 'question', 'answeredQuestions']),
+    ...mapGetters('User', ['user', 'module', 'question', 'answeredQuestions', 'uploadError']),
     ...mapGetters('ModulesIndex', ['modules'])
   }
 

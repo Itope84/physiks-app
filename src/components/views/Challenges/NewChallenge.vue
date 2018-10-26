@@ -125,7 +125,7 @@ export default {
   methods: {
     ...mapActions('ChallengesIndex', ['fetchChallenges', 'scoreChallenge']),
     ...mapMutations('ChallengesIndex', ['setChallenges']),
-    ...mapActions('Navigation', ['startLoading', 'stopLoading']),
+    ...mapActions('Navigation', ['startLoading', 'stopLoading', 'setTitle']),
     scoreClass (a, b) {
       return a > b ? 'success--text' : 'error--text'
     },
@@ -230,6 +230,8 @@ export default {
 
       this.tryScoring()
     })
+
+    this.setTitle('Challenge Outcome')
   }
 }
 </script>

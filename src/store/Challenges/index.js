@@ -47,6 +47,9 @@ const actions = {
     let a = { ...challenge }
     let user = rootGetters['User/user']
     user.points += score
+    if (user.points < 0) {
+      user.points = 0
+    }
     a.scored = true
     dispatch('User/updateUser', { details: user }, { root: true })
     commit('scoreChallenge', a)
