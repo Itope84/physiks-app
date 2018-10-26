@@ -12,7 +12,7 @@
           </v-flex>
 
           <v-flex xs12>
-             <h1 class="title mb-1">{{ user.name }}</h1>
+             <h1 class="title mb-1">{{ user.username }}</h1>
 
               <h5 class="body-2" style="color: #cecece">Level {{getUserLevel(user.points)}} ({{user.points}} points)</h5>
           </v-flex>
@@ -109,7 +109,7 @@
                 <v-card-text class="px-3 py-0 mb-2"><h3 class="body-1 grey--text">Challenges are a good way to level up and gain more points...</h3></v-card-text>
 
                 <div class="d-flex">
-                  <v-btn class="mx-0 mb-0 rounded-bottom" large depressed color="secondary">
+                  <v-btn class="mx-0 mb-0 rounded-bottom" large depressed color="secondary" :to="{name: 'FindOpponent'}">
                       Challenge Someone
                   </v-btn>
                 </div>
@@ -125,43 +125,32 @@
             <v-flex xs12>
               <v-card light class="mt-4 pa-2 elevation-5" style="border-radius: 1rem; overflow: hidden;">
                 <!-- the results -->
-                <v-layout class="py-1">
+
+                <v-layout class="pt-2">
                   <v-flex xs4>
-                    <v-layout column>
-                      <v-avatar size="30" class="ml-auto mr-auto" tile style="border-radius: 20px; overflow: hidden;" color="grey lighten-4">
-                        <v-img :src="`./static/img/icons/physics-concepts/005-physics.png`" aspect-ratio="1" class="grey lighten-2">
-                          <v-layout slot="placeholder" fill-height align-center justify-center ma-0>
-                            <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
-                          </v-layout>
-                        </v-img>
-                      </v-avatar>
-                      <h5 class="subheading py-2 text-xs-center success--text"><span>Santiago</span></h5>
+                    <v-layout column align-center>
+                      <profile-avatar :username="latestChallenge.challenger.username" :size="30"></profile-avatar>
+                      <h5 class="subheading py-2 text-xs-center" :class="[scoreClass(latestChallenge.challenger_score, latestChallenge.opponent_score)]">{{latestChallenge.challenger.username}}</h5>
                     </v-layout>
                   </v-flex>
 
                   <v-flex xs4>
                     <v-card-text>
-                      <h2 class="subheading py-2 text-xs-center"><span class="success--text">3</span> - <span class="error--text">2</span></h2>
+                      <h2 class="subheading py-2 text-xs-center"><span :class="[scoreClass(latestChallenge.challenger_score, latestChallenge.opponent_score)]">{{latestChallenge.challenger_score}}</span> - <span :class="[scoreClass(latestChallenge.opponent_score, latestChallenge.challenger_score)]">{{latestChallenge.opponent_score}}</span></h2>
                     </v-card-text>
                   </v-flex>
 
                   <v-flex xs4>
-                    <v-layout column>
-                      <v-avatar size="30" class="ml-auto mr-auto" tile style="border-radius: 20px; overflow: hidden;" color="grey lighten-4">
-                        <v-img :src="`./static/img/icons/physics-concepts/005-physics.png`" aspect-ratio="1" class="grey lighten-2">
-                          <v-layout slot="placeholder" fill-height align-center justify-center ma-0>
-                            <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
-                          </v-layout>
-                        </v-img>
-                      </v-avatar>
-                      <h5 class="subheading py-2 text-xs-center error--text"><span>Death Star</span></h5>
+                    <v-layout column align-center>
+                      <profile-avatar :username="latestChallenge.opponent.username" :size="30"></profile-avatar>
+                      <h5 class="subheading py-2 text-xs-center" :class="[scoreClass(latestChallenge.opponent_score, latestChallenge.challenger_score)]">{{latestChallenge.opponent.username}}</h5>
                     </v-layout>
                   </v-flex>
                 </v-layout>
 
                 <!--  -->
 
-                <div class="d-flex"><v-btn color="accent" class="mx-auto">View All</v-btn></div>
+                <div class="d-flex"><v-btn color="accent" class="mx-auto"  :to="{name: 'Challenges'}">View All</v-btn></div>
 
               </v-card>
             </v-flex>
@@ -185,7 +174,7 @@
 </template>
 
 <script>
-import { getUserLevel } from '../functions.js'
+import { getUserLevel, lastItemIn } from '../functions.js'
 import SvgIcon from './partials/SvgIcon.vue'
 import ProfileAvatar from './partials/ProfileAvatar.vue'
 import { mapGetters, mapActions } from 'vuex'
@@ -197,7 +186,7 @@ export default {
   computed: {
     ...mapGetters('User', ['user']),
     ...mapGetters('ModulesIndex', ['sanitisedModules']),
-    ...mapActions('Navigation', ['startLoading', 'stopLoading']),
+    ...mapGetters('ChallengesIndex', ['challenges']),
     activeModule () {
       let m = this.user.modules[this.user.modules.length - 1]
       if (!m) {
@@ -210,10 +199,23 @@ export default {
         qstnsInLastAttempt: m.attempts.length ? m.attempts[m.attempts.length - 1].questions.length : 0,
         totalQstns: p.questions.length
       }
+    },
+    latestChallenge () {
+      return lastItemIn(this.challenges)
     }
   },
   methods: {
-    getUserLevel
+    getUserLevel,
+    ...mapActions('Navigation', ['startLoading', 'stopLoading']),
+    ...mapActions('ChallengesIndex', ['fetchChallenges']),
+
+    scoreClass (a, b) {
+      return a > b ? 'success--text' : 'error--text'
+    }
+  },
+
+  beforeMount () {
+    this.fetchChallenges()
   },
 
   mounted () {

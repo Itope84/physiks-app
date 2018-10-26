@@ -10,6 +10,7 @@ import ChallengeQuestion from '@/components/views/Challenges/ChallengeQuestion'
 import SingleModule from '@/components/views/Modules/SingleModule'
 import SingleQuestion from '@/components/views/Questions/SingleQuestion'
 import ShowScore from '@/components/views/Modules/ShowScore'
+import ProfileSettings from '@/components/views/ProfileSettings'
 
 Vue.use(Router)
 
@@ -64,6 +65,11 @@ export default new Router({
       path: '/challenges/challenge/:challengeId/questions',
       name: 'ChallengeQuestion',
       component: ChallengeQuestion
+    },
+    {
+      path: '/settings',
+      name: 'ProfileSettings',
+      component: ProfileSettings
     }
   ],
   scrollBehavior (to, from, savedPosition) {

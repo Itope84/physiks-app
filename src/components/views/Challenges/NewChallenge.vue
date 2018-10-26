@@ -89,7 +89,7 @@
       <v-divider></v-divider>
 
       <v-card-actions class="justify-center">
-        <v-btn color="primary" outline>
+        <v-btn color="primary" outline :to="{name: 'ChallengeQuestion', params:{challengeId: challenge.id}}">
           View Details
         </v-btn>
       </v-card-actions>

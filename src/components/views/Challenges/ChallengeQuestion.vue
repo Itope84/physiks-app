@@ -1,7 +1,7 @@
 <template>
   <v-layout row wrap>
     <v-flex xs12 sm6 offset-sm3 px-3 pt-3 pb-1>
-      <v-card>
+      <v-card v-if="!completed">
         <v-card-text>
           <div class="d-flex px-3">
             <span class="">Difficulty: <b class="success--text">{{challengeQuestion.question.difficulty > 2 ? 'Difficult' : challengeQuestion.question.difficulty > 1 ? 'Medium' : 'Easy'}}</b></span>
@@ -13,9 +13,33 @@
 
         </v-card-text>
       </v-card>
+
+      <v-card v-else px-2>
+        <v-layout class="pt-2" align-center>
+          <v-flex xs3>
+            <v-layout column align-center>
+              <profile-avatar :username="challenge.challenger.username" :size="30"></profile-avatar>
+            </v-layout>
+          </v-flex>
+
+          <v-flex xs6>
+            <v-card-text class="d-flex px-0">
+              <v-icon :color="optionColorClass(challengeQuestion.challenger_answer)" class="mr-auto">{{challengeQuestion.challenger_answer === challengeQuestion.question.answer ? `check` : `close`}}</v-icon>
+               -
+              <v-icon :color="optionColorClass(challengeQuestion.opponent_answer)" class="ml-auto">{{challengeQuestion.opponent_answer === challengeQuestion.question.answer ? `check` : `close`}}</v-icon>
+            </v-card-text>
+          </v-flex>
+
+          <v-flex xs3>
+            <v-layout column align-center>
+              <profile-avatar :username="challenge.opponent.username" :size="30"></profile-avatar>
+            </v-layout>
+          </v-flex>
+        </v-layout>
+      </v-card>
     </v-flex>
 
-    <v-flex xs12 sm6 offset-sm3 v-if="!completed && challengeQuestion" class="mb-3">
+    <v-flex xs12 sm6 offset-sm3 v-if="challengeQuestion" class="mb-3">
       <v-layout row wrap>
         <v-flex xs12 pa-3 mb-2>
           <v-card flat class="pb-1 accent" dark>
@@ -69,8 +93,11 @@
 
     <v-flex xs12 class="mb-3">
       <v-card-actions class="px-3">
-        <v-btn class="secondary">Return</v-btn>
-        <v-btn class="primary" style="margin-left: auto" @click="submit">Next</v-btn>
+        <v-btn class="secondary" v-if="completed" @click="prevSolution" :disabled="completed && challenge.questions.indexOf(challengeQuestion) - 1 < 0">Previous</v-btn>
+
+        <v-btn class="primary" style="margin-left: auto" @click="nextSolution" v-if="completed" :disabled ="challenge.questions.indexOf(challengeQuestion) + 1 >= this.challenge.questions.length">Next</v-btn>
+
+        <v-btn class="primary" style="margin-left: auto" @click="submit" v-if="!completed">Next</v-btn>
       </v-card-actions>
     </v-flex>
 
@@ -90,18 +117,23 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import ProfileAvatar from '../../partials/ProfileAvatar.vue'
+
 export default {
   data () {
     return {
       time: 0,
       bottomSheet: {
         open: false,
-        message: ''
+        message: 'Please chose a valid option'
       },
       challengeQuestion: null,
       completed: false,
       choice: null
     }
+  },
+  components: {
+    ProfileAvatar
   },
   computed: {
     ...mapGetters('ChallengesIndex', ['challenges']),
@@ -136,12 +168,34 @@ export default {
         // if we're not waiting for opponent, show choice details
       } else {
         this.challengeQuestion = unanswered[0]
+        window.scrollTo(0, 0)
+        this.startTimer()
       }
+    },
+    nextSolution () {
+      this.challengeQuestion ? this.challengeQuestion = this.challenge.questions[this.challenge.questions.indexOf(this.challengeQuestion) + 1] : this.challengeQuestion = this.challenge.questions[0]
+
+      window.scrollTo(0, 0)
+
+      this.choice = this.challengeQuestion[this.role + '_answer']
+    },
+
+    prevSolution () {
+      this.challengeQuestion ? this.challengeQuestion = this.challenge.questions[this.challenge.questions.indexOf(this.challengeQuestion) - 1] : this.challengeQuestion = this.challenge.questions[0]
+
+      window.scrollTo(0, 0)
+
+      this.choice = this.challengeQuestion[this.role + '_answer']
     },
     startTimer () {
       this.challengeQuestion.question.difficulty > 2 ? this.time = 300 : this.challengeQuestion.question.difficulty > 1 ? this.time = 200 : this.time = 100
+      let expired = () => {
+        clearInterval(countdown)
+        this.chooseOption('E')
+        this.nextQuestion()
+      }
       let countdown = setInterval(() => {
-        this.time === 0 ? clearInterval(countdown) : --this.time
+        this.time === 0 ? expired() : --this.time
       }, 1000)
     },
     optionColorClass (option) {
@@ -158,7 +212,7 @@ export default {
     },
     submit () {
       if (!(this.completed || this.choice)) {
-        // show error
+        this.bottomSheet.open = true
       } else {
         this.choice = null
         this.nextQuestion()
@@ -167,8 +221,12 @@ export default {
   },
 
   beforeMount () {
-    this.nextQuestion()
-    this.startTimer()
+    if (this.challenge.completed) {
+      this.completed = true
+      this.nextSolution()
+    } else {
+      this.nextQuestion()
+    }
   }
 }
 </script>

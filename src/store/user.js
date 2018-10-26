@@ -246,8 +246,16 @@ const actions = {
         }
       }
     })
-
     u.points += points
+
+    axios.post(`users/${u.id}`, {
+      name: u.name,
+      username: u.username,
+      email: u.email,
+      password: u.password,
+      matric_no: u.matric_no,
+      points: u.points
+    })
 
     let mod = findById(u.modules, module.id)
 
@@ -272,6 +280,15 @@ const actions = {
     let u = state.user
     u.points -= points
     commit('setUser', u)
+
+    axios.post(`users/${u.id}`, {
+      name: u.name,
+      username: u.username,
+      email: u.email,
+      password: u.password,
+      matric_no: u.matric_no,
+      points: u.points
+    })
   },
 
   submitAnswers ({commit, state}, module) {

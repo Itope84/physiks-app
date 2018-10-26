@@ -52,7 +52,7 @@
         <v-icon>bookmark</v-icon>
       </v-btn>
 
-      <v-btn dark>
+      <v-btn dark :to="{name: 'ProfileSettings'}">
         <span>Profile</span>
         <v-icon>person</v-icon>
       </v-btn>
