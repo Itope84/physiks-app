@@ -227,8 +227,10 @@ const actions = {
     let u = state.user
 
     let points = 0
+    // only if the question hasn't been marked before
+    let mod = findById(u.modules, module.id)
+
     correctAttempts.map(q => {
-      // only if the question hasn't been marked before
       if (!att.score) {
         switch (findById(actualModule.questions, q.id).difficulty) {
           case 1:
@@ -249,7 +251,22 @@ const actions = {
     })
     u.points = parseInt(u.points) + points
 
-    let mod = findById(u.modules, module.id)
+    if (correctAttempts.length > actualModule.questions.length / 2 && !mod.passed) {
+      mod.passed = true
+    }
+
+    if (mod.passed && !att.score) {
+      u.points = parseInt(u.points) + actualModule.completion_points
+    }
+
+    axios.post(`users/${u.id}`, {
+      name: u.name,
+      username: u.username,
+      email: u.email,
+      password: u.password,
+      matric_no: u.matric_no,
+      points: u.points
+    })
 
     // set score of current attempt
     findById(mod.attempts, att.id).score = correctAttempts.length
@@ -258,21 +275,6 @@ const actions = {
     let scores = mod.attempts.map(att => typeof att.score === 'number' ? att.score : 0)
 
     mod.highestScore = scores.reduce((a, b) => b > a ? b : a)
-
-    mod.highestScore > actualModule.questions.length / 2 ? mod.passed = true : mod.passed = false
-
-    if (!att.score) {
-      u.points = parseInt(u.points) + actualModule.completion_points
-
-      axios.post(`users/${u.id}`, {
-        name: u.name,
-        username: u.username,
-        email: u.email,
-        password: u.password,
-        matric_no: u.matric_no,
-        points: u.points
-      })
-    }
 
     state.correctAttempts = correctAttempts
 
