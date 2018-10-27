@@ -47,7 +47,7 @@
           <v-subheader>
             <v-layout row>
               <v-list-tile avatar>
-                  <profile-avatar :username="'Santiago'" :name="'Temitope I'" :size="50"></profile-avatar>
+                  <profile-avatar :username="user.username" :name="user.name" :size="50"></profile-avatar>
 
                 <v-list-tile-content class="ml-4">
                   <v-list-tile-title>{{user.name}}</v-list-tile-title>

@@ -32,7 +32,7 @@ let userTemplate = {
 }
 
 // we'll do sth about this later
-let questionsPerAttempt = 30
+let questionsPerAttempt = 20
 
 const state = {
   user: userTemplate,
@@ -222,8 +222,6 @@ const actions = {
     // find the latest complete attempt
     let att = lastItemIn(module.attempts.filter(a => a.questions.length === actualModule.questions.length))
 
-    console.log(att)
-
     let correctAttempts = att.questions.filter(q => q.attempt === findById(actualModule.questions, q.id).answer)
 
     let u = state.user
@@ -251,15 +249,6 @@ const actions = {
     })
     u.points = parseInt(u.points) + points
 
-    axios.post(`users/${u.id}`, {
-      name: u.name,
-      username: u.username,
-      email: u.email,
-      password: u.password,
-      matric_no: u.matric_no,
-      points: u.points
-    })
-
     let mod = findById(u.modules, module.id)
 
     // set score of current attempt
@@ -269,6 +258,21 @@ const actions = {
     let scores = mod.attempts.map(att => typeof att.score === 'number' ? att.score : 0)
 
     mod.highestScore = scores.reduce((a, b) => b > a ? b : a)
+
+    mod.highestScore > actualModule.questions.length / 2 ? mod.passed = true : mod.passed = false
+
+    if (!att.score) {
+      u.points = parseInt(u.points) + actualModule.completion_points
+
+      axios.post(`users/${u.id}`, {
+        name: u.name,
+        username: u.username,
+        email: u.email,
+        password: u.password,
+        matric_no: u.matric_no,
+        points: u.points
+      })
+    }
 
     state.correctAttempts = correctAttempts
 
