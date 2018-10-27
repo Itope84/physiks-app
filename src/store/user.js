@@ -256,7 +256,7 @@ const actions = {
     }
 
     if (mod.passed && !att.score) {
-      u.points = parseInt(u.points) + actualModule.completion_points
+      u.points = parseInt(u.points) + parseInt(actualModule.completion_points)
     }
 
     axios.post(`users/${u.id}`, {
