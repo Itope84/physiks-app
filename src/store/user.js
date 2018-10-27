@@ -249,24 +249,24 @@ const actions = {
         }
       }
     })
-    u.points = parseInt(u.points) + points
 
-    if (correctAttempts.length > actualModule.questions.length / 2 && !mod.passed) {
-      mod.passed = true
+    if (!findById(mod.attempts, att.id).score) {
+      u.points = parseInt(u.points) + points
+
+      if (correctAttempts.length > actualModule.questions.length / 2 && !mod.passed) {
+        mod.passed = true
+        u.points = parseInt(u.points) + parseInt(actualModule.completion_points)
+      }
+
+      axios.post(`users/${u.id}`, {
+        name: u.name,
+        username: u.username,
+        email: u.email,
+        password: u.password,
+        matric_no: u.matric_no,
+        points: u.points
+      })
     }
-
-    if (mod.passed && !att.score) {
-      u.points = parseInt(u.points) + parseInt(actualModule.completion_points)
-    }
-
-    axios.post(`users/${u.id}`, {
-      name: u.name,
-      username: u.username,
-      email: u.email,
-      password: u.password,
-      matric_no: u.matric_no,
-      points: u.points
-    })
 
     // set score of current attempt
     findById(mod.attempts, att.id).score = correctAttempts.length

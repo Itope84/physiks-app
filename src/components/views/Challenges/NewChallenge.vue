@@ -33,7 +33,7 @@
       <v-layout class="pa-3 mx-2 mt-5">
         <v-flex xs4>
           <v-layout column align-center>
-            <profile-avatar :size="60" :name="`Santiago`" :username="`Tope`"></profile-avatar>
+            <profile-avatar :size="60" :name="this.challenge.challenger.name" :username="this.challenge.challenger.username"></profile-avatar>
             <h5 class="subheading py-2 text-xs-center" :class="[scoreClass(this.challenge.challenger_score, this.challenge.opponent_score)]">{{this.challenge.challenger.username}}</h5>
           </v-layout>
         </v-flex>
@@ -46,7 +46,7 @@
 
         <v-flex xs4>
           <v-layout column align-center>
-            <profile-avatar :size="60" :name="`Santiago`" :username="`Tope`"></profile-avatar>
+            <profile-avatar :size="60" :name="this.challenge.opponent.name" :username="this.challenge.opponent.username"></profile-avatar>
             <h5 class="subheading py-2 text-xs-center" :class="[scoreClass(this.challenge.opponent_score, this.challenge.challenger_score)]">{{this.challenge.opponent.username}}</h5>
           </v-layout>
         </v-flex>
