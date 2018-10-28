@@ -6,7 +6,7 @@
         <v-card-text>
           Thanks for entering your matric number. You have been awarded <span class="orange--text">{{bonusPoints}} bonus points</span>.
 
-          <v-card-actions justify-end>
+          <v-card-actions class="justify-end">
             <v-btn color="primary" @click="showBonusModal = false">Okay, thanks</v-btn>
           </v-card-actions>
         </v-card-text>
