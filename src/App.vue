@@ -100,7 +100,12 @@
 
     <v-toolbar app color="accent" dark :class="{'elevation-0': $route.name === 'Home'}" v-if="!isLanding">
 
-      <v-toolbar-title class="ml-0">{{title}}</v-toolbar-title>
+      <v-toolbar-title class="ml-0">
+        <v-layout align-center>
+          <v-btn v-if="!isTopLevel" fab flat small class="ma-0" @click="$router.go(-1)"><v-icon>keyboard_backspace</v-icon></v-btn>
+        {{title}}
+        </v-layout>
+      </v-toolbar-title>
       <v-spacer></v-spacer>
 
       <v-toolbar-items>
@@ -163,7 +168,10 @@ export default {
       return this.$route.name === 'Landing'
     },
     ...mapGetters('User', ['user']),
-    ...mapGetters('Navigation', ['title', 'ajaxLoading'])
+    ...mapGetters('Navigation', ['title', 'ajaxLoading']),
+    isTopLevel () {
+      return this.$route.name === 'Modules' || this.$route.name === 'Home' || this.$route.name === 'Challenges' || this.$route.name === 'ProfileSettings'
+    }
   },
 
   mounted () {

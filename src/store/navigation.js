@@ -7,7 +7,6 @@ function initialState () {
 }
 
 const getters = {
-  menu: state => state.menu,
   title: state => state.pageTitle,
   ajaxLoading: state => state.ajaxLoading,
   showConstants: state => state.showConstants
