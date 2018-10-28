@@ -60,7 +60,7 @@
             <div v-html="question.option_d" class="mb-2" ></div>
           </v-radio-group>
           <v-card-actions>
-            <v-btn color="secondary">Return </v-btn>
+            <v-btn color="secondary" :to="{ name: 'Module', params: {id: module.id} }">Return </v-btn>
             <v-btn color="accent" style="margin-left: auto" @click="submitAttempt">Submit </v-btn>
           </v-card-actions>
         </v-card-text>
