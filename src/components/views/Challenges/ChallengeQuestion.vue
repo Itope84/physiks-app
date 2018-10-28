@@ -170,7 +170,7 @@ export default {
       } else {
         this.challengeQuestion = unanswered[0]
         window.scrollTo(0, 0)
-        this.startTimer()
+        this.resetTime()
       }
     },
     nextSolution () {
@@ -188,12 +188,20 @@ export default {
 
       this.choice = this.challengeQuestion[this.role + '_answer']
     },
-    startTimer () {
+    resetTime () {
       this.challengeQuestion.question.difficulty > 2 ? this.time = 300 : this.challengeQuestion.question.difficulty > 1 ? this.time = 200 : this.time = 100
+    },
+    startTimer () {
       let expired = () => {
+        // once a time is expired, stop timer, bounce to next question, reset interval,
         clearInterval(countdown)
-        this.chooseOption('E')
-        this.nextQuestion()
+        if (!this.choice) {
+          this.chooseOption('E')
+        }
+        this.submit()
+        countdown = setInterval(() => {
+          this.time === 0 ? expired() : --this.time
+        }, 1000)
       }
       let countdown = setInterval(() => {
         this.time === 0 ? expired() : --this.time
@@ -227,6 +235,8 @@ export default {
       this.nextSolution()
     } else {
       this.nextQuestion()
+      this.startTimer()
+      // the timer never stops until the time ends, tight?
     }
   },
 
