@@ -16,6 +16,12 @@
 
               <h5 class="body-2" style="color: #cecece">Level {{getUserLevel(user.points)}} ({{user.points}} points)</h5>
           </v-flex>
+
+          <v-flex xs12>
+            <v-card-text>
+              <i v-html="joke.joke"></i>
+            </v-card-text>
+          </v-flex>
         </v-layout>
       </v-container>
     </v-jumbotron>
@@ -180,10 +186,12 @@
 </template>
 
 <script>
-import { getUserLevel, lastItemIn } from '../functions.js'
+import { getUserLevel, lastItemIn, randomItemIn } from '../functions.js'
 import SvgIcon from './partials/SvgIcon.vue'
 import ProfileAvatar from './partials/ProfileAvatar.vue'
 import { mapGetters, mapActions } from 'vuex'
+let jokes = require('../../static/jokes.json')
+console.log(jokes)
 export default {
   components: {
     'svg-icon': SvgIcon,
@@ -198,7 +206,7 @@ export default {
       if (!m) {
         return null
       }
-      let p = this.sanitisedModules.filter(module => module.id === m.id)[0]
+      let p = this.sanitisedModules.filter(module => parseInt(module.id) === parseInt(m.id))[0]
       return {
         id: m.id,
         title: p.title,
@@ -208,6 +216,9 @@ export default {
     },
     latestChallenge () {
       return this.challenges ? lastItemIn(this.challenges) : null
+    },
+    joke () {
+      return randomItemIn(jokes)
     }
   },
   methods: {
@@ -227,6 +238,7 @@ export default {
   mounted () {
     this.stopLoading()
     this.setTitle('Physiks')
+    eval('MathJax.Hub.Queue(["Typeset", MathJax.Hub])')
   }
 }
 </script>
