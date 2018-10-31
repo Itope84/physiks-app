@@ -8,7 +8,6 @@
 
           <v-spacer></v-spacer>
           <v-btn fab small color="accent" @click="showConstants = false"><v-icon>close</v-icon></v-btn>
-          </v-card-actions>
         </v-card-title>
 
         <v-card-text>

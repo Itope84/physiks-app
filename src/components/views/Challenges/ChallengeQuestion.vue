@@ -240,6 +240,10 @@ export default {
     }
   },
 
+  updated () {
+    eval('MathJax.Hub.Queue(["Typeset", MathJax.Hub])')
+  },
+
   mounted () {
     eval('MathJax.Hub.Queue(["Typeset", MathJax.Hub])')
     this.setTitle('Challenge')

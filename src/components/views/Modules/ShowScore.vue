@@ -292,6 +292,10 @@ export default {
     this.setActiveModule(findById(this.modules, parseInt(this.$route.params.id)))
   },
 
+  updated () {
+    eval('MathJax.Hub.Queue(["Typeset", MathJax.Hub])')
+  },
+
   mounted () {
     eval('MathJax.Hub.Queue(["Typeset", MathJax.Hub])')
 

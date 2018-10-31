@@ -141,6 +141,10 @@ export default {
     this.setActiveQuestion(findById(this.module.questions, parseInt(this.$route.params.questionId)))
   },
 
+  updated () {
+    eval('MathJax.Hub.Queue(["Typeset", MathJax.Hub])')
+  },
+
   mounted () {
     eval('MathJax.Hub.Queue(["Typeset", MathJax.Hub])')
 

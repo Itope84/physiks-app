@@ -235,6 +235,10 @@ export default {
     this.fetchChallenges()
   },
 
+  updated () {
+    eval('MathJax.Hub.Queue(["Typeset", MathJax.Hub])')
+  },
+
   mounted () {
     this.stopLoading()
     this.setTitle('Physiks')

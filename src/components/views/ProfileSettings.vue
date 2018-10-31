@@ -66,10 +66,17 @@
             </v-list-tile-content>
           </v-list-tile>
 
+          <v-list-tile avatar v-ripple>
+            <v-list-tile-content>
+              <v-list-tile-title>Credits</v-list-tile-title>
+              <v-list-tile-sub-title>The awesome people behind the scenes</v-list-tile-sub-title>
+            </v-list-tile-content>
+          </v-list-tile>
+
         </v-list>
 
         <v-card-text style="position: absolute; bottom: 1rem" class="text-xs-center">
-          Copyright &copy; 2018 - Temitope I. (Santiago)
+          Built with <v-icon color="red">favorite</v-icon> by Temitope I. (Santiago)
         </v-card-text>
     </v-flex>
   </v-layout>
