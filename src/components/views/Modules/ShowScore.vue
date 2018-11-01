@@ -249,6 +249,7 @@ export default {
         this.reducePoints(pointsToReduce).then(this.showAnswers = true)
         this.showDetails()
       }
+      this.confirmViewAnswersDialog = false
     },
 
     showQuestion (id, questionNo) {
