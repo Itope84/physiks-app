@@ -1,5 +1,8 @@
 import axios from '../../http'
 
+axios.defaults.headers.common['Content-Type'] = 'application/json'
+axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('user.token')
+
 function initialState () {
   return {
     modules: []

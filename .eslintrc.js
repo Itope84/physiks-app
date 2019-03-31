@@ -20,6 +20,8 @@ module.exports = {
     // allow paren-less arrow functions
     'arrow-parens': 0,
     'no-eval': 0,
+    'no-useless-escape': 0,
+    'quotes': 0,
     // allow async-await
     'generator-star-spacing': 0,
     // allow debugger during development

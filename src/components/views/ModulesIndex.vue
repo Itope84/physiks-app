@@ -25,7 +25,12 @@
           </v-list-tile-avatar> -->
 
           <v-list-tile-content>
-            <v-list-tile-title v-html="item.title" class="primary--text"></v-list-tile-title>
+            <v-badge>
+              <span slot="badge" class="white--text" v-if="findById(user.modules, item.id)"><v-icon dark>{{findById(user.modules, item.id).passed ? 'check' : 'remove'}}</v-icon></span>
+
+              <v-list-tile-title v-html="item.title" class="primary--text"></v-list-tile-title>
+            </v-badge>
+
             <v-list-tile-sub-title v-html="item.summary"></v-list-tile-sub-title>
           </v-list-tile-content>
 
@@ -39,17 +44,25 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import { findById } from '../../functions'
 export default {
   computed: {
     ...mapGetters('ModulesIndex', ['sanitisedModules']),
-    ...mapGetters('Navigation', ['menu'])
+    ...mapGetters('User', ['user'])
   },
 
   methods: {
-    ...mapActions('Navigation', ['goto']),
     openModule (item) {
-      this.goto({routeName: 'Module', activeEl: this.menu[1], params: {id: item.id}})
-    }
+      this.$router.push({name: 'Module', params: {id: item.id}})
+    },
+
+    ...mapActions('Navigation', ['setTitle']),
+
+    findById
+  },
+
+  mounted () {
+    this.setTitle('Modules')
   }
 
 }
